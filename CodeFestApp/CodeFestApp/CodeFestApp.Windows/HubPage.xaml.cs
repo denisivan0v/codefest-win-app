@@ -1,38 +1,39 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-using CodeFestApp.Data;
+
 using CodeFestApp.Common;
+using CodeFestApp.Data;
+
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 
 // The Universal Hub Application project template is documented at http://go.microsoft.com/fwlink/?LinkID=391955
+using CodeFestApp.ViewModels;
 
 namespace CodeFestApp
 {
     /// <summary>
     /// A page that displays a grouped collection of items.
     /// </summary>
-    public sealed partial class HubPage : Page
+    public sealed partial class HubPage
     {
-        private NavigationHelper navigationHelper;
-        private ObservableDictionary defaultViewModel = new ObservableDictionary();
+        private readonly NavigationHelper _navigationHelper;
+        private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
+
+        public HubPage()
+        {
+            InitializeComponent();
+            DataContext = new HubViewModel();
+            
+            // _navigationHelper = new NavigationHelper(this);
+            // _navigationHelper.LoadState += NavigationHelper_LoadState;
+        }
 
         /// <summary>
         /// Gets the NavigationHelper used to aid in navigation and process lifetime management.
         /// </summary>
         public NavigationHelper NavigationHelper
         {
-            get { return this.navigationHelper; }
+            get { return _navigationHelper; }
         }
 
         /// <summary>
@@ -40,14 +41,26 @@ namespace CodeFestApp
         /// </summary>
         public ObservableDictionary DefaultViewModel
         {
-            get { return this.defaultViewModel; }
+            get { return _defaultViewModel; }
         }
 
-        public HubPage()
+        /// <summary>
+        /// The methods provided in this section are simply used to allow
+        /// NavigationHelper to respond to the page's navigation methods.
+        /// Page specific logic should be placed in event handlers for the  
+        /// <see cref="Common.NavigationHelper.LoadState"/>
+        /// and <see cref="Common.NavigationHelper.SaveState"/>.
+        /// The navigation parameter is available in the LoadState method 
+        /// in addition to page state preserved during an earlier session.
+        /// </summary>
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            this.InitializeComponent();
-            this.navigationHelper = new NavigationHelper(this);
-            this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
+            _navigationHelper.OnNavigatedTo(e);
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            _navigationHelper.OnNavigatedFrom(e);
         }
 
         /// <summary>
@@ -65,7 +78,7 @@ namespace CodeFestApp
         {
             // TODO: Create an appropriate data model for your problem domain to replace the sample data
             var sampleDataGroup = await SampleDataSource.GetGroupAsync("Group-4");
-            this.DefaultViewModel["Section3Items"] = sampleDataGroup;
+            DefaultViewModel["Section3Items"] = sampleDataGroup;
         }
 
         /// <summary>
@@ -73,11 +86,11 @@ namespace CodeFestApp
         /// </summary>
         /// <param name="sender">The Hub that contains the HubSection whose header was clicked.</param>
         /// <param name="e">Event data that describes how the click was initiated.</param>
-        void Hub_SectionHeaderClick(object sender, HubSectionHeaderClickEventArgs e)
+        private void Hub_SectionHeaderClick(object sender, HubSectionHeaderClickEventArgs e)
         {
-            HubSection section = e.Section;
+            var section = e.Section;
             var group = section.DataContext;
-            this.Frame.Navigate(typeof(SectionPage), ((SampleDataGroup)group).UniqueId);
+            Frame.Navigate(typeof(SectionPage), ((SampleDataGroup)group).UniqueId);
         }
 
         /// <summary>
@@ -86,34 +99,12 @@ namespace CodeFestApp
         /// <param name="sender">The GridView or ListView
         /// displaying the item clicked.</param>
         /// <param name="e">Event data that describes the item clicked.</param>
-        void ItemView_ItemClick(object sender, ItemClickEventArgs e)
+        private void ItemView_ItemClick(object sender, ItemClickEventArgs e)
         {
             // Navigate to the appropriate destination page, configuring the new page
             // by passing required information as a navigation parameter
             var itemId = ((SampleDataItem)e.ClickedItem).UniqueId;
-            this.Frame.Navigate(typeof(ItemPage), itemId);
+            Frame.Navigate(typeof(ItemPage), itemId);
         }
-        #region NavigationHelper registration
-
-        /// <summary>
-        /// The methods provided in this section are simply used to allow
-        /// NavigationHelper to respond to the page's navigation methods.
-        /// Page specific logic should be placed in event handlers for the  
-        /// <see cref="Common.NavigationHelper.LoadState"/>
-        /// and <see cref="Common.NavigationHelper.SaveState"/>.
-        /// The navigation parameter is available in the LoadState method 
-        /// in addition to page state preserved during an earlier session.
-        /// </summary>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            this.navigationHelper.OnNavigatedTo(e);
-        }
-
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {
-            this.navigationHelper.OnNavigatedFrom(e);
-        }
-
-        #endregion
     }
 }

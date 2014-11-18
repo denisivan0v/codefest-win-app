@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -60,7 +57,11 @@ namespace CodeFestApp.Common
     public class NavigationHelper : DependencyObject
     {
         private Page Page { get; set; }
-        private Frame Frame { get { return this.Page.Frame; } }
+
+        private Frame Frame
+        {
+            get { return Page.Frame; }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NavigationHelper"/> class.
@@ -94,15 +95,13 @@ namespace CodeFestApp.Common
             };
 
             // Undo the same changes when the page is no longer visible
-            this.Page.Unloaded += (sender, e) =>
+            Page.Unloaded += (sender, e) =>
             {
 #if WINDOWS_PHONE_APP
                 Windows.Phone.UI.Input.HardwareButtons.BackPressed -= HardwareButtons_BackPressed;
 #else
-                Window.Current.CoreWindow.Dispatcher.AcceleratorKeyActivated -=
-                    CoreDispatcher_AcceleratorKeyActivated;
-                Window.Current.CoreWindow.PointerPressed -=
-                    this.CoreWindow_PointerPressed;
+                Window.Current.CoreWindow.Dispatcher.AcceleratorKeyActivated -= CoreDispatcher_AcceleratorKeyActivated;
+                Window.Current.CoreWindow.PointerPressed -= CoreWindow_PointerPressed;
 #endif
             };
         }
