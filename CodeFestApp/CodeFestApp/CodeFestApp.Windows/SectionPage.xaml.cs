@@ -1,10 +1,7 @@
-﻿using System;
+﻿using CodeFestApp.Common;
+using CodeFestApp.ViewModels;
 
-using CodeFestApp.Common;
-using CodeFestApp.Data;
-
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Navigation;
+using ReactiveUI;
 
 namespace CodeFestApp
 {
@@ -12,18 +9,23 @@ namespace CodeFestApp
     /// A page that displays an overview of a single group, including a preview of the items
     /// within the group.
     /// </summary>
-    public sealed partial class SectionPage
+    public sealed partial class SectionPage : IViewFor<SectionViewModel>
     {
+        /*
         private readonly NavigationHelper _navigationHelper;
         private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
+        */
 
         public SectionPage()
         {
             InitializeComponent();
+            /*
             _navigationHelper = new NavigationHelper(this);
             _navigationHelper.LoadState += NavigationHelper_LoadState;
+             */
         }
 
+        /*
         /// <summary>
         /// Gets the NavigationHelper used to aid in navigation and process lifetime management.
         /// </summary>
@@ -90,5 +92,13 @@ namespace CodeFestApp
             var itemId = ((SampleDataItem)e.ClickedItem).UniqueId;
             Frame.Navigate(typeof(ItemPage), itemId);
         }
+         */
+        object IViewFor.ViewModel
+        {
+            get { return ViewModel; }
+            set { ViewModel = (SectionViewModel)value; }
+        }
+
+        public SectionViewModel ViewModel { get; set; }
     }
 }

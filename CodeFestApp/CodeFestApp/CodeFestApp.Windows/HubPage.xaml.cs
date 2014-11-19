@@ -1,33 +1,38 @@
-﻿using System;
+﻿using CodeFestApp.ViewModels;
 
-using CodeFestApp.Common;
-using CodeFestApp.Data;
+using ReactiveUI;
 
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Navigation;
-
-// The Universal Hub Application project template is documented at http://go.microsoft.com/fwlink/?LinkID=391955
-using CodeFestApp.ViewModels;
+using Windows.UI.Xaml;
 
 namespace CodeFestApp
 {
     /// <summary>
     /// A page that displays a grouped collection of items.
     /// </summary>
-    public sealed partial class HubPage
+    public sealed partial class HubPage : IViewFor<HubViewModel>
     {
+        /*
         private readonly NavigationHelper _navigationHelper;
         private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
+        */
 
+        public static readonly DependencyProperty ViewModelProperty =
+            DependencyProperty.Register("ViewModel", typeof(HubViewModel), typeof(HubPage), new PropertyMetadata(null));
+        
         public HubPage()
         {
             InitializeComponent();
-            DataContext = new HubViewModel();
+
+            ViewModel = new HubViewModel();
+            DataContext = ViewModel;
+            
+            this.BindCommand(ViewModel, x => x.NavigateCommand, x => x.Hub, "SectionHeaderClick");
             
             // _navigationHelper = new NavigationHelper(this);
             // _navigationHelper.LoadState += NavigationHelper_LoadState;
         }
 
+        /*
         /// <summary>
         /// Gets the NavigationHelper used to aid in navigation and process lifetime management.
         /// </summary>
@@ -105,6 +110,18 @@ namespace CodeFestApp
             // by passing required information as a navigation parameter
             var itemId = ((SampleDataItem)e.ClickedItem).UniqueId;
             Frame.Navigate(typeof(ItemPage), itemId);
+        }
+         */
+        object IViewFor.ViewModel
+        {
+            get { return ViewModel; }
+            set { ViewModel = (HubViewModel)value; }
+        }
+
+        public HubViewModel ViewModel
+        {
+            get { return (HubViewModel)GetValue(ViewModelProperty); }
+            set { SetValue(ViewModelProperty, value); }
         }
     }
 }
