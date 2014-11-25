@@ -1,4 +1,6 @@
-﻿using CodeFestApp.Data;
+﻿using System.Collections.Generic;
+
+using CodeFestApp.Data;
 
 using ReactiveUI;
 
@@ -12,6 +14,8 @@ namespace CodeFestApp.ViewModels
         {
             _sampleDataGroup = sampleDataGroup;
             HostScreen = hostScreen;
+
+            NavigateToItemCommand = ReactiveCommand.Create();
         }
 
         public string UrlPathSegment
@@ -20,5 +24,17 @@ namespace CodeFestApp.ViewModels
         }
 
         public IScreen HostScreen { get; private set; }
+
+        public SampleDataGroup Group
+        {
+            get { return _sampleDataGroup; }
+        }
+
+        public IEnumerable<SampleDataItem> Items
+        {
+            get { return _sampleDataGroup.Items; }
+        }
+
+        public ReactiveCommand<object> NavigateToItemCommand { get; private set; }
     }
 }

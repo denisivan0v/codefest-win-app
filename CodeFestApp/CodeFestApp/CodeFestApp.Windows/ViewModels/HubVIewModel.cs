@@ -1,50 +1,38 @@
-﻿using System;
-using System.Reactive;
-
-using CodeFestApp.Data;
+﻿using CodeFestApp.Data;
 
 using ReactiveUI;
 
-using Splat;
-
-using Windows.UI.Xaml.Controls;
-
 namespace CodeFestApp.ViewModels
 {
-    public class HubViewModel : ReactiveObject, IScreen
+    public class HubViewModel : ReactiveObject, IRoutableViewModel
     {
-        public HubViewModel(IMutableDependencyResolver dependencyResolver = null, RoutingState routingState = null)
+        public HubViewModel(IScreen screen)
         {
-            RegisterParts(dependencyResolver ?? Locator.CurrentMutable);
-            
-            Router = routingState ?? new RoutingState();
-            NavigateCommand = ReactiveCommand.Create();
-            
-            NavigateCommand.Subscribe(x =>
-                {
-                    var eventPattern = (EventPattern<HubSectionHeaderClickEventArgs>)x;
-                    
-                    var sampleDataGroup = (SampleDataGroup)eventPattern.EventArgs.Section.DataContext;
-                    Router.Navigate.Execute(new SectionViewModel(this, sampleDataGroup));
-                });
+            HostScreen = screen;
+            NavigateToSectionCommand = ReactiveCommand.Create();
+            NavigateToItemCommand = ReactiveCommand.Create();
 
-            this.WhenAny(vm => vm.Changed, x => true)
-                .Subscribe(async _ =>
-                    {
-                        Section3Items = await SampleDataSource.GetGroupAsync("Group-4");
-                    });
+            this.WhenNavigatedTo(() =>
+                {
+                    SetSectionItems();
+                    return null;
+                });
         }
 
-        public RoutingState Router { get; private set; }
-
-        public ReactiveCommand<object> NavigateCommand { get; set; }
-
+        public ReactiveCommand<object> NavigateToSectionCommand { get; private set; }
+        public ReactiveCommand<object> NavigateToItemCommand { get; private set; }
         public SampleDataGroup Section3Items { get; private set; }
+        
+        public IScreen HostScreen { get; private set; }
 
-        private void RegisterParts(IMutableDependencyResolver dependencyResolver)
+        public string UrlPathSegment
         {
-            dependencyResolver.RegisterConstant(this, typeof(IScreen));
-            dependencyResolver.Register(() => new SectionPage(), typeof(IViewFor<SectionViewModel>));
+            get { return "hubpage"; }
+        }
+
+        private async void SetSectionItems()
+        {
+            Section3Items = await SampleDataSource.GetGroupAsync("Group-4");
         }
     }
 }

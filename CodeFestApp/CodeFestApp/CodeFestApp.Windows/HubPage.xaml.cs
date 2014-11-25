@@ -1,8 +1,12 @@
-﻿using CodeFestApp.ViewModels;
+﻿using System;
+using System.Reactive;
+
+using CodeFestApp.Data;
+using CodeFestApp.ViewModels;
 
 using ReactiveUI;
 
-using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace CodeFestApp
 {
@@ -16,18 +20,33 @@ namespace CodeFestApp
         private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
         */
 
-        public static readonly DependencyProperty ViewModelProperty =
-            DependencyProperty.Register("ViewModel", typeof(HubViewModel), typeof(HubPage), new PropertyMetadata(null));
-        
         public HubPage()
         {
             InitializeComponent();
 
-            ViewModel = new HubViewModel();
-            DataContext = ViewModel;
+            this.Bind(ViewModel, x => x.Section3Items, x => x.Section3.DataContext);
+            this.BindCommand(ViewModel, x => x.NavigateToSectionCommand, x => x.Hub, "SectionHeaderClick");
             
-            this.BindCommand(ViewModel, x => x.NavigateCommand, x => x.Hub, "SectionHeaderClick");
-            
+            // this.BindCommand(ViewModel, x => x.NavigateToItemCommand, x => x.Section3.ContentTemplate.LoadContent(), "ItemClick");
+
+            this.WhenAnyObservable(x => x.ViewModel.NavigateToSectionCommand)
+                .Subscribe(x =>
+                    {
+                        var eventPattern = (EventPattern<HubSectionHeaderClickEventArgs>)x;
+
+                        var sampleDataGroup = (SampleDataGroup)eventPattern.EventArgs.Section.DataContext;
+                        ViewModel.HostScreen.Router.Navigate.Execute(new SectionViewModel(ViewModel.HostScreen, sampleDataGroup));
+                    });
+
+            this.WhenAnyObservable(x => x.ViewModel.NavigateToItemCommand)
+                .Subscribe(x =>
+                {
+                    var eventPattern = (EventPattern<ItemClickEventArgs>)x;
+
+                    var sampleDataItem = (SampleDataItem)eventPattern.EventArgs.ClickedItem;
+                    ViewModel.HostScreen.Router.Navigate.Execute(new ItemViewModel(ViewModel.HostScreen, sampleDataItem));
+                });
+
             // _navigationHelper = new NavigationHelper(this);
             // _navigationHelper.LoadState += NavigationHelper_LoadState;
         }
@@ -118,10 +137,6 @@ namespace CodeFestApp
             set { ViewModel = (HubViewModel)value; }
         }
 
-        public HubViewModel ViewModel
-        {
-            get { return (HubViewModel)GetValue(ViewModelProperty); }
-            set { SetValue(ViewModelProperty, value); }
-        }
+        public HubViewModel ViewModel { get; set; }
     }
 }

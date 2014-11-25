@@ -1,28 +1,30 @@
-﻿using System;
+﻿using CodeFestApp.ViewModels;
 
-using CodeFestApp.Common;
-using CodeFestApp.Data;
+using ReactiveUI;
 
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Navigation;
-
-// The Universal Hub Application project template is documented at http://go.microsoft.com/fwlink/?LinkID=391955
 namespace CodeFestApp
 {
     /// <summary>
     /// A page that displays details for a single item within a group.
     /// </summary>
-    public sealed partial class ItemPage
+    public sealed partial class ItemPage : IViewFor<ItemViewModel>
     {
+        /*
         private readonly NavigationHelper _navigationHelper;
         private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
+         */
 
         public ItemPage()
         {
             InitializeComponent();
+
+            /*
             _navigationHelper = new NavigationHelper(this);
             _navigationHelper.LoadState += NavigationHelper_LoadState;
+             */
         }
+        
+        /*
 
         /// <summary>
         /// Gets the NavigationHelper used to aid in navigation and process lifetime management.
@@ -76,5 +78,13 @@ namespace CodeFestApp
             var item = await SampleDataSource.GetItemAsync((string)e.NavigationParameter);
             DefaultViewModel["Item"] = item;
         }
+         */
+        object IViewFor.ViewModel
+        {
+            get { return ViewModel; }
+            set { ViewModel = (ItemViewModel)value; }
+        }
+
+        public ItemViewModel ViewModel { get; set; }
     }
 }
