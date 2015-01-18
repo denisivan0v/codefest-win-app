@@ -44,21 +44,21 @@
             <Hub.Header>
                 <!-- Back button and page title -->
                 <Grid>
-                    <!--
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="80"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Button  x:Name="backButton" Style="{StaticResource NavigationBackButtonNormalStyle}"
-                        Margin="0,0,39,0" 
-                        VerticalAlignment="Top"
-                        Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
-                        AutomationProperties.Name="Back"
-                        AutomationProperties.AutomationId="BackButton"
-                        AutomationProperties.ItemType="Navigation Button"/>
-                    <TextBlock x:Name="pageTitle" x:Uid="Header" Text="application name" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
-                        VerticalAlignment="Top" IsHitTestVisible="false" TextWrapping="NoWrap" />
-                -->
+                    <Button  x:Name="BackButton" 
+                             Style="{StaticResource NavigationBackButtonNormalStyle}"
+                            Margin="0,0,39,0" 
+                            VerticalAlignment="Top" /> 
+                    <TextBlock x:Uid="Header" 
+                               Text="application name" 
+                               Style="{StaticResource HeaderTextBlockStyle}" 
+                               Grid.Column="1" 
+                               VerticalAlignment="Top" 
+                               IsHitTestVisible="false"
+                               TextWrapping="NoWrap" />
                 </Grid>
             </Hub.Header>
             <HubSection Width="780" Margin="0,0,80,0">

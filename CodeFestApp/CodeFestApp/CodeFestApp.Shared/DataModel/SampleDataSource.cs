@@ -82,12 +82,12 @@ namespace CodeFestApp.Data
     /// </summary>
     public sealed class SampleDataSource
     {
-        private static SampleDataSource _sampleDataSource = new SampleDataSource();
+        private static readonly SampleDataSource _sampleDataSource = new SampleDataSource();
 
-        private ObservableCollection<SampleDataGroup> _groups = new ObservableCollection<SampleDataGroup>();
+        private readonly ObservableCollection<SampleDataGroup> _groups = new ObservableCollection<SampleDataGroup>();
         public ObservableCollection<SampleDataGroup> Groups
         {
-            get { return this._groups; }
+            get { return _groups; }
         }
 
         public static async Task<IEnumerable<SampleDataGroup>> GetGroupsAsync()
@@ -100,9 +100,14 @@ namespace CodeFestApp.Data
         public static async Task<SampleDataGroup> GetGroupAsync(string uniqueId)
         {
             await _sampleDataSource.GetSampleDataAsync();
+
             // Simple linear search is acceptable for small data sets
             var matches = _sampleDataSource.Groups.Where((group) => group.UniqueId.Equals(uniqueId));
-            if (matches.Count() == 1) return matches.First();
+            if (matches.Count() == 1)
+            {
+                return matches.First();
+            }
+
             return null;
         }
 
@@ -118,7 +123,9 @@ namespace CodeFestApp.Data
         private async Task GetSampleDataAsync()
         {
             if (this._groups.Count != 0)
+            {
                 return;
+            }
 
             Uri dataUri = new Uri("ms-appx:///DataModel/SampleData.json");
 

@@ -25,6 +25,7 @@ namespace CodeFestApp
         private void RegisterParts(IMutableDependencyResolver dependencyResolver)
         {
             dependencyResolver.RegisterConstant(this, typeof(IScreen));
+
             dependencyResolver.Register(() => new HubPage(), typeof(IViewFor<HubViewModel>));
             dependencyResolver.Register(() => new SectionPage(), typeof(IViewFor<SectionViewModel>));
             dependencyResolver.Register(() => new ItemPage(), typeof(IViewFor<ItemViewModel>));

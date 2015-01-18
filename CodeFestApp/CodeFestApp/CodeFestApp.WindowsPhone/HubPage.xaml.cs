@@ -1,53 +1,43 @@
-﻿using CodeFestApp.Common;
-using CodeFestApp.Data;
+﻿using CodeFestApp.ViewModels;
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.ApplicationModel.Resources;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using ReactiveUI;
+
 using Windows.Graphics.Display;
-using Windows.UI.Core;
-using Windows.UI.ViewManagement;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
-
-// The Universal Hub Application project template is documented at http://go.microsoft.com/fwlink/?LinkID=391955
 
 namespace CodeFestApp
 {
     /// <summary>
     /// A page that displays a grouped collection of items.
     /// </summary>
-    public sealed partial class HubPage : Page
+    public sealed partial class HubPage : IViewFor<HubViewModel>
     {
+        /*
         private readonly NavigationHelper navigationHelper;
         private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
         private readonly ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView("Resources");
+         */
 
         public HubPage()
         {
-            this.InitializeComponent();
-
+            InitializeComponent();
+            
             // Hub is only supported in Portrait orientation
             DisplayInformation.AutoRotationPreferences = DisplayOrientations.Portrait;
 
-            this.NavigationCacheMode = NavigationCacheMode.Required;
+            NavigationCacheMode = NavigationCacheMode.Required;
 
+            this.Bind(ViewModel, x => x.Groups, x => x.Hub.DataContext);
+
+            /*
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
+             */
         }
 
+        /*
+        
         /// <summary>
         /// Gets the <see cref="NavigationHelper"/> associated with this <see cref="Page"/>.
         /// </summary>
@@ -149,5 +139,14 @@ namespace CodeFestApp
         }
 
         #endregion
+         
+         */
+        object IViewFor.ViewModel
+        {
+            get { return ViewModel; }
+            set { ViewModel = (HubViewModel)value; }
+        }
+
+        public HubViewModel ViewModel { get; set; }
     }
 }

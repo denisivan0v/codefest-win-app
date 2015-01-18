@@ -1,4 +1,6 @@
-﻿using CodeFestApp.Data;
+﻿using System.Collections.Generic;
+
+using CodeFestApp.Data;
 
 using ReactiveUI;
 
@@ -14,6 +16,7 @@ namespace CodeFestApp.ViewModels
 
             this.WhenNavigatedTo(() =>
                 {
+                    SetGroups();
                     SetSectionItems();
                     return null;
                 });
@@ -21,6 +24,8 @@ namespace CodeFestApp.ViewModels
 
         public ReactiveCommand<object> NavigateToSectionCommand { get; private set; }
         public ReactiveCommand<object> NavigateToItemCommand { get; private set; }
+
+        public IEnumerable<SampleDataGroup> Groups { get; private set; }
         public SampleDataGroup Section3Items { get; private set; }
         
         public IScreen HostScreen { get; private set; }
@@ -28,6 +33,11 @@ namespace CodeFestApp.ViewModels
         public string UrlPathSegment
         {
             get { return "hubpage"; }
+        }
+
+        private async void SetGroups()
+        {
+            Groups = await SampleDataSource.GetGroupsAsync();
         }
 
         private async void SetSectionItems()
