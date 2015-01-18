@@ -4,7 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:codeFestApp="using:CodeFestApp"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -85,17 +86,32 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid x:Name="LayoutRoot">
+    <Grid>
         <Hub x:Name="Hub" 
-             x:Uid="Hub" 
              Header="application name" 
              Background="{ThemeResource HubBackgroundImageBrush}">
-            <HubSection x:Name="HubSection1"
-                        Header="SECTION 1" 
-                        DataContext="{Binding DataContext, ElementName=Hub}"
-                        HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}"> 
+            <HubSection Header="SECTION 1" 
+                        HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}"
+                        DataContext="{Binding DataContext, ElementName=Hub}"> 
                 <DataTemplate>
-                    <codeFestApp:SectionListView />
+                    <ListView x:Name="Sections"
+                              ItemsSource="{Binding}"
+                              IsItemClickEnabled="True"
+                              ContinuumNavigationTransitionInfo.ExitElementContainer="True">
+                        <interactivity:Interaction.Behaviors>
+                            <core:EventTriggerBehavior EventName="ItemClick">
+                                <core:InvokeCommandAction Command="{Binding NavigateToSectionCommand, RelativeSource={RelativeSource TemplatedParent}}" />
+                            </core:EventTriggerBehavior>
+                        </interactivity:Interaction.Behaviors>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,0,0,27.5">
+                                    <TextBlock Text="{Binding Title}" 
+                                               Style="{ThemeResource ListViewItemTextBlockStyle}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
                 </DataTemplate>
             </HubSection>
 

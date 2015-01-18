@@ -1,9 +1,15 @@
-﻿using CodeFestApp.ViewModels;
+﻿using System;
+using System.Reactive.Linq;
+
+using CodeFestApp.Data;
+using CodeFestApp.ViewModels;
 
 using ReactiveUI;
 
 using Windows.Graphics.Display;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace CodeFestApp
@@ -22,13 +28,20 @@ namespace CodeFestApp
         public HubPage()
         {
             InitializeComponent();
-            
+
             // Hub is only supported in Portrait orientation
             DisplayInformation.AutoRotationPreferences = DisplayOrientations.Portrait;
             NavigationCacheMode = NavigationCacheMode.Required;
 
             this.Bind(ViewModel, x => x.Groups, x => x.Hub.DataContext);
-            this.Bind(ViewModel, x => x.Groups, x => x.HubSection1.DataContext);
+
+            /*
+            var sections = FindChildControl<ListView>(Root, "Sections") as ListView;
+            this.Bind(ViewModel, x => x.Groups, x => sections.ItemsSource);
+            sections.Events().ItemClick
+                    .Select(x => (SampleDataGroup)x.ClickedItem)
+                    .Subscribe(x => ViewModel.NavigateToSectionCommand.Execute(new SectionViewModel(ViewModel.HostScreen, x)));
+             */
 
             /*
             this.navigationHelper = new NavigationHelper(this);
@@ -158,5 +171,31 @@ namespace CodeFestApp
         }
 
         public HubViewModel ViewModel { get; set; }
+
+        private DependencyObject FindChildControl<T>(DependencyObject control, string ctrlName)
+        {
+            int childNumber = VisualTreeHelper.GetChildrenCount(control);
+            for (int i = 0; i < childNumber; i++)
+            {
+                DependencyObject child = VisualTreeHelper.GetChild(control, i);
+                FrameworkElement fe = child as FrameworkElement;
+                // Not a framework element or is null
+                if (fe == null) return null;
+
+                if (child is T && fe.Name == ctrlName)
+                {
+                    // Found the control so return
+                    return child;
+                }
+                else
+                {
+                    // Not found it - search children
+                    DependencyObject nextLevel = FindChildControl<T>(child, ctrlName);
+                    if (nextLevel != null)
+                        return nextLevel;
+                }
+            }
+            return null;
+        }
     }
 }
