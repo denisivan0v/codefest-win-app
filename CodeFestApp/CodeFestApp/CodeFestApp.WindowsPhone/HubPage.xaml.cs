@@ -3,6 +3,7 @@
 using ReactiveUI;
 
 using Windows.Graphics.Display;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
 namespace CodeFestApp
@@ -24,10 +25,10 @@ namespace CodeFestApp
             
             // Hub is only supported in Portrait orientation
             DisplayInformation.AutoRotationPreferences = DisplayOrientations.Portrait;
-
             NavigationCacheMode = NavigationCacheMode.Required;
 
             this.Bind(ViewModel, x => x.Groups, x => x.Hub.DataContext);
+            this.Bind(ViewModel, x => x.Groups, x => x.HubSection1.DataContext);
 
             /*
             this.navigationHelper = new NavigationHelper(this);
@@ -139,8 +140,17 @@ namespace CodeFestApp
         }
 
         #endregion
-         
+        
          */
+
+        private void GroupSection_ItemClick(object sender, ItemClickEventArgs e)
+        {
+        }
+
+        private void ItemView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+        }
+
         object IViewFor.ViewModel
         {
             get { return ViewModel; }

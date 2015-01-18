@@ -27,6 +27,9 @@ namespace CodeFestApp
             dependencyResolver.RegisterConstant(this, typeof(IScreen));
 
             dependencyResolver.Register(() => new HubPage(), typeof(IViewFor<HubViewModel>));
+#if WINDOWS_PHONE_APP
+            dependencyResolver.Register(() => new SectionListView(), typeof(IViewFor<SectionListViewModel>));
+#endif
             dependencyResolver.Register(() => new SectionPage(), typeof(IViewFor<SectionViewModel>));
             dependencyResolver.Register(() => new ItemPage(), typeof(IViewFor<ItemViewModel>));
         }

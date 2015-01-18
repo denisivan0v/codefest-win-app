@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:codeFestApp="using:CodeFestApp"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -89,29 +90,17 @@
              x:Uid="Hub" 
              Header="application name" 
              Background="{ThemeResource HubBackgroundImageBrush}">
-            <HubSection Header="SECTION 1" 
+            <HubSection x:Name="HubSection1"
+                        Header="SECTION 1" 
                         DataContext="{Binding DataContext, ElementName=Hub}"
                         HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}"> 
                 <DataTemplate>
-                    <ListView
-                        ItemsSource="{Binding}"
-                        IsItemClickEnabled="True"
-                        ItemClick="GroupSection_ItemClick"
-                        ContinuumNavigationTransitionInfo.ExitElementContainer="True">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Margin="0,0,0,27.5">
-                                    <TextBlock Text="{Binding Title}" 
-                                               Style="{ThemeResource ListViewItemTextBlockStyle}" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
+                    <codeFestApp:SectionListView />
                 </DataTemplate>
             </HubSection>
 
             <HubSection x:Uid="HubSection2" Header="SECTION 2" Width="Auto"
-                        DataContext="{Binding Groups[0]}" 
+                        DataContext="{Binding DataContext[0], ElementName=Hub}" 
                         HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
                 <DataTemplate>
                     <GridView
@@ -134,7 +123,7 @@
             </HubSection>
 
             <HubSection x:Uid="HubSection3" Header="SECTION 3"
-                        DataContext="{Binding Groups[1]}" 
+                        DataContext="{Binding DataContext[1], ElementName=Hub}" 
                         HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
                 <DataTemplate>
                     <ListView 
@@ -151,7 +140,8 @@
             </HubSection>
 
             <HubSection x:Uid="HubSection4" Header="SECTION 4"
-                        DataContext="{Binding Groups[2]}" HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
+                        DataContext="{Binding DataContext[2], ElementName=Hub}" 
+                        HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
                 <DataTemplate>
                     <ListView 
                         AutomationProperties.AutomationId="ItemListViewSection4"
@@ -175,7 +165,7 @@
 
             <HubSection x:Uid="HubSection5" 
                         Header="SECTION 5"
-                        DataContext="{Binding Groups[3]}" 
+                        DataContext="{Binding DataContext[3], ElementName=Hub}" 
                         HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
                 <DataTemplate>
                     <ListView 
