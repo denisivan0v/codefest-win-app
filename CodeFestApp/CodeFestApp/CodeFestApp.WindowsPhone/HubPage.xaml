@@ -90,9 +90,9 @@
         <Hub x:Name="Hub" 
              Header="application name" 
              Background="{ThemeResource HubBackgroundImageBrush}">
-            <HubSection Header="SECTION 1" 
-                        HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}"
-                        DataContext="{Binding DataContext, ElementName=Hub}"> 
+            <HubSection x:Name="Section1"
+                        Header="SECTION 1" 
+                        HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}"> 
                 <DataTemplate>
                     <ListView x:Name="Sections"
                               ItemsSource="{Binding}"
@@ -115,8 +115,8 @@
                 </DataTemplate>
             </HubSection>
 
-            <HubSection x:Uid="HubSection2" Header="SECTION 2" Width="Auto"
-                        DataContext="{Binding DataContext[0], ElementName=Hub}" 
+            <HubSection x:Name="Section2"
+                        Header="SECTION 2" Width="Auto"
                         HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
                 <DataTemplate>
                     <GridView
@@ -138,8 +138,8 @@
                 </DataTemplate>
             </HubSection>
 
-            <HubSection x:Uid="HubSection3" Header="SECTION 3"
-                        DataContext="{Binding DataContext[1], ElementName=Hub}" 
+            <HubSection x:Name="Section3"
+                        Header="SECTION 3"
                         HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
                 <DataTemplate>
                     <ListView 
@@ -155,8 +155,8 @@
                 </DataTemplate>
             </HubSection>
 
-            <HubSection x:Uid="HubSection4" Header="SECTION 4"
-                        DataContext="{Binding DataContext[2], ElementName=Hub}" 
+            <HubSection x:Name="Section4" 
+                        Header="SECTION 4"
                         HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
                 <DataTemplate>
                     <ListView 

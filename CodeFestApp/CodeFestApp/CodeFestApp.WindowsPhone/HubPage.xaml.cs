@@ -33,7 +33,10 @@ namespace CodeFestApp
             DisplayInformation.AutoRotationPreferences = DisplayOrientations.Portrait;
             NavigationCacheMode = NavigationCacheMode.Required;
 
-            this.Bind(ViewModel, x => x.Groups, x => x.Hub.DataContext);
+            this.Bind(ViewModel, x => x.Groups, x => x.Section1.DataContext);
+            this.Bind(ViewModel, x => x.Groups[0], x => x.Section2.DataContext);
+            this.Bind(ViewModel, x => x.Groups[1], x => x.Section3.DataContext);
+            this.Bind(ViewModel, x => x.Groups[2], x => x.Section4.DataContext);
 
             /*
             var sections = FindChildControl<ListView>(Root, "Sections") as ListView;

@@ -90,11 +90,11 @@ namespace CodeFestApp.Data
             get { return _groups; }
         }
 
-        public static async Task<IEnumerable<SampleDataGroup>> GetGroupsAsync()
+        public static async Task<SampleDataGroup[]> GetGroupsAsync()
         {
             await _sampleDataSource.GetSampleDataAsync();
 
-            return _sampleDataSource.Groups;
+            return _sampleDataSource.Groups.ToArray();
         }
 
         public static async Task<SampleDataGroup> GetGroupAsync(string uniqueId)
