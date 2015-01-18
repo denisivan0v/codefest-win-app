@@ -16,6 +16,7 @@ namespace CodeFestApp.ViewModels
             HostScreen = hostScreen;
 
             NavigateToItemCommand = ReactiveCommand.Create();
+            GoBackCommand = ReactiveCommand.Create();
         }
 
         public string UrlPathSegment
@@ -36,5 +37,6 @@ namespace CodeFestApp.ViewModels
         }
 
         public ReactiveCommand<object> NavigateToItemCommand { get; private set; }
+        public ReactiveCommand<object> GoBackCommand { get; private set; }
     }
 }

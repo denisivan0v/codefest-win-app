@@ -18,6 +18,7 @@ namespace CodeFestApp
 
             this.Bind(ViewModel, x => x.Group, x => x.Container.DataContext);
             this.BindCommand(ViewModel, x => x.NavigateToItemCommand, x => x.ItemGridView, "ItemClick");
+            this.BindCommand(ViewModel, x => x.GoBackCommand, x => x.BackButton);
 
             this.WhenAnyObservable(x => x.ViewModel.NavigateToItemCommand)
                 .Subscribe(x =>
@@ -27,6 +28,10 @@ namespace CodeFestApp
                     var sampleDataItem = (SampleDataItem)eventPattern.EventArgs.ClickedItem;
                     ViewModel.HostScreen.Router.Navigate.Execute(new ItemViewModel(ViewModel.HostScreen, sampleDataItem));
                 });
+
+            this.WhenAnyObservable(x => x.ViewModel.GoBackCommand)
+                .Subscribe(x => ViewModel.HostScreen.Router.NavigateBack.Execute(null));
+
         }
         
         object IViewFor.ViewModel

@@ -12,6 +12,8 @@ namespace CodeFestApp.ViewModels
         {
             HostScreen = hostScreen;
             _sampleDataItem = sampleDataItem;
+            
+            GoBackCommand = ReactiveCommand.Create();
 
             this.WhenNavigatedTo(() =>
                 {
@@ -28,6 +30,8 @@ namespace CodeFestApp.ViewModels
         public IScreen HostScreen { get; private set; }
 
         public SampleDataItem Item { get; private set; }
+
+        public ReactiveCommand<object> GoBackCommand { get; private set; }
 
         private async void SetItem()
         {
