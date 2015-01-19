@@ -90,7 +90,7 @@
         <Hub x:Name="Hub" 
              Header="application name" 
              Background="{ThemeResource HubBackgroundImageBrush}">
-            <HubSection x:Name="Section1"
+            <HubSection DataContext="{Binding DataContext, ElementName=Hub}"
                         Header="SECTION 1" 
                         HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}"> 
                 <DataTemplate>
@@ -115,7 +115,7 @@
                 </DataTemplate>
             </HubSection>
 
-            <HubSection x:Name="Section2"
+            <HubSection DataContext="{Binding DataContext[0], ElementName=Hub}"
                         Header="SECTION 2" Width="Auto"
                         HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
                 <DataTemplate>
@@ -138,7 +138,7 @@
                 </DataTemplate>
             </HubSection>
 
-            <HubSection x:Name="Section3"
+            <HubSection DataContext="{Binding DataContext[1], ElementName=Hub}"
                         Header="SECTION 3"
                         HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
                 <DataTemplate>
@@ -155,7 +155,7 @@
                 </DataTemplate>
             </HubSection>
 
-            <HubSection x:Name="Section4" 
+            <HubSection DataContext="{Binding DataContext[2], ElementName=Hub}"
                         Header="SECTION 4"
                         HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
                 <DataTemplate>
@@ -179,9 +179,8 @@
                 </DataTemplate>
             </HubSection>
 
-            <HubSection x:Uid="HubSection5" 
+            <HubSection DataContext="{Binding DataContext[3], ElementName=Hub}" 
                         Header="SECTION 5"
-                        DataContext="{Binding DataContext[3], ElementName=Hub}" 
                         HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
                 <DataTemplate>
                     <ListView 
