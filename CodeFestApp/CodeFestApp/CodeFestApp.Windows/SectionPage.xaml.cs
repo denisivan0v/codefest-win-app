@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reactive;
 
 using CodeFestApp.Data;
 using CodeFestApp.ViewModels;
@@ -16,16 +15,15 @@ namespace CodeFestApp
         {
             InitializeComponent();
 
-            this.Bind(ViewModel, x => x.Group, x => x.Container.DataContext);
-            this.BindCommand(ViewModel, x => x.NavigateToItemCommand, x => x.ItemGridView, "ItemClick");
-            this.BindCommand(ViewModel, x => x.GoBackCommand, x => x.BackButton);
+            this.WhenAnyValue(x => x.ViewModel)
+                .Subscribe(x => DataContext = x);
 
             this.WhenAnyObservable(x => x.ViewModel.NavigateToItemCommand)
                 .Subscribe(x =>
                 {
-                    var eventPattern = (EventPattern<ItemClickEventArgs>)x;
+                    var eventPattern = (ItemClickEventArgs)x;
 
-                    var sampleDataItem = (SampleDataItem)eventPattern.EventArgs.ClickedItem;
+                    var sampleDataItem = (SampleDataItem)eventPattern.ClickedItem;
                     ViewModel.HostScreen.Router.Navigate.Execute(new ItemViewModel(ViewModel.HostScreen, sampleDataItem));
                 });
 

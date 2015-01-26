@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-using CodeFestApp.Data;
+﻿using CodeFestApp.Data;
 
 using ReactiveUI;
 
@@ -13,6 +11,7 @@ namespace CodeFestApp.ViewModels
             HostScreen = screen;
             NavigateToSectionCommand = ReactiveCommand.Create();
             NavigateToItemCommand = ReactiveCommand.Create();
+            GoBackCommand = ReactiveCommand.Create();
 
             this.WhenNavigatedTo(() =>
                 {
@@ -23,6 +22,7 @@ namespace CodeFestApp.ViewModels
 
         public ReactiveCommand<object> NavigateToSectionCommand { get; private set; }
         public ReactiveCommand<object> NavigateToItemCommand { get; private set; }
+        public ReactiveCommand<object> GoBackCommand { get; private set; }
 
         public SampleDataGroup[] Groups { get; private set; }
         

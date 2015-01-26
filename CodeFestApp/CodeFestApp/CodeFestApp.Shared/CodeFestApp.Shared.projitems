@@ -16,6 +16,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)AppBootstrapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\SuspensionManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\SampleDataSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MainWIndow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -27,10 +28,6 @@
     <Content Include="$(MSBuildThisFileDirectory)Assets\LightGray.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\MediumGray.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\DarkGray.png" />
-    <Compile Include="$(MSBuildThisFileDirectory)Common\NavigationHelper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Common\RelayCommand.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Common\SuspensionManager.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Common\ObservableDictionary.cs" />
     <PRIResource Include="$(MSBuildThisFileDirectory)Strings\ru\Resources.resw" />
   </ItemGroup>
   <ItemGroup>

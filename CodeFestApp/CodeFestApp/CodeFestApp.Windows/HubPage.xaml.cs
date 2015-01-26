@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reactive;
 
 using CodeFestApp.Data;
 using CodeFestApp.ViewModels;
@@ -19,29 +18,29 @@ namespace CodeFestApp
         {
             InitializeComponent();
 
-            this.Bind(ViewModel, x => x.Section3Items, x => x.Section3.DataContext);
-            this.BindCommand(ViewModel, x => x.NavigateToSectionCommand, x => x.Hub, "SectionHeaderClick");
-            
-            // this.BindCommand(ViewModel, x => x.NavigateToItemCommand, x => x.Section3.ContentTemplate.LoadContent(), "ItemClick");
+            this.WhenAnyValue(x => x.ViewModel)
+                .Subscribe(x => DataContext = x);
 
             this.WhenAnyObservable(x => x.ViewModel.NavigateToSectionCommand)
                 .Subscribe(x =>
                     {
-                        var eventPattern = (EventPattern<HubSectionHeaderClickEventArgs>)x;
+                        var args = (HubSectionHeaderClickEventArgs)x;
 
-                        var sampleDataGroup = (SampleDataGroup)eventPattern.EventArgs.Section.DataContext;
-                        ViewModel.HostScreen.Router.Navigate.Execute(new SectionViewModel(ViewModel.HostScreen, sampleDataGroup));
+                        var viewModel = (HubViewModel)args.Section.DataContext;
+                        ViewModel.HostScreen.Router.Navigate.Execute(new SectionViewModel(ViewModel.HostScreen, viewModel.Groups[2]));
                     });
 
             this.WhenAnyObservable(x => x.ViewModel.NavigateToItemCommand)
                 .Subscribe(x =>
                 {
-                    var eventPattern = (EventPattern<ItemClickEventArgs>)x;
+                    var args = (ItemClickEventArgs)x;
 
-                    var sampleDataItem = (SampleDataItem)eventPattern.EventArgs.ClickedItem;
+                    var sampleDataItem = (SampleDataItem)args.ClickedItem;
                     ViewModel.HostScreen.Router.Navigate.Execute(new ItemViewModel(ViewModel.HostScreen, sampleDataItem));
                 });
 
+            this.WhenAnyObservable(x => x.ViewModel.GoBackCommand)
+                .Subscribe(x => ViewModel.HostScreen.Router.NavigateBack.Execute(null));
         }
 
         object IViewFor.ViewModel

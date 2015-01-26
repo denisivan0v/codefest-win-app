@@ -11,9 +11,6 @@ using Windows.UI.Xaml.Navigation;
 
 namespace CodeFestApp
 {
-    /// <summary>
-    /// A page that displays a grouped collection of items.
-    /// </summary>
     public sealed partial class HubPage : IViewFor<HubViewModel>
     {
         public HubPage()

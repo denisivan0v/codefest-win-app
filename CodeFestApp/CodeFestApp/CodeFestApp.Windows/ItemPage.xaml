@@ -11,8 +11,7 @@
         * Row 0 contains the back button and page title
         * Row 1 contains the rest of the page layout
     -->
-    <Grid x:Name="ItemView"
-          Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ChildrenTransitions>
             <TransitionCollection>
                 <EntranceThemeTransition/>
@@ -29,11 +28,11 @@
                 <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="BackButton" 
-                    Margin="39,59,39,0" 
+            <Button Margin="39,59,39,0" 
                     Style="{StaticResource NavigationBackButtonNormalStyle}"
-                    VerticalAlignment="Top"/>
-            <TextBlock Text="{Binding Title}" 
+                    VerticalAlignment="Top"
+                    Command="{Binding GoBackCommand}" />
+            <TextBlock Text="{Binding Item.Title}" 
                        Style="{StaticResource HeaderTextBlockStyle}" 
                        Grid.Column="1" 
                        IsHitTestVisible="false" 
@@ -44,17 +43,17 @@
         <StackPanel Grid.Row="1" VerticalAlignment="Top" Margin="10,0,0,0">
             <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" 
                     Width="110" Height="110">
-                <Image Source="{Binding ImagePath}" 
+                <Image Source="{Binding Item.ImagePath}" 
                        Stretch="UniformToFill" 
-                       AutomationProperties.Name="{Binding Title}"/>
+                       AutomationProperties.Name="{Binding Item.Title}"/>
             </Border>
-            <TextBlock Text="{Binding Title}" 
+            <TextBlock Text="{Binding Item.Title}" 
                        Style="{StaticResource TitleTextBlockStyle}"
                        TextWrapping="NoWrap"/>
-            <TextBlock Text="{Binding Subtitle}" 
+            <TextBlock Text="{Binding Item.Subtitle}" 
                        Style="{StaticResource CaptionTextBlockStyle}" 
                        TextWrapping="NoWrap"/>
-            <TextBlock Text="{Binding Description}" 
+            <TextBlock Text="{Binding Item.Description}" 
                        Style="{StaticResource BodyTextBlockStyle}"
                        MaxHeight="60"/>
         </StackPanel>

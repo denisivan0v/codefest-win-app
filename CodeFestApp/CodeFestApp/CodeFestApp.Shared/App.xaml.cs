@@ -17,7 +17,7 @@ namespace CodeFestApp
     public sealed partial class App : Application
     {
 #if WINDOWS_PHONE_APP
-        private TransitionCollection transitions;
+        private TransitionCollection _transitions;
 #endif
 
         /// <summary>
@@ -84,10 +84,10 @@ namespace CodeFestApp
                 // Removes the turnstile navigation for startup.
                 if (rootFrame.ContentTransitions != null)
                 {
-                    this.transitions = new TransitionCollection();
+                    this._transitions = new TransitionCollection();
                     foreach (var c in rootFrame.ContentTransitions)
                     {
-                        this.transitions.Add(c);
+                        this._transitions.Add(c);
                     }
                 }
 
@@ -117,7 +117,7 @@ namespace CodeFestApp
         private void RootFrame_FirstNavigated(object sender, NavigationEventArgs e)
         {
             var rootFrame = sender as Frame;
-            rootFrame.ContentTransitions = this.transitions ?? new TransitionCollection() { new NavigationThemeTransition() };
+            rootFrame.ContentTransitions = this._transitions ?? new TransitionCollection() { new NavigationThemeTransition() };
             rootFrame.Navigated -= this.RootFrame_FirstNavigated;
         }
 #endif

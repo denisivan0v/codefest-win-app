@@ -3,6 +3,8 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+      xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
       mc:Ignorable="d"> 
 
     <!--
@@ -10,8 +12,7 @@
         * Row 0 contains the back button and page title
         * Row 1 contains the rest of the page layout
     -->
-    <Grid x:Name="Container"
-          Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ChildrenTransitions>
             <TransitionCollection>
                 <EntranceThemeTransition/>
@@ -23,17 +24,20 @@
         </Grid.RowDefinitions>
 
         <!-- Horizontal scrolling grid -->
-        <GridView
-            x:Name="ItemGridView"
-            AutomationProperties.AutomationId="ItemGridView"
-            AutomationProperties.Name="Items In Group"
-            TabIndex="1"
-            Grid.RowSpan="2"
-            Padding="120,126,120,50"
-            ItemsSource="{Binding Items}"
-            SelectionMode="None"
-            IsSwipeEnabled="false"
-            IsItemClickEnabled="True">
+        <GridView AutomationProperties.AutomationId="ItemGridView"
+                  AutomationProperties.Name="Items In Group"
+                  TabIndex="1"
+                  Grid.RowSpan="2"
+                  Padding="120,126,120,50"
+                  ItemsSource="{Binding Items}"
+                  SelectionMode="None"
+                  IsSwipeEnabled="false"
+                  IsItemClickEnabled="True"> 
+            <interactivity:Interaction.Behaviors>
+                <core:EventTriggerBehavior EventName="ItemClick">
+                    <core:InvokeCommandAction Command="{Binding NavigateToItemCommand}"/>
+                </core:EventTriggerBehavior>
+            </interactivity:Interaction.Behaviors>
             <GridView.ItemTemplate>
                 <DataTemplate>
                     <Grid Height="110" Width="480" Margin="10">
@@ -88,9 +92,10 @@
                 <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="BackButton" Margin="39,59,39,0" 
+            <Button Margin="39,59,39,0" 
                     Style="{StaticResource NavigationBackButtonNormalStyle}"
-                    VerticalAlignment="Top" />
+                    VerticalAlignment="Top" 
+                    Command="{Binding GoBackCommand}" />
             <TextBlock x:Uid="Section3Header.Text" 
                        Text="Section 3" 
                        Style="{StaticResource HeaderTextBlockStyle}" 
