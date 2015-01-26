@@ -1,4 +1,6 @@
-﻿using CodeFestApp.Data;
+﻿using System.Linq;
+
+using CodeFestApp.Data;
 
 using ReactiveUI;
 
@@ -15,7 +17,6 @@ namespace CodeFestApp.ViewModels
             this.WhenNavigatedTo(() =>
                 {
                     SetGroups();
-                    SetSectionItems();
                     return null;
                 });
         }
@@ -24,7 +25,6 @@ namespace CodeFestApp.ViewModels
         public ReactiveCommand<object> NavigateToItemCommand { get; private set; }
 
         public SampleDataGroup[] Groups { get; private set; }
-        public SampleDataGroup Section3Items { get; private set; }
         
         public IScreen HostScreen { get; private set; }
 
@@ -36,11 +36,6 @@ namespace CodeFestApp.ViewModels
         private async void SetGroups()
         {
             Groups = await SampleDataSource.GetGroupsAsync();
-        }
-
-        private async void SetSectionItems()
-        {
-            Section3Items = await SampleDataSource.GetGroupAsync("Group-4");
         }
     }
 }
