@@ -1,4 +1,8 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿using ReactiveUI;
+
+using Splat;
+
+using Windows.UI.Xaml.Controls;
 
 namespace CodeFestApp
 {
@@ -7,7 +11,7 @@ namespace CodeFestApp
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new AppBootstrapper();
+            DataContext = Locator.Current.GetService(typeof(IScreen));
         }
     }
 }
