@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Reactive.Linq;
 
 using ReactiveUI;
 
+using Splat;
+
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.Phone.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
@@ -58,7 +62,7 @@ namespace CodeFestApp
                 rootFrame = new Frame();
 
                 // TODO: change this value to a cache size that is appropriate for your application
-                rootFrame.CacheSize = 1;
+                rootFrame.CacheSize = 3;
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
@@ -84,6 +88,18 @@ namespace CodeFestApp
 
                 rootFrame.ContentTransitions = null;
                 rootFrame.Navigated += RootFrame_FirstNavigated;
+
+                Observable.FromEventPattern<BackPressedEventArgs>(x => HardwareButtons.BackPressed += x,
+                                                                  x => HardwareButtons.BackPressed -= x)
+                          .Subscribe(x =>
+                              {
+                                  var hostScreen = (IScreen)Locator.Current.GetService(typeof(IScreen));
+                                  if (hostScreen.Router.NavigationStack.Count > 1)
+                                  {
+                                      hostScreen.Router.NavigateBack.Execute(null);
+                                      x.EventArgs.Handled = true;
+                                  }
+                              });
 #endif
 
                 // When the navigation stack isn't restored navigate to the first page,

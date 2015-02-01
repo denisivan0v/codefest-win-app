@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive.Linq;
 
 using CodeFestApp.Data;
 using CodeFestApp.ViewModels;
@@ -7,7 +8,6 @@ using ReactiveUI;
 
 using Windows.Graphics.Display;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Navigation;
 
 namespace CodeFestApp
 {
@@ -19,26 +19,21 @@ namespace CodeFestApp
 
             // Hub is only supported in Portrait orientation
             DisplayInformation.AutoRotationPreferences = DisplayOrientations.Portrait;
-            NavigationCacheMode = NavigationCacheMode.Required;
-            
+
             this.WhenAnyValue(x => x.ViewModel)
                 .Subscribe(x => DataContext = x);
 
             this.WhenAnyObservable(x => x.ViewModel.NavigateToSectionCommand)
-                .Subscribe(x =>
-                    {
-                        var args = (ItemClickEventArgs)x;
-                        var sampleDataGroup = (SampleDataGroup)args.ClickedItem;
-                        ViewModel.HostScreen.Router.Navigate.Execute(new SectionViewModel(ViewModel.HostScreen, sampleDataGroup));
-                    });
+                .Cast<ItemClickEventArgs>()
+                .Select(x => x.ClickedItem)
+                .Cast<SampleDataGroup>()
+                .BindTo(this, x => x.ViewModel.GroupToNavigate);
 
             this.WhenAnyObservable(x => x.ViewModel.NavigateToItemCommand)
-                .Subscribe(x =>
-                {
-                    var args = (ItemClickEventArgs)x;
-                    var sampleDataGroup = (SampleDataItem)args.ClickedItem;
-                    ViewModel.HostScreen.Router.Navigate.Execute(new ItemViewModel(ViewModel.HostScreen, sampleDataGroup));
-                });
+                .Cast<ItemClickEventArgs>()
+                .Select(x => x.ClickedItem)
+                .Cast<SampleDataItem>()
+                .BindTo(this, x => x.ViewModel.ItemToNavigate);
         }
 
         object IViewFor.ViewModel

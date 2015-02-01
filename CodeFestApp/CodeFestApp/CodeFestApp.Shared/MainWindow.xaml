@@ -8,7 +8,8 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <reactiveUi:RoutedViewHost Router="{Binding Router}"  
+        <reactiveUi:RoutedViewHost Router="{Binding Router}"
+                                   DefaultContent="CodeFest"
                                    HorizontalContentAlignment="Stretch" 
                                    VerticalContentAlignment="Stretch" />
     </Grid>

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Reactive.Linq;
 
 using CodeFestApp.Data;
 
@@ -9,6 +11,7 @@ namespace CodeFestApp.ViewModels
     public class SectionViewModel : ReactiveObject, IRoutableViewModel
     {
         private readonly SampleDataGroup _sampleDataGroup;
+        private SampleDataItem _itemToNavigate;
 
         public SectionViewModel(IScreen hostScreen, SampleDataGroup sampleDataGroup)
         {
@@ -16,7 +19,10 @@ namespace CodeFestApp.ViewModels
             HostScreen = hostScreen;
 
             NavigateToItemCommand = ReactiveCommand.Create();
-            GoBackCommand = ReactiveCommand.Create();
+
+            this.WhenAnyValue(x => x.ItemToNavigate)
+                .Where(x => x != null)
+                .Subscribe(x => HostScreen.Router.Navigate.Execute(new ItemViewModel(HostScreen, x)));
         }
 
         public string UrlPathSegment
@@ -36,7 +42,12 @@ namespace CodeFestApp.ViewModels
             get { return _sampleDataGroup.Items; }
         }
 
+        public SampleDataItem ItemToNavigate
+        {
+            get { return _itemToNavigate; }
+            set { this.RaiseAndSetIfChanged(ref _itemToNavigate, value); }
+        }
+
         public ReactiveCommand<object> NavigateToItemCommand { get; private set; }
-        public ReactiveCommand<object> GoBackCommand { get; private set; }
     }
 }

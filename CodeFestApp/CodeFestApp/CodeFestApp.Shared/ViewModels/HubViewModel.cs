@@ -1,4 +1,8 @@
-﻿using CodeFestApp.Data;
+﻿using System;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
+
+using CodeFestApp.Data;
 
 using ReactiveUI;
 
@@ -6,6 +10,9 @@ namespace CodeFestApp.ViewModels
 {
     public class HubViewModel : ReactiveObject, IRoutableViewModel
     {
+        private SampleDataGroup _groupToNavigate;
+        private SampleDataItem _itemToNavigate;
+
         public HubViewModel(IScreen screen)
         {
             HostScreen = screen;
@@ -13,10 +20,18 @@ namespace CodeFestApp.ViewModels
             NavigateToItemCommand = ReactiveCommand.Create();
             GoBackCommand = ReactiveCommand.Create();
 
+            this.WhenAnyValue(x => x.GroupToNavigate)
+                .Where(x => x != null)
+                .Subscribe(x => HostScreen.Router.Navigate.Execute(new SectionViewModel(HostScreen, x)));
+
+            this.WhenAnyValue(x => x.ItemToNavigate)
+                .Where(x => x != null)
+                .Subscribe(x => HostScreen.Router.Navigate.Execute(new ItemViewModel(HostScreen, x)));
+
             this.WhenNavigatedTo(() =>
                 {
                     SetGroups();
-                    return null;
+                    return Disposable.Empty;
                 });
         }
 
@@ -25,6 +40,18 @@ namespace CodeFestApp.ViewModels
         public ReactiveCommand<object> GoBackCommand { get; private set; }
 
         public SampleDataGroup[] Groups { get; private set; }
+
+        public SampleDataGroup GroupToNavigate 
+        {
+            get { return _groupToNavigate; }
+            set { this.RaiseAndSetIfChanged(ref _groupToNavigate, value); }
+        }
+
+        public SampleDataItem ItemToNavigate
+        {
+            get { return _itemToNavigate; }
+            set { this.RaiseAndSetIfChanged(ref _itemToNavigate, value); }
+        }
         
         public IScreen HostScreen { get; private set; }
 
