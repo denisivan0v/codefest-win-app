@@ -18,8 +18,7 @@ namespace CodeFestApp
             this.WhenAnyValue(x => x.ViewModel)
                 .Subscribe(x => DataContext = x);
 
-            this.WhenAnyObservable(x => x.ViewModel.GoBackCommand)
-                .Subscribe(x => ViewModel.HostScreen.Router.NavigateBack.Execute(null));
+            this.BindCommand(ViewModel, x => x.HostScreen.Router.NavigateBack, x => x.GoBackButton);
         }
         
         object IViewFor.ViewModel

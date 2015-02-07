@@ -1,17 +1,19 @@
 ﻿using System;
-using System.Reactive.Linq;
 
 using ReactiveUI;
 
-using Splat;
-
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Phone.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+
+#if WINDOWS_PHONE_APP
+using System.Reactive.Linq;
+using Splat;
+using Windows.Phone.UI.Input;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
+#endif
 
 namespace CodeFestApp
 {

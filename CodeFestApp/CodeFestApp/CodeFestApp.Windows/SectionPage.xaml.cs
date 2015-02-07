@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive.Linq;
 
 using CodeFestApp.Data;
 using CodeFestApp.ViewModels;
@@ -19,17 +20,12 @@ namespace CodeFestApp
                 .Subscribe(x => DataContext = x);
 
             this.WhenAnyObservable(x => x.ViewModel.NavigateToItemCommand)
-                .Subscribe(x =>
-                {
-                    var eventPattern = (ItemClickEventArgs)x;
+                .Cast<ItemClickEventArgs>()
+                .Select(x => x.ClickedItem)
+                .Cast<SampleDataItem>()
+                .BindTo(this, x => x.ViewModel.ItemToNavigate);
 
-                    var sampleDataItem = (SampleDataItem)eventPattern.ClickedItem;
-                    ViewModel.HostScreen.Router.Navigate.Execute(new ItemViewModel(ViewModel.HostScreen, sampleDataItem));
-                });
-
-            this.WhenAnyObservable(x => x.ViewModel.GoBackCommand)
-                .Subscribe(x => ViewModel.HostScreen.Router.NavigateBack.Execute(null));
-
+            this.BindCommand(ViewModel, x => x.HostScreen.Router.NavigateBack, x => x.GoBackButton);
         }
         
         object IViewFor.ViewModel
