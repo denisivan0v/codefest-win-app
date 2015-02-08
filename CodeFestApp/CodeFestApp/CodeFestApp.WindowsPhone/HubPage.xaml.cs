@@ -28,12 +28,6 @@ namespace CodeFestApp
                 .Select(x => x.ClickedItem)
                 .Cast<SampleDataGroup>()
                 .BindTo(this, x => x.ViewModel.GroupToNavigate);
-
-            this.WhenAnyObservable(x => x.ViewModel.NavigateToItemCommand)
-                .Cast<ItemClickEventArgs>()
-                .Select(x => x.ClickedItem)
-                .Cast<SampleDataItem>()
-                .BindTo(this, x => x.ViewModel.ItemToNavigate);
         }
 
         object IViewFor.ViewModel
@@ -43,5 +37,10 @@ namespace CodeFestApp
         }
 
         public HubViewModel ViewModel { get; set; }
+
+        private void DaysGrid_OnItemClick(object sender, ItemClickEventArgs e)
+        {
+            ViewModel.NavigateToDayCommand.Execute(e.ClickedItem);
+        }
     }
 }

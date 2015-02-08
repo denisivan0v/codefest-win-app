@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 
 using CodeFestApp.Data;
+using CodeFestApp.DataModel;
 
 using ReactiveUI;
 
@@ -11,35 +13,31 @@ namespace CodeFestApp.ViewModels
     public class HubViewModel : ReactiveObject, IRoutableViewModel
     {
         private SampleDataGroup _groupToNavigate;
-        private SampleDataItem _itemToNavigate;
 
-        public HubViewModel(IScreen screen)
+        public HubViewModel(IScreen screen, IScheduleSource scheduleSource)
         {
             HostScreen = screen;
             NavigateToSectionCommand = ReactiveCommand.Create();
-            NavigateToItemCommand = ReactiveCommand.Create();
-            GoBackCommand = ReactiveCommand.Create();
+            NavigateToDayCommand = ReactiveCommand.Create();
 
             this.WhenAnyValue(x => x.GroupToNavigate)
                 .Where(x => x != null)
                 .Subscribe(x => HostScreen.Router.Navigate.Execute(new SectionViewModel(HostScreen, x)));
 
-            this.WhenAnyValue(x => x.ItemToNavigate)
-                .Where(x => x != null)
-                .Subscribe(x => HostScreen.Router.Navigate.Execute(new ItemViewModel(HostScreen, x)));
+            this.WhenAnyObservable(x => x.NavigateToDayCommand)
+                .Subscribe(x => HostScreen.Router.Navigate.Execute(x));
 
             this.WhenNavigatedTo(() =>
                 {
-                    SetGroups();
+                    SetDaysViewModel(scheduleSource);
                     return Disposable.Empty;
                 });
         }
 
         public ReactiveCommand<object> NavigateToSectionCommand { get; private set; }
-        public ReactiveCommand<object> NavigateToItemCommand { get; private set; }
-        public ReactiveCommand<object> GoBackCommand { get; private set; }
-
-        public SampleDataGroup[] Groups { get; private set; }
+        public ReactiveCommand<object> NavigateToDayCommand { get; private set; }
+        
+        public ReactiveList<DayViewModel> Days { get; private set; }
 
         public SampleDataGroup GroupToNavigate 
         {
@@ -47,12 +45,6 @@ namespace CodeFestApp.ViewModels
             set { this.RaiseAndSetIfChanged(ref _groupToNavigate, value); }
         }
 
-        public SampleDataItem ItemToNavigate
-        {
-            get { return _itemToNavigate; }
-            set { this.RaiseAndSetIfChanged(ref _itemToNavigate, value); }
-        }
-        
         public IScreen HostScreen { get; private set; }
 
         public string UrlPathSegment
@@ -60,9 +52,12 @@ namespace CodeFestApp.ViewModels
             get { return "hubpage"; }
         }
 
-        private async void SetGroups()
+        private async void SetDaysViewModel(IScheduleSource scheduleSource)
         {
-            Groups = await SampleDataSource.GetGroupsAsync();
+            var scheduleJson = await scheduleSource.ReadScheduleAsync();
+            var scheduleReader = new ScheduleReader(scheduleJson);
+            var days = await scheduleReader.GetDaysAsync();
+            Days = new ReactiveList<DayViewModel>(days.Select(x => new DayViewModel(HostScreen, x)));
         }
     }
 }

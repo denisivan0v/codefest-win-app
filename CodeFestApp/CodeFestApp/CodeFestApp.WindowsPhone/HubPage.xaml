@@ -86,7 +86,7 @@
     </Page.Resources>
 
     <Grid>
-        <Hub Header="application name" 
+        <Hub Header="codefest 2015" 
              Background="{ThemeResource HubBackgroundImageBrush}">
             <HubSection Header="SECTION 1" 
                         HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}"> 
@@ -112,23 +112,17 @@
                 </DataTemplate>
             </HubSection>
 
-            <HubSection Header="SECTION 2" Width="Auto"
+            <HubSection Width="Auto"
                         HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
                 <DataTemplate>
-                    <GridView
-                        Margin="0,9.5,0,0"
-                        ItemsSource="{Binding Groups[0].Items}"
-                        AutomationProperties.AutomationId="ItemGridView"
-                        AutomationProperties.Name="Items In Group"
-                        ItemTemplate="{StaticResource Standard200x180TileItemTemplate}"
-                        SelectionMode="None"
-                        IsItemClickEnabled="True"
-                        ContinuumNavigationTransitionInfo.ExitElementContainer="True">
-                        <interactivity:Interaction.Behaviors>
-                            <core:EventTriggerBehavior EventName="ItemClick">
-                                <core:InvokeCommandAction Command="{Binding NavigateToItemCommand}" />
-                            </core:EventTriggerBehavior>
-                        </interactivity:Interaction.Behaviors>
+                    <GridView x:Name="DaysGrid"
+                              Margin="0,9.5,0,0"
+                              ItemsSource="{Binding Days}"
+                              ItemTemplate="{StaticResource Standard200x180TileItemTemplate}"
+                              SelectionMode="None"
+                              IsItemClickEnabled="True"
+                              ItemClick="DaysGrid_OnItemClick"
+                              ContinuumNavigationTransitionInfo.ExitElementContainer="True">
                         <GridView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <ItemsWrapGrid />

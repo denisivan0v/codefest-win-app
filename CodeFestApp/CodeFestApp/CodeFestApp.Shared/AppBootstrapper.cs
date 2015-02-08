@@ -1,4 +1,5 @@
-﻿using CodeFestApp.ViewModels;
+﻿using CodeFestApp.DataModel;
+using CodeFestApp.ViewModels;
 
 using ReactiveUI;
 
@@ -17,7 +18,7 @@ namespace CodeFestApp
 
             LogHost.Default.Level = LogLevel.Debug;
 
-            Router.Navigate.Execute(new HubViewModel(this));
+            Router.Navigate.Execute(new HubViewModel(this, new ScheduleSource()));
         }
 
         public RoutingState Router { get; private set; }
@@ -29,6 +30,7 @@ namespace CodeFestApp
             dependencyResolver.Register(() => new HubPage(), typeof(IViewFor<HubViewModel>));
             dependencyResolver.Register(() => new SectionPage(), typeof(IViewFor<SectionViewModel>));
             dependencyResolver.Register(() => new ItemPage(), typeof(IViewFor<ItemViewModel>));
+            dependencyResolver.Register(() => new DayView(), typeof(IViewFor<DayViewModel>));
         }
     }
 }
