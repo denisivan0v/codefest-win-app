@@ -24,7 +24,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\SampleDataSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\ScheduleReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\ScheduleSource.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DataModel\Section.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataModel\Track.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\Speaker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MainWIndow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
