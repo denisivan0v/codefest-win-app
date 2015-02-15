@@ -8,7 +8,7 @@ namespace CodeFestApp.DataModel
         public string Title { get; set; }
         public string Description { get; set; }
         public Day Day { get; set; }
-        public Section Section { get; set; }
+        public Track Track { get; set; }
         public Speaker Speaker { get; set; }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }

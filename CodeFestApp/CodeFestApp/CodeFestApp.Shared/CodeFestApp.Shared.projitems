@@ -29,8 +29,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)MainWIndow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\LectureViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\HubViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\DaysViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\DayViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ItemViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SectionViewModel.cs" />
     <Content Include="$(MSBuildThisFileDirectory)DataModel\SampleData.json" />

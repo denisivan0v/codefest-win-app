@@ -36,7 +36,19 @@ namespace CodeFestApp.ViewModels
 
         public ReactiveCommand<object> NavigateToSectionCommand { get; private set; }
         public ReactiveCommand<object> NavigateToDayCommand { get; private set; }
-        
+
+        public int ActiveSection { get; set; }
+
+        public string CurrentLecturesSectionTitle
+        {
+            get { return "ИДЕТ СЕЙЧАС"; }
+        }
+
+        public string DaysSectionTitle
+        {
+            get { return "ДНИ КОНФЕРЕНЦИИ"; }
+        }
+
         public ReactiveList<DayViewModel> Days { get; private set; }
 
         public SampleDataGroup GroupToNavigate 

@@ -1,10 +1,12 @@
-﻿namespace CodeFestApp.DataModel
+﻿using System.Drawing;
+
+namespace CodeFestApp.DataModel
 {
-    public class Section
+    public class Track
     {
         public int Id { get; set; }
         public Room Room { get; set; }
-        public string Color { get; set; }
+        public Color Color { get; set; }
         public string Title { get; set; }
     }
 }

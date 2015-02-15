@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 using CodeFestApp.DataModel;
 
@@ -24,6 +26,11 @@ namespace CodeFestApp.ViewModels
         public DateTime Date
         {
             get { return _day.Date; }
+        }
+
+        public IEnumerable<LectureViewModel> Lectures
+        {
+            get { return _day.Lectures.Select(x => new LectureViewModel(HostScreen, x)); }
         }
 
         public string UrlPathSegment

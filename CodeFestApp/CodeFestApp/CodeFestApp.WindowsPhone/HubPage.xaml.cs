@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reactive.Linq;
 
 using CodeFestApp.Data;
@@ -41,6 +42,13 @@ namespace CodeFestApp
         private void DaysGrid_OnItemClick(object sender, ItemClickEventArgs e)
         {
             ViewModel.NavigateToDayCommand.Execute(e.ClickedItem);
+        }
+
+        private void Hub_OnSectionsInViewChanged(object sender, SectionsInViewChangedEventArgs e)
+        {
+            var hub = (Hub)sender;
+            var activeSection = hub.SectionsInView[0];
+            ViewModel.ActiveSection = hub.Sections.IndexOf(activeSection);
         }
     }
 }

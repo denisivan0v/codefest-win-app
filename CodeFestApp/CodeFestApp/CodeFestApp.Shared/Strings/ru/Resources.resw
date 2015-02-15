@@ -274,7 +274,4 @@
   <data name="NavigationFailedExceptionMessage" xml:space="preserve">
     <value>Navigation failed.</value>
   </data>
-  <data name="DaysSection.Header" xml:space="preserve">
-    <value>ДНИ КОНФЕРЕНЦИИ</value>
-  </data>
 </root>

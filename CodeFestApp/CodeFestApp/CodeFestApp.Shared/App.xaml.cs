@@ -6,13 +6,12 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Animation;
 
 #if WINDOWS_PHONE_APP
 using System.Reactive.Linq;
 using Splat;
 using Windows.Phone.UI.Input;
-using Windows.UI.Xaml.Media.Animation;
-using Windows.UI.Xaml.Navigation;
 #endif
 
 namespace CodeFestApp
@@ -22,10 +21,6 @@ namespace CodeFestApp
     /// </summary>
     public sealed partial class App : Application
     {
-#if WINDOWS_PHONE_APP
-        private TransitionCollection _transitions;
-#endif
-
         /// <summary>
         /// Initializes the singleton instance of the <see cref="App"/> class. This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -71,39 +66,18 @@ namespace CodeFestApp
                     // TODO: Load state from previously suspended application
                 }
 
+#if WINDOWS_PHONE_APP
+                if (rootFrame.ContentTransitions == null)
+                {
+                    rootFrame.ContentTransitions = new TransitionCollection { new NavigationThemeTransition() };
+                }
+#endif
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
             }
 
             if (rootFrame.Content == null)
             {
-#if WINDOWS_PHONE_APP
-                // Removes the turnstile navigation for startup.
-                if (rootFrame.ContentTransitions != null)
-                {
-                    _transitions = new TransitionCollection();
-                    foreach (var c in rootFrame.ContentTransitions)
-                    {
-                        _transitions.Add(c);
-                    }
-                }
-
-                rootFrame.ContentTransitions = null;
-                rootFrame.Navigated += RootFrame_FirstNavigated;
-
-                Observable.FromEventPattern<BackPressedEventArgs>(x => HardwareButtons.BackPressed += x,
-                                                                  x => HardwareButtons.BackPressed -= x)
-                          .Subscribe(x =>
-                              {
-                                  var hostScreen = (IScreen)Locator.Current.GetService(typeof(IScreen));
-                                  if (hostScreen.Router.NavigationStack.Count > 1)
-                                  {
-                                      hostScreen.Router.NavigateBack.Execute(null);
-                                      x.EventArgs.Handled = true;
-                                  }
-                              });
-#endif
-
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
                 // parameter
@@ -113,23 +87,23 @@ namespace CodeFestApp
                 }
             }
 
+#if WINDOWS_PHONE_APP
+            Observable.FromEventPattern<BackPressedEventArgs>(x => HardwareButtons.BackPressed += x,
+                                                              x => HardwareButtons.BackPressed -= x)
+                      .Subscribe(x =>
+                          {
+                              var hostScreen = (IScreen)Locator.Current.GetService(typeof(IScreen));
+                              if (hostScreen.Router.NavigationStack.Count > 1)
+                              {
+                                  hostScreen.Router.NavigateBack.Execute(null);
+                                  x.EventArgs.Handled = true;
+                              }
+                          });
+#endif
             // Ensure the current window is active
             Window.Current.Activate();
         }
 
-#if WINDOWS_PHONE_APP
-        /// <summary>
-        /// Restores the content transitions after the app has launched.
-        /// </summary>
-        /// <param name="sender">The object where the handler is attached.</param>
-        /// <param name="e">Details about the navigation event.</param>
-        private void RootFrame_FirstNavigated(object sender, NavigationEventArgs e)
-        {
-            var rootFrame = sender as Frame;
-            rootFrame.ContentTransitions = _transitions ?? new TransitionCollection { new NavigationThemeTransition() };
-            rootFrame.Navigated -= RootFrame_FirstNavigated;
-        }
-#endif
         /// <summary>
         /// Invoked when application execution is being suspended.  Application state is saved
         /// without knowing whether the application will be terminated or resumed with the contents
