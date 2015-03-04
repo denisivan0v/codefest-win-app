@@ -8,13 +8,13 @@ using ReactiveUI;
 
 namespace CodeFestApp.ViewModels
 {
-    public class DayViewModel : ReactiveObject, IRoutableViewModel
+    public class SpeakerViewModel : ReactiveObject, IRoutableViewModel
     {
-        private readonly Day _day;
+        private readonly Speaker _speaker;
 
-        public DayViewModel(IScreen hostScreen, Day day)
+        public SpeakerViewModel(IScreen hostScreen, Speaker speaker)
         {
-            _day = day;
+            _speaker = speaker;
             HostScreen = hostScreen;
 
             NavigateToLectureCommand = ReactiveCommand.Create();
@@ -25,19 +25,34 @@ namespace CodeFestApp.ViewModels
 
         public string Title
         {
-            get { return _day.Title; }
+            get { return _speaker.Title; }
         }
 
-        public DateTime Date
+        public string JobTitle
         {
-            get { return _day.Date; }
+            get { return _speaker.JobTitle; }
+        }
+
+        public string Company
+        {
+            get { return _speaker.Company.Title; }
+        }
+        
+        public string Description
+        {
+            get { return _speaker.Description; }
+        }
+        
+        public Uri Avatar
+        {
+            get { return _speaker.Avatar; }
         }
 
         public IEnumerable<IGrouping<string, LectureViewModel>> Lectures
         {
             get
             {
-                return _day.Lectures
+                return _speaker.Lectures
                            .Select(x => new LectureViewModel(HostScreen, x))
                            .GroupBy(x => x.Start.ToString("t"));
             }
@@ -47,7 +62,7 @@ namespace CodeFestApp.ViewModels
 
         public string UrlPathSegment
         {
-            get { return "day"; }
+            get { return "item"; }
         }
 
         public IScreen HostScreen { get; private set; }

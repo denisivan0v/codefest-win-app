@@ -6,24 +6,22 @@ using ReactiveUI;
 
 namespace CodeFestApp
 {
-    public sealed partial class SectionPage : IViewFor<TrackViewModel>
+    public sealed partial class LectureView : IViewFor<LectureViewModel>
     {
-        public SectionPage()
+        public LectureView()
         {
             InitializeComponent();
 
             this.WhenAnyValue(x => x.ViewModel)
                 .Subscribe(x => DataContext = x);
+        } 
 
-            this.BindCommand(ViewModel, x => x.HostScreen.Router.NavigateBack, x => x.GoBackButton);
-        }
-        
         object IViewFor.ViewModel
         {
             get { return ViewModel; }
-            set { ViewModel = (TrackViewModel)value; }
+            set { ViewModel = (LectureViewModel)value; }
         }
 
-        public TrackViewModel ViewModel { get; set; }
+        public LectureViewModel ViewModel { get; set; }
     }
 }

@@ -1,5 +1,8 @@
 ﻿using CodeFestApp.DataModel;
+using CodeFestApp.DI;
 using CodeFestApp.ViewModels;
+
+using Microsoft.Practices.Unity;
 
 using ReactiveUI;
 
@@ -9,28 +12,36 @@ namespace CodeFestApp
 {
     public class AppBootstrapper : ReactiveObject, IScreen
     {
-        public AppBootstrapper(IMutableDependencyResolver dependencyResolver = null, RoutingState router = null)
+        public AppBootstrapper()
         {
-            Router = router ?? new RoutingState();
-            dependencyResolver = dependencyResolver ?? Locator.CurrentMutable;
-
-            RegisterParts(dependencyResolver);
+            var container = PerformRegister();
+            var dependencyResolver = new UnityDependencyResolver(container);
+            Locator.Current = dependencyResolver;
 
             LogHost.Default.Level = LogLevel.Debug;
 
-            Router.Navigate.Execute(new HubViewModel(this, new ScheduleSource()));
+            var hubViewModel = container.Resolve<HubViewModel>();
+
+            Router = new RoutingState();
+            Router.Navigate.Execute(hubViewModel);
         }
 
         public RoutingState Router { get; private set; }
 
-        private void RegisterParts(IMutableDependencyResolver dependencyResolver)
+        private IUnityContainer PerformRegister()
         {
-            dependencyResolver.RegisterConstant(this, typeof(IScreen));
+            var container = new UnityContainer();
 
-            dependencyResolver.Register(() => new HubPage(), typeof(IViewFor<HubViewModel>));
-            dependencyResolver.Register(() => new SectionPage(), typeof(IViewFor<SectionViewModel>));
-            dependencyResolver.Register(() => new ItemPage(), typeof(IViewFor<ItemViewModel>));
-            dependencyResolver.Register(() => new DayView(), typeof(IViewFor<DayViewModel>));
+            return container.RegisterInstance(typeof(IScreen), this, new ExternallyControlledLifetimeManager())
+
+                            .RegisterType<IViewFor<HubViewModel>, HubPage>()
+                            .RegisterType<IViewFor<TrackViewModel>, SectionPage>()
+                            .RegisterType<IViewFor<ItemViewModel>, ItemPage>()
+                            .RegisterType<IViewFor<DayViewModel>, DayView>()
+                            .RegisterType<IViewFor<LectureViewModel>, LectureView>()
+
+                            .RegisterType<IScheduleSource, ScheduleSource>(new ContainerControlledLifetimeManager())
+                            .RegisterType<IScheduleReader, ScheduleReader>(new ContainerControlledLifetimeManager());
         }
     }
 }

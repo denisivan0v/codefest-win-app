@@ -4,6 +4,8 @@ using CodeFestApp.ViewModels;
 
 using ReactiveUI;
 
+using Windows.UI.Xaml.Controls;
+
 namespace CodeFestApp
 {
     public sealed partial class DayView : IViewFor<DayViewModel>
@@ -23,5 +25,10 @@ namespace CodeFestApp
         }
 
         public DayViewModel ViewModel { get; set; }
+
+        private void LecturesListView_OnItemClick(object sender, ItemClickEventArgs e)
+        {
+            ViewModel.NavigateToLectureCommand.Execute(e.ClickedItem);
+        }
     }
 }

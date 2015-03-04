@@ -18,6 +18,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)AppBootstrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\Company.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\Day.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataModel\IScheduleReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\IScheduleSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\Lecture.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\Room.cs" />
@@ -26,14 +27,17 @@
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\ScheduleSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\Track.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\Speaker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DI\Lifetime.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DI\UnityDependencyResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MainWIndow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SpeakerViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\LectureViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\HubViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\DayViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ItemViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SectionViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\TrackViewModel.cs" />
     <Content Include="$(MSBuildThisFileDirectory)DataModel\SampleData.json" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\LightGray.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\MediumGray.png" />

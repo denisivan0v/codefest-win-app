@@ -23,12 +23,6 @@ namespace CodeFestApp
 
             this.WhenAnyValue(x => x.ViewModel)
                 .Subscribe(x => DataContext = x);
-
-            this.WhenAnyObservable(x => x.ViewModel.NavigateToSectionCommand)
-                .Cast<ItemClickEventArgs>()
-                .Select(x => x.ClickedItem)
-                .Cast<SampleDataGroup>()
-                .BindTo(this, x => x.ViewModel.GroupToNavigate);
         }
 
         object IViewFor.ViewModel

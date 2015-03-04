@@ -9,7 +9,7 @@ using Newtonsoft.Json.Linq;
 
 namespace CodeFestApp.DataModel
 {
-    public class ScheduleReader
+    public class ScheduleReader : IScheduleReader
     {
         private static readonly string Today = DateTime.Today.ToString("d");
 
@@ -20,9 +20,12 @@ namespace CodeFestApp.DataModel
         private readonly Lazy<IEnumerable<Company>> _companies;
         private readonly Lazy<IEnumerable<Speaker>> _speakers;
 
-        public ScheduleReader(string scheduleJson)
+        public ScheduleReader(IScheduleSource scheduleSource)
         {
-            _scheduleJson = JObject.Parse(scheduleJson);
+            var json = scheduleSource.ReadScheduleAsync();
+            json.Wait();
+
+            _scheduleJson = JObject.Parse(json.Result);
             _days = new Lazy<IEnumerable<Day>>(
                 () => _scheduleJson["day"]
                           .Select(x => new Day

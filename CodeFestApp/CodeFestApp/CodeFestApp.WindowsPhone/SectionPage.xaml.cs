@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Reactive.Linq;
 
-using CodeFestApp.Data;
 using CodeFestApp.ViewModels;
 
 using ReactiveUI;
 
-using Windows.UI.Xaml.Controls;
-
 namespace CodeFestApp
 {
-    public sealed partial class SectionPage : IViewFor<SectionViewModel>
+    public sealed partial class SectionPage : IViewFor<TrackViewModel>
     {
         public SectionPage()
         {
@@ -18,20 +14,14 @@ namespace CodeFestApp
 
             this.WhenAnyValue(x => x.ViewModel)
                 .Subscribe(x => DataContext = x);
-            
-            this.WhenAnyObservable(x => x.ViewModel.NavigateToItemCommand)
-                .Cast<ItemClickEventArgs>()
-                .Select(x => x.ClickedItem)
-                .Cast<SampleDataItem>()
-                .BindTo(this, x => x.ViewModel.ItemToNavigate);
         }
 
         object IViewFor.ViewModel
         {
             get { return ViewModel; }
-            set { ViewModel = (SectionViewModel)value; }
+            set { ViewModel = (TrackViewModel)value; }
         }
 
-        public SectionViewModel ViewModel { get; set; }
+        public TrackViewModel ViewModel { get; set; }
     }
 }

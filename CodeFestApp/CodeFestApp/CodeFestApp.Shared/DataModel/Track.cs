@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 
 namespace CodeFestApp.DataModel
 {
@@ -8,5 +9,6 @@ namespace CodeFestApp.DataModel
         public Room Room { get; set; }
         public Color Color { get; set; }
         public string Title { get; set; }
+        public IEnumerable<Lecture> Lectures { get; set; } 
     }
 }

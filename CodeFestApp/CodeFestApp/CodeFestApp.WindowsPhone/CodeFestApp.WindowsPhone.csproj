@@ -86,6 +86,9 @@
     <Compile Include="DayView.xaml.cs">
       <DependentUpon>DayView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LectureView.xaml.cs">
+      <DependentUpon>LectureView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SectionPage.xaml.cs">
       <DependentUpon>SectionPage.xaml</DependentUpon>
@@ -118,6 +121,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="LectureView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="SectionPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -133,17 +140,27 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
-    <Reference Include="ReactiveUI">
-      <HintPath>..\..\packages\reactiveui-core.6.3.0\lib\Portable-Win81+WPA81\ReactiveUI.dll</HintPath>
+    <Reference Include="Microsoft.Practices.Unity">
+      <HintPath>..\..\packages\Unity.3.5.1405-prerelease\lib\portable-net45+wp80+win8+wpa81+MonoAndroid10+MonoTouch10\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
-    <Reference Include="ReactiveUI.Events">
-      <HintPath>..\..\packages\reactiveui-events.6.3.1\lib\WPA81\ReactiveUI.Events.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Newtonsoft.Json.7.0.1-beta1\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Splat">
-      <HintPath>..\..\packages\Splat.1.6.0\lib\Portable-Win81+Wpa81\Splat.dll</HintPath>
+    <Reference Include="ReactiveUI, Version=6.4.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\reactiveui-core.6.4.0.1\lib\Portable-Win81+WPA81\ReactiveUI.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveUI.Events, Version=6.4.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\reactiveui-events.6.4.0.1\lib\WPA81\ReactiveUI.Events.dll</HintPath>
+    </Reference>
+    <Reference Include="Splat, Version=1.6.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Splat.1.6.1\lib\Portable-Win81+Wpa81\Splat.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.Core">
       <HintPath>..\..\packages\Rx-Core.2.2.5\lib\portable-win81+wpa81\System.Reactive.Core.dll</HintPath>

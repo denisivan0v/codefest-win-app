@@ -16,14 +16,34 @@ namespace CodeFestApp.ViewModels
             HostScreen = hostScreen;
         }
 
+        public TrackViewModel Track
+        {
+            get { return new TrackViewModel(HostScreen, _lecture.Track); }
+        }
+
+        public string ConferenceTitle
+        {
+            get { return "codefest 2015"; }
+        }
+
         public string Title
         {
             get { return _lecture.Title; }
         }
 
+        public SpeakerViewModel Speaker
+        {
+            get { return new SpeakerViewModel(HostScreen, _lecture.Speaker); }
+        }
+        
         public string Description
         {
             get { return _lecture.Description; }
+        }
+
+        public DayViewModel Day
+        {
+            get { return new DayViewModel(HostScreen, _lecture.Day); }
         }
 
         public DateTime Start
@@ -38,7 +58,7 @@ namespace CodeFestApp.ViewModels
 
         public string UrlPathSegment
         {
-            get { return "item"; }
+            get { return "lecture"; }
         }
 
         public IScreen HostScreen { get; private set; }
