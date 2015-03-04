@@ -12,37 +12,54 @@ namespace CodeFestApp
 {
     public class AppBootstrapper : ReactiveObject, IScreen
     {
+        private readonly IUnityContainer _container = new UnityContainer();
+
         public AppBootstrapper()
         {
-            var container = new UnityContainer();
-            var dependencyResolver = new UnityDependencyResolver(PerformRegister(container));
-            Locator.Current = dependencyResolver;
+            PerformRegister(_container);
 
             LogHost.Default.Level = LogLevel.Debug;
-
-            var hubViewModel = container.Resolve<HubViewModel>();
-
+            Locator.Current = new UnityDependencyResolver(_container);
             Router = new RoutingState();
-            Router.Navigate.Execute(hubViewModel);
+
+            ReadSchedule();
+            NavigateToHub();
         }
 
         public RoutingState Router { get; private set; }
+        public bool IsLoading { get; set; }
 
-        private IUnityContainer PerformRegister(IUnityContainer container)
+        private void PerformRegister(IUnityContainer container)
         {
-            return container.RegisterInstance(typeof(IScreen), this, Lifetime.External)
+            container.RegisterInstance(typeof(IScreen), this, Lifetime.External)
 
-                            .RegisterType<IScheduleSource, ScheduleSource>(Lifetime.Singleton)
-                            .RegisterType<IScheduleReader, ScheduleReader>(Lifetime.Singleton)
+                     .RegisterType<IScheduleSource, ScheduleSource>(Lifetime.Singleton)
+                     .RegisterType<IScheduleReader, ScheduleReader>(Lifetime.Singleton)
 
-                            .RegisterType(typeof(IViewModelFactory<>), typeof(UnityViewModelFactory<>), Lifetime.Singleton)
+                     .RegisterType(typeof(IViewModelFactory<>), typeof(UnityViewModelFactory<>), Lifetime.Singleton)
 
-                            .RegisterType<IViewFor<HubViewModel>, HubPage>()
-                            .RegisterType<IViewFor<TrackViewModel>, SectionPage>()
-                            .RegisterType<IViewFor<ItemViewModel>, ItemPage>()
-                            .RegisterType<IViewFor<DayViewModel>, DayView>()
-                            .RegisterType<IViewFor<LectureViewModel>, LectureView>()
-                            .RegisterType<IViewFor<SpeakerViewModel>, SpeakerView>();
+                     .RegisterType<IViewFor<HubViewModel>, HubView>()
+                     .RegisterType<IViewFor<TrackViewModel>, SectionPage>()
+                     .RegisterType<IViewFor<ItemViewModel>, ItemPage>()
+                     .RegisterType<IViewFor<DayViewModel>, DayView>()
+                     .RegisterType<IViewFor<LectureViewModel>, LectureView>()
+                     .RegisterType<IViewFor<SpeakerViewModel>, SpeakerView>();
+        }
+
+        private void ReadSchedule()
+        {
+            IsLoading = true;
+
+            var scheduleReader = _container.Resolve<IScheduleReader>();
+            scheduleReader.ReadSchedule().Wait();
+
+            IsLoading = false;
+        }
+
+        private void NavigateToHub()
+        {
+            var hubViewModel = _container.Resolve<HubViewModel>();
+            Router.Navigate.Execute(hubViewModel);
         }
     }
 }

@@ -31,7 +31,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DI\Lifetime.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DI\UnityDependencyResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DI\UnityViewModelFactory.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)MainWIndow.xaml.cs">
+    <Compile Include="$(MSBuildThisFileDirectory)MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SpeakerViewModel.cs" />

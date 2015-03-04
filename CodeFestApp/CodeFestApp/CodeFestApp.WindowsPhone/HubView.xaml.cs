@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Linq;
-using System.Reactive.Linq;
 
-using CodeFestApp.Data;
 using CodeFestApp.ViewModels;
 
 using ReactiveUI;
@@ -12,9 +9,9 @@ using Windows.UI.Xaml.Controls;
 
 namespace CodeFestApp
 {
-    public sealed partial class HubPage : IViewFor<HubViewModel>
+    public sealed partial class HubView : IViewFor<HubViewModel>
     {
-        public HubPage()
+        public HubView()
         {
             InitializeComponent();
 

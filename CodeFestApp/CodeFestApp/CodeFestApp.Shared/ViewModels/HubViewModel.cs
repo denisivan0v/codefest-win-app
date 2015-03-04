@@ -21,10 +21,8 @@ namespace CodeFestApp.ViewModels
             this.WhenAnyObservable(x => x.NavigateToDayCommand)
                 .Subscribe(x => HostScreen.Router.Navigate.Execute(x));
 
-            var days = scheduleReader.GetDaysAsync();
-            days.Wait();
-
-            Days = new ReactiveList<DayViewModel>(days.Result.Select(x => _dayViewModelFactory.Create(x)));
+            var days = scheduleReader.GetDays();
+            Days = new ReactiveList<DayViewModel>(days.Select(x => _dayViewModelFactory.Create(x)));
         }
 
         public ReactiveCommand<object> NavigateToDayCommand { get; private set; }

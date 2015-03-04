@@ -5,8 +5,11 @@ namespace CodeFestApp.DataModel
 {
     public interface IScheduleReader
     {
-        Task<IEnumerable<Day>> GetDaysAsync();
-        Task<IEnumerable<Lecture>> GetCurrentLectures();
-        Task<IEnumerable<Speaker>> GetSpeakers();
+        Task ReadSchedule();
+
+        IEnumerable<Day> GetDays();
+        IEnumerable<Lecture> GetCurrentLectures();
+        IEnumerable<Speaker> GetSpeakers();
+        IEnumerable<Lecture> GetSpeakerLections(int speakerId);
     }
 }

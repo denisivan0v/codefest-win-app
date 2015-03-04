@@ -12,105 +12,104 @@ namespace CodeFestApp.DataModel
     public class ScheduleReader : IScheduleReader
     {
         private static readonly string Today = DateTime.Today.ToString("d");
+        private readonly IScheduleSource _scheduleSource;
 
-        private readonly JObject _scheduleJson;
-        private readonly Lazy<IEnumerable<Day>> _days;
-        private readonly Lazy<IEnumerable<Lecture>> _lectures;
-        private readonly Lazy<IEnumerable<Track>> _tracks;
-        private readonly Lazy<IEnumerable<Company>> _companies;
-        private readonly Lazy<IEnumerable<Speaker>> _speakers;
+        private IEnumerable<Day> _days;
+        private IEnumerable<Lecture> _lectures;
+        private IEnumerable<Track> _tracks;
+        private IEnumerable<Company> _companies;
+        private IEnumerable<Speaker> _speakers;
 
         public ScheduleReader(IScheduleSource scheduleSource)
         {
-            var json = scheduleSource.ReadScheduleAsync();
-            json.Wait();
-
-            _scheduleJson = JObject.Parse(json.Result);
-            _days = new Lazy<IEnumerable<Day>>(
-                () => _scheduleJson["day"]
-                          .Select(x => new Day
-                              {
-                                  Id = (int)x["id"],
-                                  Title = (string)x["title"],
-                                  Date = (DateTime)x["date"]
-                              })
-                          .ToArray());
-
-            _lectures = new Lazy<IEnumerable<Lecture>>(
-                () => _scheduleJson["lecture"]
-                          .Select(x => new Lecture
-                              {
-                                  Id = (int)x["id"],
-                                  Title = (string)x["title"],
-                                  Description = (string)x["description"],
-                                  Day = new Day { Id = (int)x["day_id"] },
-                                  Track = new Track { Id = (int)x["section_id"] },
-                                  Speaker = new Speaker { Id = (int)x["speaker_id"] },
-                                  Start = DateTime.Parse(Today + " " + x["time_start"]),
-                                  End = DateTime.Parse(Today + " " + x["time_end"])
-                              })
-                          .ToArray());
-
-            _tracks = new Lazy<IEnumerable<Track>>(
-                () => _scheduleJson["section"]
-                          .Select(x => new Track
-                              {
-                                  Id = (int)x["id"],
-                                  Title = (string)x["title"],
-                                  Room = new Room { Id = (int)x["room_id"] },
-                                  Color = Color.FromArgb(int.Parse(x.Value<string>("color").Substring(1),
-                                                                   NumberStyles.HexNumber))
-                              })
-                          .ToArray());
-
-            _companies = new Lazy<IEnumerable<Company>>(
-                () => _scheduleJson["company"]
-                          .Select(x => new Company
-                              {
-                                  Id = (int)x["id"],
-                                  Title = (string)x["title"]
-                              })
-                          .ToArray());
-
-            _speakers = new Lazy<IEnumerable<Speaker>>(
-                () => _scheduleJson["speaker"]
-                          .Select(x => new Speaker
-                              {
-                                  Id = (int)x["id"],
-                                  Title = (string)x["title"],
-                                  Description = (string)x["description"],
-                                  JobTitle = (string)x["post"],
-                                  Avatar = CreateUri((string)x["avatar"]),
-                                  Company = new Company { Id = (int)x["company_id"] },
-                                  FacebookProfile = CreateUri((string)x["link_facebook"]),
-                                  LinkedInProfile = CreateUri((string)x["link_linkedin"]),
-                                  MoiKrugProfile = CreateUri((string)x["link_moikrug"]),
-                                  TwitterProfile = CreateUri((string)x["link_twitter"]),
-                                  VkontakteProfile = CreateUri((string)x["link_vkontakte"])
-                              })
-                          .ToArray());
+            _scheduleSource = scheduleSource;
         }
 
-        public async Task<IEnumerable<Day>> GetDaysAsync()
+        public async Task ReadSchedule()
         {
-            return await Task.Factory.StartNew(
-                () => _days.Value.Select(x => ProjectDay(x, _lectures.Value, _speakers.Value, _tracks.Value)));
+            var json = await _scheduleSource.ReadScheduleAsync();
+            var schedule = JObject.Parse(json);
+
+            _days = schedule["day"]
+                .Select(x => new Day
+                    {
+                        Id = (int)x["id"],
+                        Title = (string)x["title"],
+                        Date = (DateTime)x["date"]
+                    })
+                .ToArray();
+
+            _lectures = schedule["lecture"]
+                .Select(x => new Lecture
+                    {
+                        Id = (int)x["id"],
+                        Title = (string)x["title"],
+                        Description = (string)x["description"],
+                        Day = new Day { Id = (int)x["day_id"] },
+                        Track = new Track { Id = (int)x["section_id"] },
+                        Speaker = new Speaker { Id = (int)x["speaker_id"] },
+                        Start = DateTime.Parse(Today + " " + x["time_start"]),
+                        End = DateTime.Parse(Today + " " + x["time_end"])
+                    })
+                .ToArray();
+
+            _tracks = schedule["section"]
+                .Select(x => new Track
+                    {
+                        Id = (int)x["id"],
+                        Title = (string)x["title"],
+                        Room = new Room { Id = (int)x["room_id"] },
+                        Color = Color.FromArgb(int.Parse(x.Value<string>("color").Substring(1),
+                                                         NumberStyles.HexNumber))
+                    })
+                .ToArray();
+
+            _companies = schedule["company"]
+                .Select(x => new Company
+                    {
+                        Id = (int)x["id"],
+                        Title = (string)x["title"]
+                    })
+                .ToArray();
+
+            _speakers = schedule["speaker"]
+                .Select(x => new Speaker
+                    {
+                        Id = (int)x["id"],
+                        Title = (string)x["title"],
+                        Description = (string)x["description"],
+                        JobTitle = (string)x["post"],
+                        Avatar = CreateUri((string)x["avatar"]),
+                        Company = new Company { Id = (int)x["company_id"] },
+                        FacebookProfile = CreateUri((string)x["link_facebook"]),
+                        LinkedInProfile = CreateUri((string)x["link_linkedin"]),
+                        MoiKrugProfile = CreateUri((string)x["link_moikrug"]),
+                        TwitterProfile = CreateUri((string)x["link_twitter"]),
+                        VkontakteProfile = CreateUri((string)x["link_vkontakte"])
+                    })
+                .ToArray();
         }
 
-        public async Task<IEnumerable<Lecture>> GetCurrentLectures()
+        public IEnumerable<Day> GetDays()
+        {
+            return _days.Select(x => ProjectDay(x, _lectures, _speakers, _tracks));
+        }
+
+        public IEnumerable<Lecture> GetCurrentLectures()
         {
             var now = DateTime.Now;
-            return await Task.Factory.StartNew(
-                () => _lectures.Value
-                               .Where(x => x.Start >= now && x.End <= now)
-                               .Select(x => ProjectLecture(x, _speakers.Value, _tracks.Value)));
+            return _lectures.Where(x => x.Start >= now && x.End <= now)
+                            .Select(x => ProjectLecture(x, _speakers, _tracks));
         }
 
-        public async Task<IEnumerable<Speaker>> GetSpeakers()
+        public IEnumerable<Speaker> GetSpeakers()
         {
-            return await Task.Factory.StartNew(
-                () => _speakers.Value
-                               .Select(x => ProjectSpeaker(x, _companies.Value, _lectures.Value)));
+            return _speakers.Select(x => ProjectSpeaker(x, _companies, _lectures));
+        }
+
+        public IEnumerable<Lecture> GetSpeakerLections(int speakerId)
+        {
+            return _lectures.Where(x => x.Speaker != null && x.Speaker.Id == speakerId);
         }
 
         private static Uri CreateUri(string value)
@@ -142,7 +141,7 @@ namespace CodeFestApp.DataModel
         private static Speaker ProjectSpeaker(Speaker speaker, IEnumerable<Company> companies, IEnumerable<Lecture> lectures)
         {
             speaker.Company = companies.SingleOrDefault(x => x.Id == speaker.Company.Id);
-            speaker.Lectures = lectures.Where(x => x.Speaker.Id == speaker.Id).ToArray();
+            speaker.Lectures = lectures.Where(x => x.Speaker.Id == speaker.Id);
             return speaker;
         }
     }

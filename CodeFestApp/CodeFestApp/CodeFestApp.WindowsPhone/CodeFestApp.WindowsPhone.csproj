@@ -83,8 +83,8 @@
     <Compile Include="Speaker.xaml.cs">
       <DependentUpon>Speaker.xaml</DependentUpon>
     </Compile>
-    <Compile Include="HubPage.xaml.cs">
-      <DependentUpon>HubPage.xaml</DependentUpon>
+    <Compile Include="HubView.xaml.cs">
+      <DependentUpon>HubView.xaml</DependentUpon>
     </Compile>
     <Compile Include="DayView.xaml.cs">
       <DependentUpon>DayView.xaml</DependentUpon>
@@ -120,7 +120,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="HubPage.xaml">
+    <Page Include="HubView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

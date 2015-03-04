@@ -4,9 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:reactiveUi="using:ReactiveUI">
     <ContentControl>
-        <reactiveUi:RoutedViewHost Router="{Binding Router}"
-                                   DefaultContent="CodeFest"
-                                   HorizontalContentAlignment="Stretch" 
-                                   VerticalContentAlignment="Stretch"/> 
+        <reactiveUi:RoutedViewHost Router="{Binding Router}" />
     </ContentControl>
 </Page>
