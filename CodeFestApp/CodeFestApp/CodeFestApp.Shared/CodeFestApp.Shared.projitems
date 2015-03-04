@@ -27,8 +27,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\ScheduleSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\Track.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\Speaker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DI\IViewModelFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DI\Lifetime.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DI\UnityDependencyResolver.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DI\UnityViewModelFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MainWIndow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>

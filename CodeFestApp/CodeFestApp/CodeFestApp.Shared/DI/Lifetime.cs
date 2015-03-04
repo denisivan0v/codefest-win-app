@@ -8,5 +8,10 @@ namespace CodeFestApp.DI
         {
             get { return new ContainerControlledLifetimeManager(); }
         }
+
+        public static LifetimeManager External
+        {
+            get { return new ExternallyControlledLifetimeManager(); }
+        }
     }
 }

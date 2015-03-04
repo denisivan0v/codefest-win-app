@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using System.Reactive.Disposables;
 
 using CodeFestApp.DataModel;
+using CodeFestApp.DI;
 
 using ReactiveUI;
 
@@ -10,8 +10,11 @@ namespace CodeFestApp.ViewModels
 {
     public class HubViewModel : ReactiveObject, IRoutableViewModel
     {
-        public HubViewModel(IScreen screen, IScheduleReader scheduleReader)
+        private readonly IViewModelFactory<DayViewModel> _dayViewModelFactory;
+
+        public HubViewModel(IScreen screen, IScheduleReader scheduleReader, IViewModelFactory<DayViewModel> dayViewModelFactory)
         {
+            _dayViewModelFactory = dayViewModelFactory;
             HostScreen = screen;
             NavigateToDayCommand = ReactiveCommand.Create();
 
@@ -21,7 +24,7 @@ namespace CodeFestApp.ViewModels
             var days = scheduleReader.GetDaysAsync();
             days.Wait();
 
-            Days = new ReactiveList<DayViewModel>(days.Result.Select(x => new DayViewModel(HostScreen, x)));
+            Days = new ReactiveList<DayViewModel>(days.Result.Select(x => _dayViewModelFactory.Create(x)));
         }
 
         public ReactiveCommand<object> NavigateToDayCommand { get; private set; }

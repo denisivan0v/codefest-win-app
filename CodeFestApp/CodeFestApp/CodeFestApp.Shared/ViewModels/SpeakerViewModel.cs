@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using CodeFestApp.DataModel;
+using CodeFestApp.DI;
 
 using ReactiveUI;
 
@@ -11,10 +12,12 @@ namespace CodeFestApp.ViewModels
     public class SpeakerViewModel : ReactiveObject, IRoutableViewModel
     {
         private readonly Speaker _speaker;
+        private readonly IViewModelFactory<LectureViewModel> _lectureViewModelFactory;
 
-        public SpeakerViewModel(IScreen hostScreen, Speaker speaker)
+        public SpeakerViewModel(IScreen hostScreen, Speaker speaker, IViewModelFactory<LectureViewModel> lectureViewModelFactory)
         {
             _speaker = speaker;
+            _lectureViewModelFactory = lectureViewModelFactory;
             HostScreen = hostScreen;
 
             NavigateToLectureCommand = ReactiveCommand.Create();
@@ -53,8 +56,9 @@ namespace CodeFestApp.ViewModels
             get
             {
                 return _speaker.Lectures
-                           .Select(x => new LectureViewModel(HostScreen, x))
-                           .GroupBy(x => x.Start.ToString("t"));
+                           .Select(x => _lectureViewModelFactory.Create(x))
+                           .OrderBy(x => x.Start)
+                           .GroupBy(x => x.Start.ToString("f"));
             }
         }
 

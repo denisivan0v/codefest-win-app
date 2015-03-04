@@ -19,26 +19,30 @@
             <TextBlock Text="{Binding ConferenceTitle}" 
                        Style="{ThemeResource TitleTextBlockStyle}" 
                        Margin="0,12,0,0" />
+            <TextBlock Text="{Binding Track.Title}" 
+                       Style="{ThemeResource TitleTextBlockStyle}" 
+                       Margin="0,12,0,0" />
             <TextBlock Text="{Binding Title}" 
                        Style="{ThemeResource HeaderTextBlockStyle}" 
                        Margin="0,-6.5,0,26.5" 
                        CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
         </StackPanel>
-
-        <!--TODO: Content should be placed within the following grid 
-                  to show details for the current item -->
         <Grid Grid.Row="1" 
               Margin="19,9.5,19,0">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Image Width="100" Grid.Column="0" Source="{Binding Speaker.Avatar}" />
-                <TextBlock Grid.Column="1" Text="{Binding Speaker.Title}" />
-                <TextBlock Grid.Column="1" Text="{Binding Speaker.Company}" />
-            </Grid>
-            <TextBlock Text="{Binding Description}"/>
+            <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Image Width="100" Grid.Column="0" Source="{Binding Speaker.Avatar}" />
+                    <StackPanel Grid.Column="1">
+                        <HyperlinkButton  Content="{Binding Speaker.Title}" Command="{Binding NavigateToSpeaker}" CommandParameter="{Binding Speaker}" />
+                        <TextBlock Text="{Binding Speaker.Company}" />
+                    </StackPanel>
+                </Grid>
+                <TextBlock Text="{Binding Description}" FontSize="14"/>
+            </StackPanel>
         </Grid>
     </Grid>
 </Page>

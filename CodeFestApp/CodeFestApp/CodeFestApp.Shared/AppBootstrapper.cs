@@ -14,8 +14,8 @@ namespace CodeFestApp
     {
         public AppBootstrapper()
         {
-            var container = PerformRegister();
-            var dependencyResolver = new UnityDependencyResolver(container);
+            var container = new UnityContainer();
+            var dependencyResolver = new UnityDependencyResolver(PerformRegister(container));
             Locator.Current = dependencyResolver;
 
             LogHost.Default.Level = LogLevel.Debug;
@@ -28,20 +28,21 @@ namespace CodeFestApp
 
         public RoutingState Router { get; private set; }
 
-        private IUnityContainer PerformRegister()
+        private IUnityContainer PerformRegister(IUnityContainer container)
         {
-            var container = new UnityContainer();
+            return container.RegisterInstance(typeof(IScreen), this, Lifetime.External)
 
-            return container.RegisterInstance(typeof(IScreen), this, new ExternallyControlledLifetimeManager())
+                            .RegisterType<IScheduleSource, ScheduleSource>(Lifetime.Singleton)
+                            .RegisterType<IScheduleReader, ScheduleReader>(Lifetime.Singleton)
+
+                            .RegisterType(typeof(IViewModelFactory<>), typeof(UnityViewModelFactory<>), Lifetime.Singleton)
 
                             .RegisterType<IViewFor<HubViewModel>, HubPage>()
                             .RegisterType<IViewFor<TrackViewModel>, SectionPage>()
                             .RegisterType<IViewFor<ItemViewModel>, ItemPage>()
                             .RegisterType<IViewFor<DayViewModel>, DayView>()
                             .RegisterType<IViewFor<LectureViewModel>, LectureView>()
-
-                            .RegisterType<IScheduleSource, ScheduleSource>(new ContainerControlledLifetimeManager())
-                            .RegisterType<IScheduleReader, ScheduleReader>(new ContainerControlledLifetimeManager());
+                            .RegisterType<IViewFor<SpeakerViewModel>, SpeakerView>();
         }
     }
 }

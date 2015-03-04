@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using CodeFestApp.DataModel;
+using CodeFestApp.DI;
 
 using ReactiveUI;
 
@@ -10,12 +11,15 @@ namespace CodeFestApp.ViewModels
 {
     public class DayViewModel : ReactiveObject, IRoutableViewModel
     {
+        private readonly IViewModelFactory<LectureViewModel> _lectureViewModelFactory;
         private readonly Day _day;
 
-        public DayViewModel(IScreen hostScreen, Day day)
+        public DayViewModel(IScreen hostScreen, Day day, IViewModelFactory<LectureViewModel> lectureViewModelFactory)
         {
-            _day = day;
             HostScreen = hostScreen;
+            _day = day;
+            _lectureViewModelFactory = lectureViewModelFactory;
+
 
             NavigateToLectureCommand = ReactiveCommand.Create();
 
@@ -38,7 +42,8 @@ namespace CodeFestApp.ViewModels
             get
             {
                 return _day.Lectures
-                           .Select(x => new LectureViewModel(HostScreen, x))
+                           .Select(x => _lectureViewModelFactory.Create(x))
+                           .OrderBy(x => x.Start)
                            .GroupBy(x => x.Start.ToString("t"));
             }
         }

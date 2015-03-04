@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Linq;
 
 using CodeFestApp.DataModel;
+using CodeFestApp.DI;
 
 using ReactiveUI;
 
@@ -11,10 +12,12 @@ namespace CodeFestApp.ViewModels
     public class TrackViewModel : ReactiveObject, IRoutableViewModel
     {
         private readonly Track _track;
+        private readonly IViewModelFactory<LectureViewModel> _lectureViewModelFactory;
 
-        public TrackViewModel(IScreen hostScreen, Track track)
+        public TrackViewModel(IScreen hostScreen, Track track, IViewModelFactory<LectureViewModel> lectureViewModelFactory)
         {
             _track = track;
+            _lectureViewModelFactory = lectureViewModelFactory;
             HostScreen = hostScreen;
 
             NavigateToLectureCommand = ReactiveCommand.Create();
@@ -40,7 +43,7 @@ namespace CodeFestApp.ViewModels
             get
             {
                 return _track.Lectures
-                             .Select(x => new LectureViewModel(HostScreen, x))
+                             .Select(x => _lectureViewModelFactory.Create(x))
                              .GroupBy(x => x.Start.ToString("t"));
             }
         }
