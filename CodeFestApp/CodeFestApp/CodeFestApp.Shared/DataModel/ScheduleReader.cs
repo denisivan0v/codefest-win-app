@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+
+using Windows.UI;
+using Windows.UI.Xaml.Media;
 
 using Newtonsoft.Json.Linq;
 
@@ -61,8 +63,7 @@ namespace CodeFestApp.DataModel
                     {
                         Id = (int)x["id"],
                         Title = (string)x["title"],
-                        Color = Color.FromArgb(int.Parse(x.Value<string>("color").Substring(1),
-                                                         NumberStyles.HexNumber))
+                        Color = (string)x["color"]
                     })
                 .Select(x =>
                     {

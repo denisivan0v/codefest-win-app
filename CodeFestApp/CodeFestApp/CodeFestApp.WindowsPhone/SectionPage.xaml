@@ -5,7 +5,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
       xmlns:core="using:Microsoft.Xaml.Interactions.Core"
-      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+      Background="{ThemeResource HubBackgroundImageBrush}"
       mc:Ignorable="d"
       xmlns:data="using:CodeFestApp.Data"
       d:DataContext="{Binding Groups[0], Source={d:DesignData Source=../CodeFestApp.Shared/DataModel/SampleData.json, Type=data:SampleDataSource}}">

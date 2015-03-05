@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 
 using CodeFestApp.DataModel;
@@ -28,7 +27,7 @@ namespace CodeFestApp.ViewModels
             get { return _track.Title; }
         }
 
-        public Color Color
+        public string Color
         {
             get { return _track.Color; }
         }

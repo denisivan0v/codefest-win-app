@@ -19,7 +19,7 @@ namespace CodeFestApp.DataModel
         public DateTime Date { get; set; }
         public IEnumerable<Lecture> Lectures
         {
-            get { return _lectures ?? (_lectures = _lecturesProvider().ToArray()); }
+            get { return _lectures ?? (_lectures = _lecturesProvider().Where(x => x.Day.Id == Id).ToArray()); }
         }
     }
 }

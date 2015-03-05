@@ -1,6 +1,8 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:helpers="using:CodeFestApp.Helpers">
     
     <ResourceDictionary.ThemeDictionaries>
         <ResourceDictionary x:Key="Default">
@@ -10,7 +12,7 @@
             <ImageBrush x:Key="HubBackgroundImageBrush" ImageSource="{x:Null}"/>
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
-
+    
     <DataTemplate x:Key="HubSectionHeaderTemplate">
         <TextBlock Margin="0,0,0,-9.5" Text="{Binding}"/>
     </DataTemplate>
@@ -74,5 +76,27 @@
                 <TextBlock Text="{Binding Subtitle}" Style="{ThemeResource ListViewItemSubheaderTextBlockStyle}"/>
             </StackPanel>
         </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="GroupHeaderTemplate">
+        <Border Background="Transparent" Padding="5" >
+            <Border Background="Transparent" 
+                    BorderBrush="{StaticResource PhoneAccentBrush}" 
+                    BorderThickness="2"	
+                    Margin="0,0,18,0"  
+                    HorizontalAlignment="Stretch">
+                <interactivity:Interaction.Behaviors>
+                    <helpers:WindowDimensionBehavior WidthPercentage="{StaticResource smallCellWidthPercent}"
+                                                     HeightPercentage="{StaticResource smallCellHeightPercent}"/>
+                </interactivity:Interaction.Behaviors>
+                <TextBlock Text="{Binding Key}" 
+                           Foreground="{StaticResource PhoneAccentBrush}" 
+                           FontSize="30"
+                           Padding="6,0"
+                           FontFamily="{StaticResource PhoneFontFamilySemiLight}"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Bottom"/>
+            </Border>
+        </Border>
     </DataTemplate>
 </ResourceDictionary>

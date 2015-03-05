@@ -1,0 +1,63 @@
+﻿<Page x:Class="CodeFestApp.SpeakerView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:userControls="using:CodeFestApp.UserControls"
+      Background="{ThemeResource HubBackgroundImageBrush}">
+    <Page.Resources>
+        <CollectionViewSource x:Key="LecturesSource"
+                              Source="{Binding Lectures}"
+                              IsSourceGrouped="True" />
+    </Page.Resources>
+    <Grid>
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Title Panel -->
+        <StackPanel Grid.Row="0" Margin="19,0,0,0">
+            <TextBlock Text="codefest 2015" 
+                       Style="{ThemeResource TitleTextBlockStyle}" 
+                       Margin="0,12,0,0" />
+            <TextBlock Text="{Binding Title}" 
+                       Style="{ThemeResource HeaderTextBlockStyle}" 
+                       Margin="0,-6.5,0,26.5" 
+                       CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
+        </StackPanel>
+        <ScrollViewer Grid.Row="1">
+            <StackPanel>
+                <userControls:ProfileControl />
+                <ListView ItemsSource="{Binding Source={StaticResource LecturesSource}}">
+                    <ListView.GroupStyle>
+                        <GroupStyle HidesIfEmpty="True" HeaderTemplate="{StaticResource GroupHeaderTemplate}"/>
+                    </ListView.GroupStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Rectangle Grid.Column="0" Width="10" Margin="5,0,10,0" >
+                                    <Rectangle.Fill>
+                                        <SolidColorBrush Color="{Binding Track.Color}" />
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                                <TextBlock Grid.Column="1"
+                                       Text="{Binding Title}" 
+                                       Style="{ThemeResource ListViewItemTextBlockStyle}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+        </ScrollViewer>
+
+    </Grid>
+</Page>

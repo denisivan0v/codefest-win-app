@@ -1,7 +1,7 @@
 ﻿<Page x:Class="CodeFestApp.DayView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"> 
+      Background="{ThemeResource HubBackgroundImageBrush}"> 
     <Page.Resources>
         <CollectionViewSource x:Key="LecturesSource"
                               Source="{Binding Lectures}"
@@ -29,28 +29,31 @@
                        Margin="0,-6.5,0,26.5" 
                        CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
         </StackPanel>
-
-        
         
         <ListView Grid.Row="1"
                   ItemsSource="{Binding Source={StaticResource LecturesSource}}"
                   IsItemClickEnabled="True"
                   ItemClick="LecturesListView_OnItemClick">
             <ListView.GroupStyle>
-                <GroupStyle>
-                    <GroupStyle.HeaderTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Key}" 
-                                       Style="{ThemeResource ListViewItemTextBlockStyle}"/>
-                        </DataTemplate>
-                    </GroupStyle.HeaderTemplate>
-                </GroupStyle>
+                <GroupStyle HidesIfEmpty="True" HeaderTemplate="{StaticResource GroupHeaderTemplate}"/>
             </ListView.GroupStyle>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Margin="0,0,0,27.5">
-                        <TextBlock Text="{Binding Title}" 
-                                   Style="{ThemeResource ListViewItemTextBlockStyle}" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Rectangle Grid.Column="0" Width="10" Margin="5,0,10,0" >
+                                <Rectangle.Fill>
+                                    <SolidColorBrush Color="{Binding Track.Color}" />
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <TextBlock Grid.Column="1"
+                                       Text="{Binding Title}" 
+                                       Style="{ThemeResource ListViewItemTextBlockStyle}" />
+                        </Grid>
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 
 namespace CodeFestApp.DataModel
@@ -20,7 +19,7 @@ namespace CodeFestApp.DataModel
 
         public int Id { get; set; }
         public Room Room { get; private set; }
-        public Color Color { get; set; }
+        public string Color { get; set; }
         public string Title { get; set; }
         public IEnumerable<Lecture> Lectures
         {

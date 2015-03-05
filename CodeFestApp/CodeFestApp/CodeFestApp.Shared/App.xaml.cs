@@ -28,10 +28,23 @@ namespace CodeFestApp
         public App()
         {
             InitializeComponent();
-            Suspending += OnSuspending;
 
             RxApp.SuspensionHost.CreateNewAppState = () => new AppBootstrapper();
             RxApp.SuspensionHost.SetupDefaultSuspendResume();
+
+#if WINDOWS_PHONE_APP
+            Observable.FromEventPattern<BackPressedEventArgs>(x => HardwareButtons.BackPressed += x,
+                                                              x => HardwareButtons.BackPressed -= x)
+                      .Subscribe(x =>
+                      {
+                          var hostScreen = (IScreen)Locator.Current.GetService(typeof(IScreen));
+                          if (hostScreen.Router.NavigationStack.Count > 1)
+                          {
+                              hostScreen.Router.NavigateBack.Execute(null);
+                              x.EventArgs.Handled = true;
+                          }
+                      });
+#endif
         }
 
         /// <summary>
@@ -56,22 +69,8 @@ namespace CodeFestApp
             if (rootFrame == null)
             {
                 // Create a Frame to act as the navigation context and navigate to the first page
-                rootFrame = new Frame();
+                rootFrame = new Frame { CacheSize = 3 };
 
-                // TODO: change this value to a cache size that is appropriate for your application
-                rootFrame.CacheSize = 3;
-
-                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
-                {
-                    // TODO: Load state from previously suspended application
-                }
-
-#if WINDOWS_PHONE_APP
-                if (rootFrame.ContentTransitions == null)
-                {
-                    rootFrame.ContentTransitions = new TransitionCollection { new NavigationThemeTransition() };
-                }
-#endif
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
             }
@@ -81,38 +80,11 @@ namespace CodeFestApp
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
                 // parameter
-                if (!rootFrame.Navigate(typeof(MainWindow), e.Arguments))
-                {
-                    throw new Exception("Failed to create initial page");
-                }
+                rootFrame.Navigate(typeof(MainWindow), e.Arguments);
             }
-
-#if WINDOWS_PHONE_APP
-            Observable.FromEventPattern<BackPressedEventArgs>(x => HardwareButtons.BackPressed += x,
-                                                              x => HardwareButtons.BackPressed -= x)
-                      .Subscribe(x =>
-                          {
-                              var hostScreen = (IScreen)Locator.Current.GetService(typeof(IScreen));
-                              if (hostScreen.Router.NavigationStack.Count > 1)
-                              {
-                                  hostScreen.Router.NavigateBack.Execute(null);
-                                  x.EventArgs.Handled = true;
-                              }
-                          });
-#endif
+            
             // Ensure the current window is active
             Window.Current.Activate();
-        }
-
-        /// <summary>
-        /// Invoked when application execution is being suspended.  Application state is saved
-        /// without knowing whether the application will be terminated or resumed with the contents
-        /// of memory still intact.
-        /// </summary>
-        private static void OnSuspending(object sender, SuspendingEventArgs e)
-        {
-            var deferral = e.SuspendingOperation.GetDeferral();
-            deferral.Complete();
         }
     }
 }
