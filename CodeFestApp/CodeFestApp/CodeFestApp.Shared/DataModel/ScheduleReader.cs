@@ -93,7 +93,7 @@ namespace CodeFestApp.DataModel
                 .ToArray();
 
             _lectures.AddRange(schedule["lecture"]
-                                   .Select(x => new Lecture((int)x["day_id"], (int)x["section_id"], (int)x["speaker_id"])
+                                   .Select(x => new Lecture((int)x["day_id"], (int)x["section_id"], () => _speakers, (int)x["speaker_id"])
                                        {
                                            Id = (int)x["id"],
                                            Title = (string)x["title"],
@@ -105,7 +105,6 @@ namespace CodeFestApp.DataModel
                                        {
                                            x.SetDay(_days);
                                            x.SetTrack(_tracks);
-                                           x.SetSpeaker(_speakers);
                                            return x;
                                        }));
         }
@@ -124,11 +123,6 @@ namespace CodeFestApp.DataModel
         public IEnumerable<Speaker> GetSpeakers()
         {
             return _speakers;
-        }
-
-        public IEnumerable<Lecture> GetSpeakerLections(int speakerId)
-        {
-            return _lectures.Where(x => x.Speaker != null && x.Speaker.Id == speakerId);
         }
 
         private static Uri CreateUri(string value)

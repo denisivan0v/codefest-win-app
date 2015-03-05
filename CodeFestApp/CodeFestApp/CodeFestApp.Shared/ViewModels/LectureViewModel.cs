@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 using CodeFestApp.DataModel;
 using CodeFestApp.DI;
@@ -41,9 +43,9 @@ namespace CodeFestApp.ViewModels
             get { return _lecture.Title; }
         }
 
-        public SpeakerViewModel Speaker
+        public IEnumerable<SpeakerViewModel> Speakers
         {
-            get { return _viewModelFactory.Create<SpeakerViewModel, Speaker>(_lecture.Speaker); }
+            get { return _lecture.Speakers.Select(x => _viewModelFactory.Create<SpeakerViewModel, Speaker>(x)); }
         }
         
         public string Description

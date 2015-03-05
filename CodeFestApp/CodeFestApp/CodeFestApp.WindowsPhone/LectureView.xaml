@@ -30,18 +30,27 @@
         <Grid Grid.Row="1" 
               Margin="19,9.5,19,0">
             <StackPanel>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Image Width="100" Grid.Column="0" Source="{Binding Speaker.Avatar}" />
-                    <StackPanel Grid.Column="1">
-                        <HyperlinkButton  Content="{Binding Speaker.Title}" Command="{Binding NavigateToSpeaker}" CommandParameter="{Binding Speaker}" />
-                        <TextBlock Text="{Binding Speaker.Company}" />
-                    </StackPanel>
-                </Grid>
-                <TextBlock Text="{Binding Description}" FontSize="14"/>
+                <ListView ItemsSource="{Binding Speakers}"
+                          IsItemClickEnabled="True"
+                          ItemClick="SpeakersListView_OnItemClick">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Image Width="100" Grid.Column="0" Source="{Binding Avatar}" />
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="{Binding Title}" FontSize="20"/>
+                                    <TextBlock Text="{Binding Company}" FontSize="18"/>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <TextBlock Text="{Binding Description}" FontSize="16"/>
             </StackPanel>
         </Grid>
     </Grid>

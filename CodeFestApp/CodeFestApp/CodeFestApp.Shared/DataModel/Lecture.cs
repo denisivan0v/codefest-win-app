@@ -8,13 +8,17 @@ namespace CodeFestApp.DataModel
     {
         private readonly int _dayId;
         private readonly int _trackId;
-        private readonly int _speakerId;
+        private readonly IEnumerable<int> _speakerIds;
+        private readonly Func<IEnumerable<Speaker>> _speakersProvider;
 
-        public Lecture(int dayId, int trackId, int speakerId)
+        private IEnumerable<Speaker> _speakers;
+
+        public Lecture(int dayId, int trackId, Func<IEnumerable<Speaker>> speakersProvider, int speakerId, params int[] otherSpeakerIds)
         {
             _dayId = dayId;
             _trackId = trackId;
-            _speakerId = speakerId;
+            _speakersProvider = speakersProvider;
+            _speakerIds = new[] { speakerId }.Union(otherSpeakerIds);
         } 
 
         public int Id { get; set; }
@@ -22,9 +26,13 @@ namespace CodeFestApp.DataModel
         public string Description { get; set; }
         public Day Day { get; private set; }
         public Track Track { get; private set; }
-        public Speaker Speaker { get; private set; }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
+
+        public IEnumerable<Speaker> Speakers
+        {
+            get { return _speakers ?? (_speakers = _speakersProvider().Where(x => _speakerIds.Contains(x.Id)).ToArray()); }
+        }
 
         public void SetDay(IEnumerable<Day> days)
         {
@@ -39,14 +47,6 @@ namespace CodeFestApp.DataModel
             if (Track == null)
             {
                 Track = tracks.SingleOrDefault(x => x.Id == _trackId);
-            }
-        }
-
-        public void SetSpeaker(IEnumerable<Speaker> speakers)
-        {
-            if (Speaker == null)
-            {
-                Speaker = speakers.FirstOrDefault(x => x.Id == _speakerId);
             }
         }
     }

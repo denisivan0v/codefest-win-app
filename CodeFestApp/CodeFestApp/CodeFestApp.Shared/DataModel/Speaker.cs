@@ -30,7 +30,7 @@ namespace CodeFestApp.DataModel
         public Uri VkontakteProfile { get; set; }
         public IEnumerable<Lecture> Lectures
         {
-            get { return _lectures ?? (_lectures = _lecturesProvider().Where(x => x.Speaker != null && x.Speaker.Id == Id).ToArray()); }
+            get { return _lectures ?? (_lectures = _lecturesProvider().Where(x => x.Speakers.Select(s => s.Id).Contains(Id)).ToArray()); }
         }
 
         public void SetCompany(IEnumerable<Company> companies)
