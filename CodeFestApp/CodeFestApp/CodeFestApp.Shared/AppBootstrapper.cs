@@ -36,7 +36,7 @@ namespace CodeFestApp
                      .RegisterType<IScheduleSource, ScheduleSource>(Lifetime.Singleton)
                      .RegisterType<IScheduleReader, ScheduleReader>(Lifetime.Singleton)
 
-                     .RegisterType(typeof(IViewModelFactory<>), typeof(UnityViewModelFactory<>), Lifetime.Singleton)
+                     .RegisterType<IViewModelFactory, UnityViewModelFactory>(Lifetime.Singleton)
 
                      .RegisterType<IViewFor<HubViewModel>, HubView>()
                      .RegisterType<IViewFor<TrackViewModel>, SectionPage>()

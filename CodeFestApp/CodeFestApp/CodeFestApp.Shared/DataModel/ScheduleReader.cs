@@ -13,9 +13,10 @@ namespace CodeFestApp.DataModel
     {
         private static readonly string Today = DateTime.Today.ToString("d");
         private readonly IScheduleSource _scheduleSource;
+        private readonly List<Lecture> _lectures = new List<Lecture>();
 
+        private IEnumerable<Room> _rooms;
         private IEnumerable<Day> _days;
-        private IEnumerable<Lecture> _lectures;
         private IEnumerable<Track> _tracks;
         private IEnumerable<Company> _companies;
         private IEnumerable<Speaker> _speakers;
@@ -30,40 +31,6 @@ namespace CodeFestApp.DataModel
             var json = await _scheduleSource.ReadScheduleAsync();
             var schedule = JObject.Parse(json);
 
-            _days = schedule["day"]
-                .Select(x => new Day
-                    {
-                        Id = (int)x["id"],
-                        Title = (string)x["title"],
-                        Date = (DateTime)x["date"]
-                    })
-                .ToArray();
-
-            _lectures = schedule["lecture"]
-                .Select(x => new Lecture
-                    {
-                        Id = (int)x["id"],
-                        Title = (string)x["title"],
-                        Description = (string)x["description"],
-                        Day = new Day { Id = (int)x["day_id"] },
-                        Track = new Track { Id = (int)x["section_id"] },
-                        Speaker = new Speaker { Id = (int)x["speaker_id"] },
-                        Start = DateTime.Parse(Today + " " + x["time_start"]),
-                        End = DateTime.Parse(Today + " " + x["time_end"])
-                    })
-                .ToArray();
-
-            _tracks = schedule["section"]
-                .Select(x => new Track
-                    {
-                        Id = (int)x["id"],
-                        Title = (string)x["title"],
-                        Room = new Room { Id = (int)x["room_id"] },
-                        Color = Color.FromArgb(int.Parse(x.Value<string>("color").Substring(1),
-                                                         NumberStyles.HexNumber))
-                    })
-                .ToArray();
-
             _companies = schedule["company"]
                 .Select(x => new Company
                     {
@@ -72,39 +39,91 @@ namespace CodeFestApp.DataModel
                     })
                 .ToArray();
 
+            _rooms = schedule["room"]
+                .Select(x => new Room(() => _lectures)
+                    {
+                        Id = (int)x["id"],
+                        Title = (string)x["title"]
+                    })
+                .ToArray();
+
+            _days = schedule["day"]
+                .Select(x => new Day(() => _lectures)
+                    {
+                        Id = (int)x["id"],
+                        Title = (string)x["title"],
+                        Date = (DateTime)x["date"]
+                    })
+                .ToArray();
+
+            _tracks = schedule["section"]
+                .Select(x => new Track((int)x["room_id"], () => _lectures)
+                    {
+                        Id = (int)x["id"],
+                        Title = (string)x["title"],
+                        Color = Color.FromArgb(int.Parse(x.Value<string>("color").Substring(1),
+                                                         NumberStyles.HexNumber))
+                    })
+                .Select(x =>
+                    {
+                        x.SetRoom(_rooms);
+                        return x;
+                    })
+                .ToArray();
+
             _speakers = schedule["speaker"]
-                .Select(x => new Speaker
+                .Select(x => new Speaker((int)x["company_id"], () => _lectures)
                     {
                         Id = (int)x["id"],
                         Title = (string)x["title"],
                         Description = (string)x["description"],
                         JobTitle = (string)x["post"],
                         Avatar = CreateUri((string)x["avatar"]),
-                        Company = new Company { Id = (int)x["company_id"] },
                         FacebookProfile = CreateUri((string)x["link_facebook"]),
                         LinkedInProfile = CreateUri((string)x["link_linkedin"]),
                         MoiKrugProfile = CreateUri((string)x["link_moikrug"]),
                         TwitterProfile = CreateUri((string)x["link_twitter"]),
                         VkontakteProfile = CreateUri((string)x["link_vkontakte"])
                     })
+                .Select(x =>
+                    {
+                        x.SetCompany(_companies);
+                        return x;
+                    })
                 .ToArray();
+
+            _lectures.AddRange(schedule["lecture"]
+                                   .Select(x => new Lecture((int)x["day_id"], (int)x["section_id"], (int)x["speaker_id"])
+                                       {
+                                           Id = (int)x["id"],
+                                           Title = (string)x["title"],
+                                           Description = (string)x["description"],
+                                           Start = DateTime.Parse(Today + " " + x["time_start"]),
+                                           End = DateTime.Parse(Today + " " + x["time_end"])
+                                       })
+                                   .Select(x =>
+                                       {
+                                           x.SetDay(_days);
+                                           x.SetTrack(_tracks);
+                                           x.SetSpeaker(_speakers);
+                                           return x;
+                                       }));
         }
 
         public IEnumerable<Day> GetDays()
         {
-            return _days.Select(x => ProjectDay(x, _lectures, _speakers, _tracks));
+            return _days;
         }
 
         public IEnumerable<Lecture> GetCurrentLectures()
         {
             var now = DateTime.Now;
-            return _lectures.Where(x => x.Start >= now && x.End <= now)
-                            .Select(x => ProjectLecture(x, _speakers, _tracks));
+            return _lectures.Where(x => x.Start >= now && x.End <= now);
         }
 
         public IEnumerable<Speaker> GetSpeakers()
         {
-            return _speakers.Select(x => ProjectSpeaker(x, _companies, _lectures));
+            return _speakers;
         }
 
         public IEnumerable<Lecture> GetSpeakerLections(int speakerId)
@@ -115,34 +134,6 @@ namespace CodeFestApp.DataModel
         private static Uri CreateUri(string value)
         {
             return !string.IsNullOrEmpty(value) ? new Uri(value) : null;
-        }
-
-        private static Day ProjectDay(Day day,
-                                      IEnumerable<Lecture> lectures,
-                                      IEnumerable<Speaker> speakers,
-                                      IEnumerable<Track> tracks)
-        {
-            if (day.Lectures == null || !day.Lectures.Any())
-            {
-                day.Lectures = lectures.Where(x => x.Day.Id == day.Id)
-                                       .Select(x => ProjectLecture(x, speakers, tracks));
-            }
-
-            return day;
-        }
-
-        private static Lecture ProjectLecture(Lecture lecture, IEnumerable<Speaker> speakers, IEnumerable<Track> tracks)
-        {
-            lecture.Speaker = speakers.SingleOrDefault(s => s.Id == lecture.Speaker.Id);
-            lecture.Track = tracks.SingleOrDefault(t => t.Id == lecture.Track.Id);
-            return lecture;
-        }
-
-        private static Speaker ProjectSpeaker(Speaker speaker, IEnumerable<Company> companies, IEnumerable<Lecture> lectures)
-        {
-            speaker.Company = companies.SingleOrDefault(x => x.Id == speaker.Company.Id);
-            speaker.Lectures = lectures.Where(x => x.Speaker.Id == speaker.Id);
-            return speaker;
         }
     }
 }

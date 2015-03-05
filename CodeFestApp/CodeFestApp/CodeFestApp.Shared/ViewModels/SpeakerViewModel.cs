@@ -12,18 +12,15 @@ namespace CodeFestApp.ViewModels
     public class SpeakerViewModel : ReactiveObject, IRoutableViewModel
     {
         private readonly Speaker _speaker;
-        private readonly IViewModelFactory<LectureViewModel> _lectureViewModelFactory;
+        private readonly IViewModelFactory _viewModelFactory;
 
         public SpeakerViewModel(IScreen hostScreen,
                                 Speaker speaker,
-                                IViewModelFactory<LectureViewModel> lectureViewModelFactory,
-                                IScheduleReader scheduleReader)
+                                IViewModelFactory viewModelFactory)
         {
             HostScreen = hostScreen;
             _speaker = speaker;
-            _lectureViewModelFactory = lectureViewModelFactory;
-
-            _speaker.Lectures = scheduleReader.GetSpeakerLections(_speaker.Id);
+            _viewModelFactory = viewModelFactory;
 
             NavigateToLectureCommand = ReactiveCommand.Create();
 
@@ -61,7 +58,7 @@ namespace CodeFestApp.ViewModels
             get
             {
                 return _speaker.Lectures
-                               .Select(x => _lectureViewModelFactory.Create(x))
+                               .Select(x => _viewModelFactory.Create<LectureViewModel, Lecture>(x))
                                .OrderBy(x => x.Start)
                                .GroupBy(x => x.Start.ToString("f"));
             }

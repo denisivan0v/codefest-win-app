@@ -1,7 +1,9 @@
-﻿namespace CodeFestApp.DI
+﻿using ReactiveUI;
+
+namespace CodeFestApp.DI
 {
-    public interface IViewModelFactory<out TViewModel>
+    public interface IViewModelFactory
     {
-        TViewModel Create<TParam>(TParam param);
+        TViewModel Create<TViewModel, TModel>(TModel param) where TViewModel : IRoutableViewModel;
     }
 }

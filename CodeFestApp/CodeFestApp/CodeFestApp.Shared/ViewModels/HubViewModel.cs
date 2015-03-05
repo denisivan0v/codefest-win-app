@@ -10,11 +10,11 @@ namespace CodeFestApp.ViewModels
 {
     public class HubViewModel : ReactiveObject, IRoutableViewModel
     {
-        private readonly IViewModelFactory<DayViewModel> _dayViewModelFactory;
+        private readonly IViewModelFactory _viewModelFactory;
 
-        public HubViewModel(IScreen screen, IScheduleReader scheduleReader, IViewModelFactory<DayViewModel> dayViewModelFactory)
+        public HubViewModel(IScreen screen, IScheduleReader scheduleReader, IViewModelFactory viewModelFactory)
         {
-            _dayViewModelFactory = dayViewModelFactory;
+            _viewModelFactory = viewModelFactory;
             HostScreen = screen;
             NavigateToDayCommand = ReactiveCommand.Create();
 
@@ -22,7 +22,7 @@ namespace CodeFestApp.ViewModels
                 .Subscribe(x => HostScreen.Router.Navigate.Execute(x));
 
             var days = scheduleReader.GetDays();
-            Days = new ReactiveList<DayViewModel>(days.Select(x => _dayViewModelFactory.Create(x)));
+            Days = new ReactiveList<DayViewModel>(days.Select(x => _viewModelFactory.Create<DayViewModel, Day>(x)));
         }
 
         public ReactiveCommand<object> NavigateToDayCommand { get; private set; }

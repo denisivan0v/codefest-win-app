@@ -12,12 +12,12 @@ namespace CodeFestApp.ViewModels
     public class TrackViewModel : ReactiveObject, IRoutableViewModel
     {
         private readonly Track _track;
-        private readonly IViewModelFactory<LectureViewModel> _lectureViewModelFactory;
+        private readonly IViewModelFactory _viewModelFactory;
 
-        public TrackViewModel(IScreen hostScreen, Track track, IViewModelFactory<LectureViewModel> lectureViewModelFactory)
+        public TrackViewModel(IScreen hostScreen, Track track, IViewModelFactory viewModelFactory)
         {
             _track = track;
-            _lectureViewModelFactory = lectureViewModelFactory;
+            _viewModelFactory = viewModelFactory;
             HostScreen = hostScreen;
 
             NavigateToLectureCommand = ReactiveCommand.Create();
@@ -43,7 +43,7 @@ namespace CodeFestApp.ViewModels
             get
             {
                 return _track.Lectures
-                             .Select(x => _lectureViewModelFactory.Create(x))
+                             .Select(x => _viewModelFactory.Create<LectureViewModel, Lecture>(x))
                              .GroupBy(x => x.Start.ToString("t"));
             }
         }

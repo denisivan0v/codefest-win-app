@@ -1,8 +1,10 @@
 ﻿using Microsoft.Practices.Unity;
 
+using ReactiveUI;
+
 namespace CodeFestApp.DI
 {
-    public class UnityViewModelFactory<TViewModel> : IViewModelFactory<TViewModel>
+    public class UnityViewModelFactory : IViewModelFactory
     {
         private readonly IUnityContainer _container;
 
@@ -11,9 +13,9 @@ namespace CodeFestApp.DI
             _container = container;
         }
 
-        public TViewModel Create<TParam>(TParam param)
+        public TViewModel Create<TViewModel, TModel>(TModel param) where TViewModel : IRoutableViewModel
         {
-            return _container.Resolve<TViewModel>(new DependencyOverride(typeof(TParam), param));
+            return _container.Resolve<TViewModel>(new DependencyOverride(typeof(TModel), param));
         }
     }
 }

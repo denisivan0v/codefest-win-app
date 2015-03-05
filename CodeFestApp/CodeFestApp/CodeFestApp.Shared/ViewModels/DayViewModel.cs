@@ -11,10 +11,10 @@ namespace CodeFestApp.ViewModels
 {
     public class DayViewModel : ReactiveObject, IRoutableViewModel
     {
-        private readonly IViewModelFactory<LectureViewModel> _lectureViewModelFactory;
+        private readonly IViewModelFactory _lectureViewModelFactory;
         private readonly Day _day;
 
-        public DayViewModel(IScreen hostScreen, Day day, IViewModelFactory<LectureViewModel> lectureViewModelFactory)
+        public DayViewModel(IScreen hostScreen, Day day, IViewModelFactory lectureViewModelFactory)
         {
             HostScreen = hostScreen;
             _day = day;
@@ -42,7 +42,7 @@ namespace CodeFestApp.ViewModels
             get
             {
                 return _day.Lectures
-                           .Select(x => _lectureViewModelFactory.Create(x))
+                           .Select(x => _lectureViewModelFactory.Create<LectureViewModel, Lecture>(x))
                            .OrderBy(x => x.Start)
                            .GroupBy(x => x.Start.ToString("t"));
             }

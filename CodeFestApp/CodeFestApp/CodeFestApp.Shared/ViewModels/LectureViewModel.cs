@@ -9,22 +9,16 @@ namespace CodeFestApp.ViewModels
 {
     public class LectureViewModel : ReactiveObject, IRoutableViewModel
     {
-        private readonly IViewModelFactory<SpeakerViewModel> _speakerViewModelFactory;
-        private readonly IViewModelFactory<DayViewModel> _dayViewModelFactory;
-        private readonly IViewModelFactory<TrackViewModel> _trackViewModelFactory;
+        private readonly IViewModelFactory _viewModelFactory;
         private readonly Lecture _lecture;
 
         public LectureViewModel(IScreen hostScreen,
                                 Lecture lecture,
-                                IViewModelFactory<SpeakerViewModel> speakerViewModelFactory,
-                                IViewModelFactory<DayViewModel> dayViewModelFactory,
-                                IViewModelFactory<TrackViewModel> trackViewModelFactory)
+                                IViewModelFactory viewModelFactory)
         {
             HostScreen = hostScreen;
             _lecture = lecture;
-            _speakerViewModelFactory = speakerViewModelFactory;
-            _dayViewModelFactory = dayViewModelFactory;
-            _trackViewModelFactory = trackViewModelFactory;
+            _viewModelFactory = viewModelFactory;
 
             NavigateToSpeaker = ReactiveCommand.Create();
 
@@ -34,7 +28,7 @@ namespace CodeFestApp.ViewModels
 
         public TrackViewModel Track
         {
-            get { return _trackViewModelFactory.Create(_lecture.Track); }
+            get { return _viewModelFactory.Create<TrackViewModel, Track>(_lecture.Track); }
         }
 
         public string ConferenceTitle
@@ -49,7 +43,7 @@ namespace CodeFestApp.ViewModels
 
         public SpeakerViewModel Speaker
         {
-            get { return _speakerViewModelFactory.Create(_lecture.Speaker); }
+            get { return _viewModelFactory.Create<SpeakerViewModel, Speaker>(_lecture.Speaker); }
         }
         
         public string Description
@@ -59,7 +53,7 @@ namespace CodeFestApp.ViewModels
 
         public DayViewModel Day
         {
-            get { return _dayViewModelFactory.Create(_lecture.Day); }
+            get { return _viewModelFactory.Create<DayViewModel, Day>(_lecture.Day); }
         }
 
         public DateTime Start
