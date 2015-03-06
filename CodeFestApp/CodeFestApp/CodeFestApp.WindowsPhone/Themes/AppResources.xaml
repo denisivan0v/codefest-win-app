@@ -55,6 +55,36 @@
         </Grid>
     </DataTemplate>
 
+    <DataTemplate x:Key="ManyImagesTileWithTitleItemTemplate">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <GridView ItemsSource="{Binding SpeakerAvatars}"
+                      Grid.Column="0" 
+                      Margin="0 14.5"
+                      HorizontalAlignment="Left"
+                      Height="120" Width="120">
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                        <Image Source="{Binding}"
+                               Stretch="UniformToFill"/>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+                <GridView.ItemContainerStyle>
+                    <Style TargetType="GridViewItem">
+                        <Setter Property="Width" Value="30" />
+                        <Setter Property="Height" Value="30" />
+                    </Style>
+                </GridView.ItemContainerStyle>
+            </GridView>
+            <TextBlock Text="{Binding Title}" 
+                       Grid.Column="1" Margin="14.5,0,0,0"
+                       Style="{ThemeResource ListViewItemTextBlockStyle}"/>
+        </Grid>
+    </DataTemplate>
+
     <DataTemplate x:Key="StandardDoubleLineItemTemplate">
         <Grid>
             <Grid.ColumnDefinitions>

@@ -17,6 +17,19 @@
                     </StackPanel>
                 </DataTemplate>
             </Hub.HeaderTemplate>
+
+            <HubSection Width="Auto"
+                        Header="{Binding DaysSectionTitle}"
+                        HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
+                <DataTemplate>
+                    <ListView Margin="0,9.5,0,0"
+                              ItemsSource="{Binding Days}"
+                              ItemTemplate="{StaticResource ManyImagesTileWithTitleItemTemplate}"
+                              IsItemClickEnabled="True"
+                              ItemClick="DaysGrid_OnItemClick"/>
+                </DataTemplate>
+            </HubSection>
+
             <HubSection Header="{Binding CurrentLecturesSectionTitle}" 
                         HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}"> 
                 <DataTemplate>
@@ -31,25 +44,6 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                </DataTemplate>
-            </HubSection>
-
-            <HubSection Width="Auto"
-                        Header="{Binding DaysSectionTitle}"
-                        HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
-                <DataTemplate>
-                    <GridView Margin="0,9.5,0,0"
-                              ItemsSource="{Binding Days}"
-                              ItemTemplate="{StaticResource Standard200x180TileItemTemplate}"
-                              SelectionMode="None"
-                              IsItemClickEnabled="True"
-                              ItemClick="DaysGrid_OnItemClick">
-                        <GridView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <ItemsWrapGrid />
-                            </ItemsPanelTemplate>
-                        </GridView.ItemsPanel>
-                    </GridView>
                 </DataTemplate>
             </HubSection>
 
