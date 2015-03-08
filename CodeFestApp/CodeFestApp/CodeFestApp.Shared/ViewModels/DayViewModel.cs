@@ -27,8 +27,7 @@ namespace CodeFestApp.ViewModels
                             .GroupBy(x => x.Start.ToString("t"));
 
             _speakerAvatars = new ReactiveList<Uri>(_day.Lectures.SelectMany(x => x.Speakers).Select(x => x.Avatar));
-
-
+            
             NavigateToLectureCommand = ReactiveCommand.Create();
 
             this.WhenAnyObservable(x => x.NavigateToLectureCommand)

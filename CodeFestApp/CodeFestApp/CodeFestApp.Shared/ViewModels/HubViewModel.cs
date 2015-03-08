@@ -17,15 +17,20 @@ namespace CodeFestApp.ViewModels
             _viewModelFactory = viewModelFactory;
             HostScreen = screen;
             NavigateToDayCommand = ReactiveCommand.Create();
+            NavigateToTwitterFeedCommand = ReactiveCommand.Create();
 
             this.WhenAnyObservable(x => x.NavigateToDayCommand)
                 .Subscribe(x => HostScreen.Router.Navigate.Execute(x));
+
+            this.WhenAnyObservable(x => x.NavigateToTwitterFeedCommand)
+                .Subscribe(x => HostScreen.Router.Navigate.Execute(new TweetsViewModel(HostScreen)));
 
             var days = scheduleReader.GetDays();
             Days = new ReactiveList<DayViewModel>(days.Select(x => _viewModelFactory.Create<DayViewModel, Day>(x)));
         }
 
         public ReactiveCommand<object> NavigateToDayCommand { get; private set; }
+        public ReactiveCommand<object> NavigateToTwitterFeedCommand { get; private set; }
 
         public int ActiveSection { get; set; }
 

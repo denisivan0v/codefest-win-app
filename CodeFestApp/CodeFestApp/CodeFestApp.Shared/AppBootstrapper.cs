@@ -43,7 +43,8 @@ namespace CodeFestApp
                      .RegisterType<IViewFor<ItemViewModel>, ItemPage>()
                      .RegisterType<IViewFor<DayViewModel>, DayView>()
                      .RegisterType<IViewFor<LectureViewModel>, LectureView>()
-                     .RegisterType<IViewFor<SpeakerViewModel>, SpeakerView>();
+                     .RegisterType<IViewFor<SpeakerViewModel>, SpeakerView>()
+                     .RegisterType<IViewFor<TweetsViewModel>, TweetsView>();
         }
 
         private void ReadSchedule()

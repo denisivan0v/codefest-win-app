@@ -1,6 +1,17 @@
 ﻿<Page x:Class="CodeFestApp.HubView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Page.BottomAppBar>
+        <CommandBar>
+            <CommandBar.PrimaryCommands>
+                <AppBarButton Label="лента" Command="{Binding NavigateToTwitterFeedCommand}">
+                    <AppBarButton.Icon>
+                        <BitmapIcon UriSource="ms-appx:///Assets/TwitteIcon.png"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+            </CommandBar.PrimaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
     <Grid>
         <Hub Background="{ThemeResource HubBackgroundImageBrush}"
              DefaultSectionIndex="{Binding ActiveSection}"
