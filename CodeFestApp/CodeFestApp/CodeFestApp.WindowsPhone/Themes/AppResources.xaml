@@ -57,6 +57,20 @@
 
     <DataTemplate x:Key="ManyImagesTileWithTitleItemTemplate">
         <Grid>
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="TapStates">
+                    <VisualState x:Name="Pressed">
+                        <Storyboard>
+                            <PointerDownThemeAnimation />
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Normal">
+                        <Storyboard>
+                            <PointerUpThemeAnimation />
+                        </Storyboard>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>

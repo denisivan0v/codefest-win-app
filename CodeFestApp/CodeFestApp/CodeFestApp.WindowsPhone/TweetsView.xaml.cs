@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive.Linq;
 
 using CodeFestApp.ViewModels;
 
@@ -13,7 +14,16 @@ namespace CodeFestApp
             InitializeComponent();
 
             this.WhenAnyValue(x => x.ViewModel)
-                .Subscribe(x => DataContext = x);
+                .Subscribe(x =>
+                    {
+                        if (x == null)
+                        {
+                            return;
+                        }
+
+                        DataContext = x;
+                        ViewModel.SearchForTweetsCommand.ExecuteAsyncTask();
+                    });
         }
 
         object IViewFor.ViewModel

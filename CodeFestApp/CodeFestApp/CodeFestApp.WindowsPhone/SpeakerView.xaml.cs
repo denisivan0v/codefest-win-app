@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Threading.Tasks;
 
 using CodeFestApp.ViewModels;
 
 using ReactiveUI;
-
-using Windows.UI.ViewManagement;
 
 namespace CodeFestApp
 {
@@ -14,7 +11,6 @@ namespace CodeFestApp
         public SpeakerView()
         {
             InitializeComponent();
-            HideStatusBar();
             
             this.WhenAnyValue(x => x.ViewModel)
                 .Subscribe(x => DataContext = x);
@@ -27,11 +23,5 @@ namespace CodeFestApp
         }
 
         public SpeakerViewModel ViewModel { get; set; }
-
-        private static async void HideStatusBar()
-        {
-            var statusBar = StatusBar.GetForCurrentView();
-            await statusBar.HideAsync();
-        }
     }
 }

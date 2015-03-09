@@ -1,4 +1,6 @@
-﻿namespace CodeFestApp.DataModel
+﻿using System;
+
+namespace CodeFestApp.DataModel
 {
     public class Tweet
     {
@@ -7,5 +9,6 @@
         public string Image { get; set; }
         public string Text { get; set; }
         public string PublicationDate { get; set; } 
+        public DateTime CreatedAt { get; set; } 
     }
 }

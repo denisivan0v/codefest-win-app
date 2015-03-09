@@ -9,25 +9,11 @@
     <Hub>
         <Hub.Header>
             <StackPanel Margin="0,30,0,0">
-                <TextBlock Text="{Binding ConferenceTitle}" 
-                               Style="{ThemeResource TitleTextBlockStyle}" />
-                <Grid Margin="0,12,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Rectangle Grid.Column="0" Width="10" Margin="5,0" >
-                        <Rectangle.Fill>
-                            <SolidColorBrush Color="{Binding Track.Color}" />
-                        </Rectangle.Fill>
-                    </Rectangle>
-                    <TextBlock Grid.Column="1" 
-                               Text="{Binding Track.Title}" 
-                               Style="{ThemeResource TitleTextBlockStyle}" />
-                </Grid>
-                <TextBlock Text="{Binding Title}" 
-                               Style="{ThemeResource HeaderTextBlockStyle}" 
-                               CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
+                <TextBlock Text="{Binding ConferenceTitle}"
+                           Style="{ThemeResource TitleTextBlockStyle}" />
+                <TextBlock Text="{Binding Title}"
+                           Style="{ThemeResource HeaderTextBlockStyle}"
+                           CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
             </StackPanel>
         </Hub.Header>
         <HubSection>
@@ -50,18 +36,32 @@
                                    FontSize="16" 
                                    TextWrapping="WrapWholeWords"/>
                     </ScrollViewer>
-                    <ListView Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2"
-                              ItemsSource="{Binding Speakers}"
-                              IsItemClickEnabled="True"
-                              ItemClick="SpeakersListView_OnItemClick">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <userControls:ProfileControl ShowDescription="False" 
-                                                             Height="100"
-                                                             Margin="20,15" />
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
+                    <StackPanel Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2"
+                                Margin="20,15">
+                        <ListView ItemsSource="{Binding Speakers}"
+                                  IsItemClickEnabled="True"
+                                  ItemClick="SpeakersListView_OnItemClick"> 
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <userControls:ProfileControl ShowDescription="False" Height="100" />
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        <Grid Margin="0,12,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Rectangle Grid.Column="0" Width="10" Margin="5,0" >
+                                <Rectangle.Fill>
+                                    <SolidColorBrush Color="{Binding Track.Color}" />
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <TextBlock Grid.Column="1" 
+                                                       Text="{Binding Track.Title}" 
+                                                       Style="{ThemeResource TitleTextBlockStyle}" />
+                        </Grid>
+                    </StackPanel>
                 </Grid>
             </DataTemplate>
         </HubSection>

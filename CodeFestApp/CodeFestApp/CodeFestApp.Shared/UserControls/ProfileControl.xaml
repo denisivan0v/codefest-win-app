@@ -22,12 +22,12 @@
             <VisualStateGroup x:Name="TapStates">                
                 <VisualState x:Name="Pressed">
                     <Storyboard>
-                        <PointerDownThemeAnimation TargetName="innerGrid" />
+                        <PointerDownThemeAnimation />
                     </Storyboard>
                 </VisualState>
                 <VisualState x:Name="Normal">
                     <Storyboard>
-                        <PointerUpThemeAnimation TargetName="innerGrid" />
+                        <PointerUpThemeAnimation />
                     </Storyboard>
                 </VisualState>
             </VisualStateGroup>
