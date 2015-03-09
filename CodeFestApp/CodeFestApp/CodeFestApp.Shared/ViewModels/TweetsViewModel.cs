@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
@@ -18,8 +20,8 @@ namespace CodeFestApp.ViewModels
             HostScreen = hostScreen;
             this.WhenNavigatedTo(() =>
                 {
-                    var result = SearchForTweets("codefestru", 5);
-                    result.Wait();
+                    var result = SearchForTweets("codefestru", "#codefest");
+                        result.Wait();
 
                     Tweets = result.Result;
 
@@ -41,10 +43,8 @@ namespace CodeFestApp.ViewModels
 
         public IScreen HostScreen { get; private set; }
 
-        private static async Task<ReactiveList<Tweet>> SearchForTweets(string term, int count)
+        private static async Task<ReactiveList<Tweet>> SearchForTweets(string term1, string term2)
         {
-            var result = new ReactiveList<Tweet>();
-
             var auth = new SingleUserAuthorizer
             {
                 
@@ -52,51 +52,35 @@ namespace CodeFestApp.ViewModels
 
             await auth.AuthorizeAsync();
 
-            var twitterContext = new TwitterContext(auth);
-            
-            var searchResponse = await (from search in twitterContext.Search
-                                        where search.Type == SearchType.Search &&
-                                              search.Query == term &&
-                                              search.Count == count
-                                        select search).SingleOrDefaultAsync();
-             
-            if (searchResponse != null && searchResponse.Statuses != null)
+            var tweets = new Collection<Tweet>();
+            PerformSearch(auth, term1, tweets);
+            PerformSearch(auth, term2, tweets);
+
+            return new ReactiveList<Tweet>(tweets.OrderByDescending(x => x.PublicationDate));
+        }
+
+        private static void PerformSearch(IAuthorizer authorizer, string term, ICollection<Tweet> tweets)
+        {
+            var result1 = (from search in new TwitterContext(authorizer).Search
+                           where search.Type == SearchType.Search &&
+                                 search.SearchLanguage == "ru" &&
+                                 search.Query == term
+                           select search).SingleOrDefault();
+
+            if (result1 != null && result1.Statuses != null)
             {
-                foreach (var tweet in searchResponse.Statuses)
+                foreach (var tweet in result1.Statuses)
                 {
-                    result.Add(new Tweet
+                    tweets.Add(new Tweet
                         {
                             Text = tweet.Text,
                             ScreenName = tweet.User.Name,
-                            UserName = "@" + tweet.ScreenName,
+                            UserName = !string.IsNullOrEmpty(tweet.ScreenName) ? "@" + tweet.ScreenName : null,
                             PublicationDate = GetElapsedPeriod(tweet.CreatedAt),
                             Image = tweet.User.ProfileImageUrl
                         });
                 }
             }
-
-            /*
-            var tweets = (from status in twitterContext.Status
-                          where status.ScreenName == term &&
-                                status.Type == StatusType.User
-                          select status)
-                .Take(count)
-                .ToArray();
-
-            foreach (var tweet in tweets)
-            {
-                result.Add(new Tweet
-                {
-                    Text = tweet.Text,
-                    ScreenName = tweet.User.Name,
-                    UserName = "@" + tweet.ScreenName,
-                    PublicationDate = GetElapsedPeriod(tweet.CreatedAt),
-                    Image = tweet.User.ProfileImageUrl
-                });
-            }
-             */
-
-            return result;
         }
 
         // For reference http://www.dotnetperls.com/pretty-date"
