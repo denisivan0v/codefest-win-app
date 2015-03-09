@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reactive.Disposables;
 using System.Threading.Tasks;
 
 using CodeFestApp.DataModel;
@@ -15,26 +14,27 @@ namespace CodeFestApp.ViewModels
 {
     public class TweetsViewModel : ReactiveObject, IRoutableViewModel
     {
+        private readonly ObservableAsPropertyHelper<ReactiveList<Tweet>> _tweets;
+
         public TweetsViewModel(IScreen hostScreen)
         {
             HostScreen = hostScreen;
-            this.WhenNavigatedTo(() =>
-                {
-                    var result = SearchForTweets("codefestru", "#codefest");
-                        result.Wait();
 
-                    Tweets = result.Result;
-
-                    return Disposable.Empty;
-                });
+            SearchForTweetsCommand = ReactiveCommand.CreateAsyncTask(_ => SearchForTweets("codefestru", "#codefest"));
+            _tweets = SearchForTweetsCommand.ToProperty(this, x => x.Tweets);
         }
 
         public string Title
         {
-            get { return "twitter лента"; }
+            get { return "твиттер-лента"; }
         }
 
-        public ReactiveList<Tweet> Tweets { get; private set; }
+        public ReactiveList<Tweet> Tweets
+        {
+            get { return _tweets.Value; }
+        }
+
+        public ReactiveCommand<ReactiveList<Tweet>> SearchForTweetsCommand { get; private set; }
 
         public string UrlPathSegment
         {
@@ -46,9 +46,9 @@ namespace CodeFestApp.ViewModels
         private static async Task<ReactiveList<Tweet>> SearchForTweets(string term1, string term2)
         {
             var auth = new SingleUserAuthorizer
-            {
-                
-            };
+                {
+                    
+                };
 
             await auth.AuthorizeAsync();
 
