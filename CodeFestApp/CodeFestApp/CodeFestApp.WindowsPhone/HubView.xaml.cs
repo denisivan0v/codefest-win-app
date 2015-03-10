@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive.Linq;
 
 using CodeFestApp.ViewModels;
 
@@ -19,7 +20,10 @@ namespace CodeFestApp
             DisplayInformation.AutoRotationPreferences = DisplayOrientations.Portrait;
 
             this.WhenAnyValue(x => x.ViewModel)
-                .Subscribe(x => DataContext = x);
+                .BindTo(this, x => x.DataContext);
+
+            this.WhenAnyValue(x => x.ViewModel.LoadDaysCommand)
+                .Subscribe(x => x.ExecuteAsyncTask());
         }
 
         object IViewFor.ViewModel

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 using CodeFestApp.DataModel;
 using CodeFestApp.DI;
@@ -10,27 +12,33 @@ namespace CodeFestApp.ViewModels
 {
     public class HubViewModel : ReactiveObject, IRoutableViewModel
     {
-        private readonly IViewModelFactory _viewModelFactory;
+        private readonly ObservableAsPropertyHelper<IEnumerable<DayViewModel>> _days;
 
         public HubViewModel(IScreen screen, IScheduleReader scheduleReader, IViewModelFactory viewModelFactory)
         {
-            _viewModelFactory = viewModelFactory;
             HostScreen = screen;
+
             NavigateToDayCommand = ReactiveCommand.Create();
             NavigateToTwitterFeedCommand = ReactiveCommand.Create();
 
+            LoadDaysCommand = ReactiveCommand.CreateAsyncTask(_ => Task.Run(
+                () =>
+                    {
+                        var days = scheduleReader.GetDays();
+                        return days.Select(viewModelFactory.Create<DayViewModel, Day>);
+                    }));
+            _days = LoadDaysCommand.ToProperty(this, x => x.Days);
+            
             this.WhenAnyObservable(x => x.NavigateToDayCommand)
                 .Subscribe(x => HostScreen.Router.Navigate.Execute(x));
 
             this.WhenAnyObservable(x => x.NavigateToTwitterFeedCommand)
                 .Subscribe(x => HostScreen.Router.Navigate.Execute(new TweetsViewModel(HostScreen)));
-
-            var days = scheduleReader.GetDays();
-            Days = new ReactiveList<DayViewModel>(days.Select(x => _viewModelFactory.Create<DayViewModel, Day>(x)));
         }
 
         public ReactiveCommand<object> NavigateToDayCommand { get; private set; }
         public ReactiveCommand<object> NavigateToTwitterFeedCommand { get; private set; }
+        public ReactiveCommand<IEnumerable<DayViewModel>> LoadDaysCommand { get; private set; }
 
         public int ActiveSection { get; set; }
 
@@ -44,7 +52,10 @@ namespace CodeFestApp.ViewModels
             get { return "ДНИ КОНФЕРЕНЦИИ"; }
         }
 
-        public ReactiveList<DayViewModel> Days { get; private set; }
+        public IEnumerable<DayViewModel> Days
+        {
+            get { return _days.Value; }
+        }
 
         public IScreen HostScreen { get; private set; }
 

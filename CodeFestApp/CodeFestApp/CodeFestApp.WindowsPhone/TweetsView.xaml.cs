@@ -14,16 +14,11 @@ namespace CodeFestApp
             InitializeComponent();
 
             this.WhenAnyValue(x => x.ViewModel)
-                .Subscribe(x =>
-                    {
-                        if (x == null)
-                        {
-                            return;
-                        }
+                .BindTo(this, x => x.DataContext);
 
-                        DataContext = x;
-                        ViewModel.SearchForTweetsCommand.ExecuteAsyncTask();
-                    });
+            this.WhenAnyValue(x => x.ViewModel.SearchForTweetsCommand)
+                .ObserveOn(RxApp.TaskpoolScheduler)
+                .Subscribe(x => x.ExecuteAsyncTask());
         }
 
         object IViewFor.ViewModel
