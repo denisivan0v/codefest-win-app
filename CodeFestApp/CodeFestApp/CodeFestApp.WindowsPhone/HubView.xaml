@@ -1,6 +1,11 @@
 ﻿<Page x:Class="CodeFestApp.HubView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Page.Transitions>
+        <TransitionCollection>
+            <EntranceThemeTransition/>
+        </TransitionCollection>
+    </Page.Transitions>
     <Grid>
         <Hub Background="{ThemeResource HubBackgroundImageBrush}"
              DefaultSectionIndex="{Binding ActiveSection}"

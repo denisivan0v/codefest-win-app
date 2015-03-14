@@ -4,6 +4,11 @@
       xmlns:userControls="using:CodeFestApp.UserControls"
       xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
       xmlns:behaviors="using:CodeFestApp.Behaviors">
+    <Page.Transitions>
+        <TransitionCollection>
+            <EntranceThemeTransition/>
+        </TransitionCollection>
+    </Page.Transitions>
     <Grid>
         <Hub Background="{ThemeResource HubBackgroundImageBrush}">
             <Hub.Header>

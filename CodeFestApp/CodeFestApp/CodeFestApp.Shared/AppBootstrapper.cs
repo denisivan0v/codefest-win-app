@@ -27,7 +27,6 @@ namespace CodeFestApp
         }
 
         public RoutingState Router { get; private set; }
-        public bool IsLoading { get; set; }
 
         private void PerformRegister(IUnityContainer container)
         {
@@ -47,12 +46,8 @@ namespace CodeFestApp
 
         private void ReadSchedule()
         {
-            IsLoading = true;
-
             var scheduleReader = _container.Resolve<IScheduleReader>();
             scheduleReader.ReadSchedule().Wait();
-
-            IsLoading = false;
         }
 
         private void NavigateToHub()

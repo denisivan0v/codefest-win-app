@@ -1,6 +1,4 @@
-﻿using System;
-
-using CodeFestApp.ViewModels;
+﻿using CodeFestApp.ViewModels;
 
 using ReactiveUI;
 
@@ -15,9 +13,9 @@ namespace CodeFestApp
             InitializeComponent();
 
             this.WhenAnyValue(x => x.ViewModel)
-                .Subscribe(x => DataContext = x);
-        } 
-
+                .BindTo(this, x => x.DataContext);
+        }
+        
         object IViewFor.ViewModel
         {
             get { return ViewModel; }

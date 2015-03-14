@@ -34,9 +34,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)DI\UnityDependencyResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DI\UnityViewModelFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behaviors\WindowDimensionBehavior.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)UserControls\ProfileControl.xaml.cs">
       <DependentUpon>ProfileControl.xaml</DependentUpon>
     </Compile>
@@ -54,10 +51,6 @@
     <PRIResource Include="$(MSBuildThisFileDirectory)Strings\ru\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="$(MSBuildThisFileDirectory)MainWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="$(MSBuildThisFileDirectory)UserControls\ProfileControl.xaml">
       <SubType>Designer</SubType>
     </Page>
