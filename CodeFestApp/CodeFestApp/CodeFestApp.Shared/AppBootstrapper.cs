@@ -39,8 +39,6 @@ namespace CodeFestApp
                      .RegisterType<IViewModelFactory, UnityViewModelFactory>(Lifetime.Singleton)
 
                      .RegisterType<IViewFor<HubViewModel>, HubView>()
-                     .RegisterType<IViewFor<TrackViewModel>, SectionPage>()
-                     .RegisterType<IViewFor<ItemViewModel>, ItemPage>()
                      .RegisterType<IViewFor<DayViewModel>, DayView>()
                      .RegisterType<IViewFor<LectureViewModel>, LectureView>()
                      .RegisterType<IViewFor<SpeakerViewModel>, SpeakerView>()

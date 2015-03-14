@@ -1,17 +1,6 @@
 ﻿<Page x:Class="CodeFestApp.HubView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Page.BottomAppBar>
-        <CommandBar>
-            <CommandBar.PrimaryCommands>
-                <AppBarButton Label="лента" Command="{Binding NavigateToTwitterFeedCommand}">
-                    <AppBarButton.Icon>
-                        <BitmapIcon UriSource="ms-appx:///Assets/TwitteIcon.png"/>
-                    </AppBarButton.Icon>
-                </AppBarButton>
-            </CommandBar.PrimaryCommands>
-        </CommandBar>
-    </Page.BottomAppBar>
     <Grid>
         <Hub Background="{ThemeResource HubBackgroundImageBrush}"
              DefaultSectionIndex="{Binding ActiveSection}"
@@ -20,10 +9,10 @@
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock>
-							<Run Text="Code"/>
+						    <Run Text="Code"/>
                         </TextBlock>
                         <TextBlock Foreground="DarkRed">
-							<Run Text="Fest"/>
+						    <Run Text="Fest"/>
                         </TextBlock>
                     </StackPanel>
                 </DataTemplate>
@@ -45,12 +34,12 @@
                         HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}"> 
                 <DataTemplate>
                     <ListView x:Name="Sections"
-                              IsItemClickEnabled="True">
+                                IsItemClickEnabled="True">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Margin="0,0,0,27.5">
                                     <TextBlock Text="{Binding Title}" 
-                                               Style="{ThemeResource ListViewItemTextBlockStyle}" />
+                                                Style="{ThemeResource ListViewItemTextBlockStyle}" />
                                 </StackPanel>
                             </DataTemplate>
                         </ListView.ItemTemplate>
@@ -99,4 +88,15 @@
             </HubSection>
         </Hub>
     </Grid>
+    <Page.BottomAppBar>
+        <CommandBar>
+            <CommandBar.PrimaryCommands>
+                <AppBarButton Label="лента"  Command="{Binding NavigateToTwitterFeedCommand}">
+                    <AppBarButton.Icon>
+                        <BitmapIcon UriSource="{Binding TwitterIcon}"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+            </CommandBar.PrimaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
 </Page>

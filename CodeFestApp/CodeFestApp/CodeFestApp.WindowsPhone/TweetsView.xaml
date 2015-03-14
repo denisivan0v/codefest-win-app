@@ -1,9 +1,8 @@
 ﻿<Page x:Class="CodeFestApp.TweetsView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"> 
+      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Grid>
-
         <Grid.ChildrenTransitions>
             <TransitionCollection>
                 <EntranceThemeTransition/>
@@ -16,6 +15,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Margin="19,0,0,0">
+            <ProgressBar x:Name="ProgressBar" IsIndeterminate="True"/>
             <TextBlock Text="codefest 2015" 
                        Style="{ThemeResource TitleTextBlockStyle}" 
                        Margin="0,12,0,0"/>
@@ -31,7 +31,8 @@
             </Grid.RowDefinitions>
             <ListView Grid.Row="1" 
                       ItemsSource="{Binding Tweets}" 
-                      SelectionMode="None">
+                      SelectionMode="None"
+                      IsSwipeEnabled="True">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid>
@@ -65,4 +66,9 @@
             </ListView>
         </Grid>
     </Grid>
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton Icon="Refresh" Command="{Binding RefreshTweetsCommand}"></AppBarButton>
+        </CommandBar>
+    </Page.BottomAppBar>
 </Page>

@@ -23,6 +23,7 @@ namespace CodeFestApp
                 .BindTo(this, x => x.DataContext);
 
             this.WhenAnyValue(x => x.ViewModel.LoadDaysCommand)
+                .ObserveOn(RxApp.TaskpoolScheduler)
                 .Subscribe(x => x.ExecuteAsyncTask());
         }
 

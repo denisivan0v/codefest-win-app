@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 
 using CodeFestApp.DataModel;
@@ -15,13 +16,24 @@ namespace CodeFestApp.ViewModels
     public class TweetsViewModel : ReactiveObject, IRoutableViewModel
     {
         private readonly ObservableAsPropertyHelper<ReactiveList<Tweet>> _tweets;
-
+        private readonly ObservableAsPropertyHelper<bool> _isBusy;
+        
         public TweetsViewModel(IScreen hostScreen)
         {
             HostScreen = hostScreen;
 
             SearchForTweetsCommand = ReactiveCommand.CreateAsyncTask(_ => SearchForTweets("codefestru", "#codefest"));
-            _tweets = SearchForTweetsCommand.ToProperty(this, x => x.Tweets);
+            RefreshTweetsCommand = ReactiveCommand.Create();
+
+            this.WhenAnyObservable(x => x.SearchForTweetsCommand)
+                .ToProperty(this, x => x.Tweets, out _tweets);
+
+            this.WhenAnyObservable(x => x.SearchForTweetsCommand.IsExecuting)
+                .ToProperty(this, x => x.IsBusy, out _isBusy);
+
+            this.WhenAnyObservable(x => x.RefreshTweetsCommand)
+                .ObserveOn(RxApp.TaskpoolScheduler)
+                .Subscribe(x => SearchForTweetsCommand.ExecuteAsyncTask());
         }
 
         public string Title
@@ -34,7 +46,13 @@ namespace CodeFestApp.ViewModels
             get { return _tweets.Value; }
         }
 
+        public bool IsBusy
+        {
+            get { return _isBusy.Value; }
+        }
+
         public ReactiveCommand<ReactiveList<Tweet>> SearchForTweetsCommand { get; private set; }
+        public ReactiveCommand<object> RefreshTweetsCommand { get; private set; }
 
         public string UrlPathSegment
         {

@@ -3,7 +3,7 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace CodeFestApp.Helpers
+namespace CodeFestApp.Behaviors
 {
     [TypeConstraint(typeof(FrameworkElement))]
     internal class WindowDimensionBehavior : DependencyObject, IBehavior
@@ -60,8 +60,7 @@ namespace CodeFestApp.Helpers
         {
             var frameWorkElement = AssociatedObject as FrameworkElement;
 
-            // I base all the percentage calculations on shortest dimension, you can modify this depending on your layouts requirements.
-            var shortestDimension = (Window.Current.Bounds.Width <= Window.Current.Bounds.Height)
+            var shortestDimension = Window.Current.Bounds.Width < Window.Current.Bounds.Height
                                         ? Window.Current.Bounds.Width
                                         : Window.Current.Bounds.Height;
 

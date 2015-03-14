@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 
 using CodeFestApp.DataModel;
@@ -27,13 +28,15 @@ namespace CodeFestApp.ViewModels
                         var days = scheduleReader.GetDays();
                         return days.Select(viewModelFactory.Create<DayViewModel, Day>);
                     }));
-            _days = LoadDaysCommand.ToProperty(this, x => x.Days);
-            
+
             this.WhenAnyObservable(x => x.NavigateToDayCommand)
                 .Subscribe(x => HostScreen.Router.Navigate.Execute(x));
 
             this.WhenAnyObservable(x => x.NavigateToTwitterFeedCommand)
                 .Subscribe(x => HostScreen.Router.Navigate.Execute(new TweetsViewModel(HostScreen)));
+
+            this.WhenAnyObservable(x => x.LoadDaysCommand)
+                .ToProperty(this, x => x.Days, out _days);
         }
 
         public ReactiveCommand<object> NavigateToDayCommand { get; private set; }
@@ -50,6 +53,11 @@ namespace CodeFestApp.ViewModels
         public string DaysSectionTitle
         {
             get { return "ДНИ КОНФЕРЕНЦИИ"; }
+        }
+
+        public Uri TwitterIcon
+        {
+            get { return new Uri("ms-appx:///Assets/TwitterIcon.png"); }
         }
 
         public IEnumerable<DayViewModel> Days

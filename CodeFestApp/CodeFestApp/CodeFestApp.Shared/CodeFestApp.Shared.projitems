@@ -16,6 +16,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)AppBootstrapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Behaviors\ProgressBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\Company.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\Day.cs" />
@@ -23,7 +24,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\IScheduleSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\Lecture.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\Room.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DataModel\SampleDataSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\ScheduleReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\ScheduleSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\Track.cs" />
@@ -33,7 +33,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DI\Lifetime.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DI\UnityDependencyResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DI\UnityViewModelFactory.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Helpers\WindowDimensionBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Behaviors\WindowDimensionBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -44,10 +44,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\LectureViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\HubViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\DayViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ItemViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\TrackViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\TweetsViewModel.cs" />
-    <Content Include="$(MSBuildThisFileDirectory)DataModel\SampleData.json" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\TwitterIcon.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\LightGray.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\MediumGray.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\DarkGray.png" />

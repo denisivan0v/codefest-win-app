@@ -3,67 +3,66 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:userControls="using:CodeFestApp.UserControls"
       xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
-      xmlns:helpers="using:CodeFestApp.Helpers"
-      Background="{ThemeResource HubBackgroundImageBrush}">
-        
-    <Hub>
-        <Hub.Header>
-            <StackPanel Margin="0,30,0,0">
-                <TextBlock Text="{Binding ConferenceTitle}"
-                           Style="{ThemeResource TitleTextBlockStyle}" />
-                <TextBlock Text="{Binding Title}"
-                           Style="{ThemeResource HeaderTextBlockStyle}"
-                           CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
-            </StackPanel>
-        </Hub.Header>
-        <HubSection>
-            <interactivity:Interaction.Behaviors>
-                <helpers:WindowDimensionBehavior WidthPercentage="0.8" WidthMultiple="3" />
-            </interactivity:Interaction.Behaviors>
-            <DataTemplate>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <ScrollViewer Grid.Row="0" Grid.Column="0" Grid.RowSpan="2">
-                        <TextBlock Text="{Binding Description}" 
-                                   FontSize="16" 
-                                   TextWrapping="WrapWholeWords"/>
-                    </ScrollViewer>
-                    <StackPanel Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2"
-                                Margin="20,15">
-                        <ListView ItemsSource="{Binding Speakers}"
-                                  IsItemClickEnabled="True"
-                                  ItemClick="SpeakersListView_OnItemClick"> 
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <userControls:ProfileControl ShowDescription="False" Height="100" />
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                        <Grid Margin="0,12,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <Rectangle Grid.Column="0" Width="10" Margin="5,0" >
-                                <Rectangle.Fill>
-                                    <SolidColorBrush Color="{Binding Track.Color}" />
-                                </Rectangle.Fill>
-                            </Rectangle>
-                            <TextBlock Grid.Column="1" 
-                                                       Text="{Binding Track.Title}" 
-                                                       Style="{ThemeResource TitleTextBlockStyle}" />
-                        </Grid>
-                    </StackPanel>
-                </Grid>
-            </DataTemplate>
-        </HubSection>
-    </Hub>
+      xmlns:behaviors="using:CodeFestApp.Behaviors">
+    <Grid>
+        <Hub Background="{ThemeResource HubBackgroundImageBrush}">
+            <Hub.Header>
+                <StackPanel Margin="0,30,0,0">
+                    <TextBlock Text="{Binding ConferenceTitle}"
+                               Style="{ThemeResource TitleTextBlockStyle}" />
+                    <TextBlock Text="{Binding Title}"
+                               Style="{ThemeResource HeaderTextBlockStyle}"
+                               CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
+                </StackPanel>
+            </Hub.Header>
+            <HubSection>
+                <interactivity:Interaction.Behaviors>
+                    <behaviors:WindowDimensionBehavior WidthPercentage="0.9" WidthMultiple="3" />
+                </interactivity:Interaction.Behaviors>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <ScrollViewer Grid.Row="0" Grid.Column="0" Grid.RowSpan="2">
+                            <TextBlock Text="{Binding Description}" 
+                                       FontSize="16" 
+                                       TextWrapping="WrapWholeWords"/>
+                        </ScrollViewer>
+                        <StackPanel Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2"
+                                    Margin="20,15">
+                            <ListView ItemsSource="{Binding Speakers}"
+                                      IsItemClickEnabled="True"
+                                      ItemClick="SpeakersListView_OnItemClick"> 
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <userControls:ProfileControl ShowDescription="False" Height="100" />
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                            <Grid Margin="0,12,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Rectangle Grid.Column="0" Width="10" Margin="9,0" >
+                                    <Rectangle.Fill>
+                                        <SolidColorBrush Color="{Binding Track.Color}" />
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                                <TextBlock Grid.Column="1" Text="{Binding Track.Title}" 
+                                                           Style="{ThemeResource TitleTextBlockStyle}" />
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </HubSection>
+        </Hub>
+    </Grid>
 </Page>

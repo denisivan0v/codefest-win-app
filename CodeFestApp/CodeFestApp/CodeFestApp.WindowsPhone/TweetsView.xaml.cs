@@ -5,6 +5,8 @@ using CodeFestApp.ViewModels;
 
 using ReactiveUI;
 
+using Windows.UI.Xaml;
+
 namespace CodeFestApp
 {
     public sealed partial class TweetsView : IViewFor<TweetsViewModel>
@@ -19,6 +21,12 @@ namespace CodeFestApp
             this.WhenAnyValue(x => x.ViewModel.SearchForTweetsCommand)
                 .ObserveOn(RxApp.TaskpoolScheduler)
                 .Subscribe(x => x.ExecuteAsyncTask());
+
+            this.WhenAnyValue(x => x.ViewModel.IsBusy)
+                .Subscribe(x =>
+                    {
+                        ProgressBar.Visibility = x ? Visibility.Visible : Visibility.Collapsed;
+                    });
         }
 
         object IViewFor.ViewModel
