@@ -10,5 +10,6 @@ namespace CodeFestApp.DataModel
         IEnumerable<Day> GetDays();
         IEnumerable<Lecture> GetCurrentLectures();
         IEnumerable<Speaker> GetSpeakers();
+        IEnumerable<Track> GetTracks();
     }
 }

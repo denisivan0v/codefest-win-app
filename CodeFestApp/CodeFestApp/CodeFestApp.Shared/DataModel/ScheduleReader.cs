@@ -122,6 +122,11 @@ namespace CodeFestApp.DataModel
             return _speakers;
         }
 
+        public IEnumerable<Track> GetTracks()
+        {
+            return _tracks;
+        }
+
         private static Uri CreateUri(string value)
         {
             return !string.IsNullOrEmpty(value) ? new Uri(value) : null;

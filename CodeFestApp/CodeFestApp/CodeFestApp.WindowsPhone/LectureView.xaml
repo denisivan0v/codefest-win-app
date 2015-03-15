@@ -51,19 +51,9 @@
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>
-                            <Grid Margin="0,12,0,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <Rectangle Grid.Column="0" Width="10" Margin="9,0" >
-                                    <Rectangle.Fill>
-                                        <SolidColorBrush Color="{Binding Track.Color}" />
-                                    </Rectangle.Fill>
-                                </Rectangle>
-                                <TextBlock Grid.Column="1" Text="{Binding Track.Title}" 
-                                                           Style="{ThemeResource TitleTextBlockStyle}" />
-                            </Grid>
+                            <ContentControl ContentTemplate="{StaticResource TrackItemDataTemplate}"
+                                            DataContext="{Binding Track}"
+                                            Margin="0,12,0,0"/>
                         </StackPanel>
                     </Grid>
                 </DataTemplate>

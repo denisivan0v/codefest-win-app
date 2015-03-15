@@ -55,50 +55,6 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="ManyImagesTileWithTitleItemTemplate">
-        <Grid>
-            <VisualStateManager.VisualStateGroups>
-                <VisualStateGroup x:Name="TapStates">
-                    <VisualState x:Name="Pressed">
-                        <Storyboard>
-                            <PointerDownThemeAnimation />
-                        </Storyboard>
-                    </VisualState>
-                    <VisualState x:Name="Normal">
-                        <Storyboard>
-                            <PointerUpThemeAnimation />
-                        </Storyboard>
-                    </VisualState>
-                </VisualStateGroup>
-            </VisualStateManager.VisualStateGroups>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <GridView ItemsSource="{Binding SpeakerAvatars}"
-                      Grid.Column="0" 
-                      Margin="0 14.5"
-                      HorizontalAlignment="Left"
-                      Height="120" Width="120">
-                <GridView.ItemTemplate>
-                    <DataTemplate>
-                        <Image Source="{Binding}"
-                               Stretch="UniformToFill"/>
-                    </DataTemplate>
-                </GridView.ItemTemplate>
-                <GridView.ItemContainerStyle>
-                    <Style TargetType="GridViewItem">
-                        <Setter Property="Width" Value="30" />
-                        <Setter Property="Height" Value="30" />
-                    </Style>
-                </GridView.ItemContainerStyle>
-            </GridView>
-            <TextBlock Text="{Binding Title}" 
-                       Grid.Column="1" Margin="14.5,0,0,0"
-                       Style="{ThemeResource ListViewItemTextBlockStyle}"/>
-        </Grid>
-    </DataTemplate>
-
     <DataTemplate x:Key="StandardDoubleLineItemTemplate">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -142,5 +98,68 @@
                            VerticalAlignment="Bottom"/>
             </Border>
         </Border>
+    </DataTemplate>
+
+    <DataTemplate x:Key="ManyImagesTileWithTitleItemTemplate">
+        <Grid>
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="TapStates">
+                    <VisualState x:Name="Pressed">
+                        <Storyboard>
+                            <PointerDownThemeAnimation />
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Normal">
+                        <Storyboard>
+                            <PointerUpThemeAnimation />
+                        </Storyboard>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <GridView ItemsSource="{Binding SpeakerAvatars}"
+                      Grid.Column="0" 
+                      Margin="0 14.5"
+                      HorizontalAlignment="Left"
+                      Height="120" Width="120">
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                        <Image Source="{Binding}"
+                               Stretch="UniformToFill"/>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+                <GridView.ItemContainerStyle>
+                    <Style TargetType="GridViewItem">
+                        <Setter Property="Width" Value="30" />
+                        <Setter Property="Height" Value="30" />
+                    </Style>
+                </GridView.ItemContainerStyle>
+            </GridView>
+            <TextBlock Text="{Binding Title}" 
+                       Grid.Column="1" Margin="14.5,0,0,0"
+                       Style="{ThemeResource ListViewItemTextBlockStyle}"/>
+        </Grid>
+    </DataTemplate>
+    
+    <DataTemplate x:Name="TrackItemDataTemplate">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Rectangle Grid.Column="0" Width="10" Height="30" >
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="{Binding Color}" />
+                </Rectangle.Fill>
+            </Rectangle>
+            <TextBlock Grid.Column="1" 
+                       Text="{Binding Title}" 
+                       VerticalAlignment="Center"
+                       Margin="9.5,0"
+                       Style="{ThemeResource TitleTextBlockStyle}" />
+        </Grid>
     </DataTemplate>
 </ResourceDictionary>

@@ -68,7 +68,7 @@ namespace CodeFestApp.ViewModels
 
         public string UrlPathSegment
         {
-            get { return "item"; }
+            get { return "speaker"; }
         }
 
         public IScreen HostScreen { get; private set; }

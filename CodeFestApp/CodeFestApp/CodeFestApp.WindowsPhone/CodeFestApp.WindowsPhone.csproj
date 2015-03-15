@@ -80,6 +80,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="TrackView.xaml.cs">
+      <DependentUpon>TrackView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SpeakerView.xaml.cs">
       <DependentUpon>SpeakerView.xaml</DependentUpon>
     </Compile>
@@ -112,6 +115,10 @@
     <Content Include="Assets\HubBackground.theme-dark.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="TrackView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="SpeakerView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

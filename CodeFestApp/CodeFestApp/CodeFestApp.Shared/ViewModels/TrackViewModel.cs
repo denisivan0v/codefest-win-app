@@ -43,13 +43,14 @@ namespace CodeFestApp.ViewModels
             {
                 return _track.Lectures
                              .Select(x => _viewModelFactory.Create<LectureViewModel, Lecture>(x))
-                             .GroupBy(x => x.Start.ToString("t"));
+                             .OrderBy(x => x.Start)
+                             .GroupBy(x => x.Start.ToString("f"));
             }
         }
 
         public string UrlPathSegment
         {
-            get { return "section"; }
+            get { return "track"; }
         }
 
         public IScreen HostScreen { get; private set; }

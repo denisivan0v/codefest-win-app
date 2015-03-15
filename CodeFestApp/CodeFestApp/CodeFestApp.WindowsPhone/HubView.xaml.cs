@@ -25,6 +25,10 @@ namespace CodeFestApp
             this.WhenAnyValue(x => x.ViewModel.LoadDaysCommand)
                 .ObserveOn(RxApp.TaskpoolScheduler)
                 .Subscribe(x => x.ExecuteAsyncTask());
+
+            this.WhenAnyValue(x => x.ViewModel.LoadTracksCommand)
+                .ObserveOn(RxApp.TaskpoolScheduler)
+                .Subscribe(x => x.ExecuteAsyncTask());
         }
 
         object IViewFor.ViewModel
@@ -38,6 +42,11 @@ namespace CodeFestApp
         private void DaysGrid_OnItemClick(object sender, ItemClickEventArgs e)
         {
             ViewModel.NavigateToDayCommand.Execute(e.ClickedItem);
+        }
+
+        private void TracksListView_OnItemClick(object sender, ItemClickEventArgs e)
+        {
+            ViewModel.NavigateToTrackCommand.Execute(e.ClickedItem);
         }
 
         private void Hub_OnSectionsInViewChanged(object sender, SectionsInViewChangedEventArgs e)

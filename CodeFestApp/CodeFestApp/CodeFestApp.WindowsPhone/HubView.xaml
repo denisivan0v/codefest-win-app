@@ -1,12 +1,12 @@
 ﻿<Page x:Class="CodeFestApp.HubView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Page.Transitions>
-        <TransitionCollection>
-            <EntranceThemeTransition/>
-        </TransitionCollection>
-    </Page.Transitions>
     <Grid>
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
         <Hub Background="{ThemeResource HubBackgroundImageBrush}"
              DefaultSectionIndex="{Binding ActiveSection}"
              SectionsInViewChanged="Hub_OnSectionsInViewChanged">
@@ -35,6 +35,18 @@
                 </DataTemplate>
             </HubSection>
 
+            <HubSection Width="Auto"
+                        Header="{Binding TracksSectionTitle}"
+                        HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
+                <DataTemplate>
+                    <ListView Margin="0,9.5,0,0"
+                              ItemsSource="{Binding Tracks}"
+                              ItemTemplate="{StaticResource TrackItemDataTemplate}"
+                              IsItemClickEnabled="True"
+                              ItemClick="TracksListView_OnItemClick"/>
+                </DataTemplate>
+            </HubSection>
+
             <HubSection Header="{Binding CurrentLecturesSectionTitle}" 
                         HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}"> 
                 <DataTemplate>
@@ -44,50 +56,10 @@
                             <DataTemplate>
                                 <StackPanel Margin="0,0,0,27.5">
                                     <TextBlock Text="{Binding Title}" 
-                                                Style="{ThemeResource ListViewItemTextBlockStyle}" />
+                                               Style="{ThemeResource ListViewItemTextBlockStyle}" />
                                 </StackPanel>
                             </DataTemplate>
                         </ListView.ItemTemplate>
-                    </ListView>
-                </DataTemplate>
-            </HubSection>
-
-            <HubSection Header="SECTION 3"
-                        HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
-                <DataTemplate>
-                    <ListView 
-                        SelectionMode="None"
-                        IsItemClickEnabled="True"
-                        ItemTemplate="{StaticResource StandardTripleLineItemTemplate}">
-                    </ListView>
-                </DataTemplate>
-            </HubSection>
-
-            <HubSection Header="SECTION 4"
-                        HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
-                <DataTemplate>
-                    <ListView 
-                        SelectionMode="None"
-                        IsItemClickEnabled="True">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Margin="0,0,0,19">
-                                    <TextBlock Text="{Binding Title}" Style="{ThemeResource ListViewItemTextBlockStyle}"/>
-                                    <TextBlock Text="{Binding Subtitle}" Style="{ThemeResource ListViewItemSubheaderTextBlockStyle}"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </DataTemplate>
-            </HubSection>
-
-            <HubSection Header="SECTION 5"
-                        HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
-                <DataTemplate>
-                    <ListView 
-                        SelectionMode="None"
-                        IsItemClickEnabled="True"
-                        ItemTemplate="{StaticResource StandardDoubleLineItemTemplate}">
                     </ListView>
                 </DataTemplate>
             </HubSection>

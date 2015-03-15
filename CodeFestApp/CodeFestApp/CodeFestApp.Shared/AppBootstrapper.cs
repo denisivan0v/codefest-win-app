@@ -39,6 +39,7 @@ namespace CodeFestApp
 
                      .RegisterType<IViewFor<HubViewModel>, HubView>()
                      .RegisterType<IViewFor<DayViewModel>, DayView>()
+                     .RegisterType<IViewFor<TrackViewModel>, TrackView>()
                      .RegisterType<IViewFor<LectureViewModel>, LectureView>()
                      .RegisterType<IViewFor<SpeakerViewModel>, SpeakerView>()
                      .RegisterType<IViewFor<TweetsViewModel>, TweetsView>();
