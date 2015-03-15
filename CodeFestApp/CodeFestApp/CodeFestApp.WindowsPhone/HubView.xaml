@@ -34,8 +34,7 @@
             <HubSection Header="{Binding DaysSectionTitle}"
                         HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
                 <DataTemplate>
-                    <ListView Margin="0,9.5,0,0"
-                              ItemsSource="{Binding Days}"
+                    <ListView ItemsSource="{Binding Days}"
                               ItemTemplate="{StaticResource ManyImagesTileWithTitleItemTemplate}"
                               IsItemClickEnabled="True"
                               ItemClick="DaysGridView_OnItemClick"/>
@@ -45,9 +44,8 @@
             <HubSection Header="{Binding TracksSectionTitle}"
                         HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
                 <DataTemplate>
-                    <ListView Margin="0,9.5,0,0"
-                              ItemsSource="{Binding Tracks}"
-                              ItemTemplate="{StaticResource TrackItemDataTemplate}"
+                    <ListView ItemsSource="{Binding Tracks}"
+                              ItemTemplate="{StaticResource LargeTextTrackItemTemplate}"
                               IsItemClickEnabled="True"
                               ItemClick="TracksListView_OnItemClick"/>
                 </DataTemplate>
@@ -70,7 +68,7 @@
                                 </interactivity:Interaction.Behaviors>
                                 <ListView.GroupStyle>
                                     <GroupStyle HidesIfEmpty="True" 
-                                                HeaderTemplate="{StaticResource GroupHeaderTemplate}"/>
+                                                HeaderTemplate="{StaticResource LargeTextGroupHeaderTemplate}"/>
                                 </ListView.GroupStyle>
                             </ListView>
                         </SemanticZoom.ZoomedInView>

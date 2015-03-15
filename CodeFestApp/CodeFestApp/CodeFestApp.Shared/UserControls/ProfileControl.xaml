@@ -41,7 +41,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Image Source="{Binding Avatar}" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" VerticalAlignment="Top"/>
+            <Image Source="{Binding Avatar}" Stretch="Uniform" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" VerticalAlignment="Top"/>
             <StackPanel Grid.Row="0" Grid.Column="1" Margin="12,0,0,0" Grid.RowSpan="2">
                 <TextBlock Text="{Binding Title}" TextLineBounds="Tight" Style="{StaticResource SubheaderTextBlockStyle}"/>
                 <TextBlock Text="{Binding Company}" Style="{StaticResource ListViewItemSubheaderTextBlockStyle}"/>

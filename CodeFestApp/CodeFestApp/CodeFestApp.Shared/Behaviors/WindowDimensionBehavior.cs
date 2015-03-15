@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xaml.Interactivity;
 
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 
 namespace CodeFestApp.Behaviors
 {
@@ -24,12 +23,12 @@ namespace CodeFestApp.Behaviors
 
         public void Attach(DependencyObject associatedObject)
         {
-            AssociatedObject = associatedObject as FrameworkElement;
+            AssociatedObject = associatedObject;
 
-            var control = AssociatedObject as Control;
-            if (control != null)
+            var frameworkElement = AssociatedObject as FrameworkElement;
+            if (frameworkElement != null)
             {
-                control.Loaded += TypedObject_Loaded;
+                frameworkElement.Loaded += TypedObject_Loaded;
             }
 
             Window.Current.SizeChanged += Current_SizeChanged;
@@ -37,10 +36,10 @@ namespace CodeFestApp.Behaviors
 
         public void Detach()
         {
-            var control = AssociatedObject as Control;
-            if (control != null)
+            var frameworkElement = AssociatedObject as FrameworkElement;
+            if (frameworkElement != null)
             {
-                control.Loaded -= TypedObject_Loaded;
+                frameworkElement.Loaded -= TypedObject_Loaded;
             }
 
             Window.Current.SizeChanged -= Current_SizeChanged;

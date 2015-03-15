@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 
 using CodeFestApp.DataModel;
@@ -26,9 +27,14 @@ namespace CodeFestApp.ViewModels
                 .Subscribe(x => HostScreen.Router.Navigate.Execute(x));
         }
 
+        public string ConferenceTitle 
+        {
+            get { return "codefest 2015"; }
+        }
+
         public string Title
         {
-            get { return _track.Title; }
+            get { return string.Format("{0}, {1}", _track.Title, _track.Room.Title); }
         }
 
         public string Color

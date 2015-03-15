@@ -51,7 +51,7 @@
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>
-                            <ContentControl ContentTemplate="{StaticResource TrackItemDataTemplate}"
+                            <ContentControl ContentTemplate="{StaticResource SmallTextTrackItemTemplate}"
                                             DataContext="{Binding Track}"
                                             Margin="0,12,0,0"/>
                         </StackPanel>

@@ -7,15 +7,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Themes/AppResources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <x:Double x:Key="largeCellHeightPercent">0.392</x:Double>
-            <x:Double x:Key="largeCellWidthPercent">0.392</x:Double>
-
-
-            <x:Double x:Key="mediumCellHeightPercent">0.205</x:Double>
-            <x:Double x:Key="mediumCellWidthPercent">0.205</x:Double>
-
-            <x:Double x:Key="smallCellHeightPercent">0.138</x:Double>
-            <x:Double x:Key="smallCellWidthPercent">0.138</x:Double>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

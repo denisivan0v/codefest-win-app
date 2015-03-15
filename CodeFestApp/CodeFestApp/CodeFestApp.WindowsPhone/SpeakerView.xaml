@@ -30,13 +30,13 @@
                        Margin="0,-6.5,0,26.5" 
                        CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
         </StackPanel>
-        <ScrollViewer Grid.Row="1">
-            <StackPanel>
+        <ScrollViewer Grid.Row="1" Margin="9.5,0">
+            <StackPanel Margin="5,0">
                 <userControls:ProfileControl />
                 <ListView ItemsSource="{Binding Source={StaticResource LecturesSource}}"
                           Margin="0,10">
                     <ListView.GroupStyle>
-                        <GroupStyle HidesIfEmpty="True" HeaderTemplate="{StaticResource GroupHeaderTemplate}"/>
+                        <GroupStyle HidesIfEmpty="True" HeaderTemplate="{StaticResource SmallTextGroupHeaderTemplate}"/>
                     </ListView.GroupStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate>
@@ -45,14 +45,14 @@
                                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <Rectangle Grid.Column="0" Width="10" Margin="5,0,10,0" >
+                                <Rectangle Grid.Column="0" Width="10" Margin="0,0,10,0">
                                     <Rectangle.Fill>
                                         <SolidColorBrush Color="{Binding Track.Color}" />
                                     </Rectangle.Fill>
                                 </Rectangle>
                                 <TextBlock Grid.Column="1"
-                                       Text="{Binding Title}" 
-                                       Style="{ThemeResource ListViewItemTextBlockStyle}" />
+                                           Text="{Binding Title}" 
+                                           Style="{ThemeResource ListViewItemTextBlockStyle}" />
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>

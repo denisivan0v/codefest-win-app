@@ -34,6 +34,11 @@ namespace CodeFestApp.ViewModels
                 .Subscribe(x => HostScreen.Router.Navigate.Execute(x));
         }
 
+        public string ConferenceTitle
+        {
+            get { return "codefest 2015"; }
+        }
+
         public string Title
         {
             get { return _day.Title; }

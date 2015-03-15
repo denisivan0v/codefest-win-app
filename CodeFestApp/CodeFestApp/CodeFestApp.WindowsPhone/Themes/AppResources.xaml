@@ -13,6 +13,15 @@
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
 
+    <x:Double x:Key="LargeCellHeightPercent">0.392</x:Double>
+    <x:Double x:Key="LargeCellWidthPercent">0.392</x:Double>
+
+    <x:Double x:Key="MediumCellHeightPercent">0.205</x:Double>
+    <x:Double x:Key="MediumCellWidthPercent">0.205</x:Double>
+
+    <x:Double x:Key="SmallCellHeightPercent">0.138</x:Double>
+    <x:Double x:Key="SmallCellWidthPercent">0.138</x:Double>
+    
     <JumpListItemBackgroundConverter x:Key="BackgroundConverter"/>
     <JumpListItemForegroundConverter x:Key="ForegroundConverter"/>
 
@@ -20,85 +29,66 @@
         <TextBlock Margin="0,0,0,-9.5" Text="{Binding}"/>
     </DataTemplate>
 
-    <!-- Grid-appropriate item template as seen in section 2 -->
-    <DataTemplate x:Key="Standard200x180TileItemTemplate">
-        <Grid Margin="0,0,9.5,9.5" Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}">
-            <Image Source="{Binding ImagePath}" 
-                           Stretch="UniformToFill" 
-                           AutomationProperties.Name="{Binding Title}" 
-                           Height="138.5" Width="138.5"/>
-            <TextBlock Text="{Binding Title}" 
-                               VerticalAlignment="Bottom" 
-                               Margin="9.5,0,0,6.5" 
-                               Style="{ThemeResource BaseTextBlockStyle}"/>
-        </Grid>
-    </DataTemplate>
-
-    <DataTemplate x:Key="StandardTripleLineItemTemplate">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" 
-                            Margin="0,9.5,0,0" 
-                            Grid.Column="0" 
-                            HorizontalAlignment="Left">
-                <Image Source="{Binding ImagePath}" 
-                               Stretch="UniformToFill" 
-                               AutomationProperties.Name="{Binding Title}" 
-                               Height="79" Width="79"/>
-            </Border>
-            <StackPanel Grid.Column="1" Margin="14.5,0,0,0">
-                <TextBlock Text="{Binding Title}" Style="{ThemeResource ListViewItemTextBlockStyle}"/>
-                <TextBlock Text="{Binding Description}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" Foreground="{ThemeResource PhoneMidBrush}" />
-                <TextBlock Text="{Binding Subtitle}" Style="{ThemeResource ListViewItemSubheaderTextBlockStyle}" />
+    <DataTemplate x:Key="SmallTextUnborderedGroupHeaderTemplate">
+        <Border Background="Transparent" Padding="0,9.5">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="//"
+                           Foreground="{StaticResource PhoneAccentBrush}" 
+                           FontSize="16"
+                           Padding="4,0"
+                           FontFamily="{StaticResource PhoneFontFamilySemiLight}"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding Key}" 
+                           Foreground="{StaticResource PhoneAccentBrush}" 
+                           FontSize="16"
+                           Padding="4,0"
+                           FontFamily="{StaticResource PhoneFontFamilySemiLight}"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
             </StackPanel>
-        </Grid>
+        </Border>
     </DataTemplate>
-
-    <DataTemplate x:Key="StandardDoubleLineItemTemplate">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" 
-                            Margin="0,9.5,0,0" 
-                            Grid.Column="0" 
-                            HorizontalAlignment="Left">
-                <Image Source="{Binding ImagePath}" 
-                               Stretch="UniformToFill" 
-                               AutomationProperties.Name="{Binding Title}" 
-                               Height="79" Width="79"/>
-            </Border>
-            <StackPanel Grid.Column="1" Margin="14.5,0,0,0">
-                <TextBlock Text="{Binding Title}" Style="{ThemeResource ListViewItemTextBlockStyle}"/>
-                <TextBlock Text="{Binding Subtitle}" Style="{ThemeResource ListViewItemSubheaderTextBlockStyle}"/>
-            </StackPanel>
-        </Grid>
-    </DataTemplate>
-
-    <DataTemplate x:Key="GroupHeaderTemplate">
-        <Border Background="Transparent" Padding="5" >
+    
+    <DataTemplate x:Key="SmallTextGroupHeaderTemplate">
+        <Border Background="Transparent" Padding="0,9.5">
             <Border Background="Transparent" 
                     BorderBrush="{StaticResource PhoneAccentBrush}" 
                     BorderThickness="2"	
                     Margin="0,0,18,0"  
                     HorizontalAlignment="Stretch">
                 <interactivity:Interaction.Behaviors>
-                    <behaviors:WindowDimensionBehavior WidthPercentage="{StaticResource smallCellWidthPercent}"
-                                                       HeightPercentage="{StaticResource smallCellHeightPercent}"/>
+                    <behaviors:WindowDimensionBehavior WidthPercentage="{StaticResource MediumCellWidthPercent}"/>
+                </interactivity:Interaction.Behaviors>
+                <TextBlock Text="{Binding Key}" 
+                           Foreground="{StaticResource PhoneAccentBrush}" 
+                           FontSize="30"
+                           Padding="18,0"
+                           FontFamily="{StaticResource PhoneFontFamilySemiLight}"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
+            </Border>
+        </Border>
+    </DataTemplate>
+
+    <DataTemplate x:Key="LargeTextGroupHeaderTemplate">
+        <Border Background="Transparent" Padding="0,9.5">
+            <Border Background="Transparent" 
+                    BorderBrush="{StaticResource PhoneAccentBrush}" 
+                    BorderThickness="2"	
+                    Margin="0,0,18,0"  
+                    HorizontalAlignment="Stretch">
+                <interactivity:Interaction.Behaviors>
+                    <behaviors:WindowDimensionBehavior WidthPercentage="{StaticResource SmallCellWidthPercent}"
+                                                       HeightPercentage="{StaticResource SmallCellHeightPercent}"/>
                 </interactivity:Interaction.Behaviors>
                 <TextBlock Text="{Binding Key}" 
                            Foreground="{StaticResource PhoneAccentBrush}" 
                            FontSize="40"
-                           Padding="6,0,0,0"
+                           Padding="6,0"
                            FontFamily="{StaticResource PhoneFontFamilySemiLight}"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Bottom"/>
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
             </Border>
         </Border>
     </DataTemplate>
@@ -125,13 +115,12 @@
             </Grid.ColumnDefinitions>
             <GridView ItemsSource="{Binding SpeakerAvatars}"
                       Grid.Column="0" 
-                      Margin="0 14.5"
+                      Margin="0,14.5"
                       HorizontalAlignment="Left"
                       Height="120" Width="120">
                 <GridView.ItemTemplate>
                     <DataTemplate>
-                        <Image Source="{Binding}"
-                               Stretch="UniformToFill"/>
+                        <Image Source="{Binding}" Stretch="Uniform"/>
                     </DataTemplate>
                 </GridView.ItemTemplate>
                 <GridView.ItemContainerStyle>
@@ -147,7 +136,7 @@
         </Grid>
     </DataTemplate>
     
-    <DataTemplate x:Name="TrackItemDataTemplate">
+    <DataTemplate x:Name="SmallTextTrackItemTemplate">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -165,13 +154,33 @@
                        Style="{ThemeResource TitleTextBlockStyle}" />
         </Grid>
     </DataTemplate>
+
+    <DataTemplate x:Name="LargeTextTrackItemTemplate">
+        <Grid Margin="0,9.5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Rectangle Grid.Column="0" Width="10" VerticalAlignment="Stretch">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="{Binding Color}" />
+                </Rectangle.Fill>
+            </Rectangle>
+            <TextBlock Grid.Column="1" 
+                       Text="{Binding Title}" 
+                       VerticalAlignment="Center"
+                       Margin="9.5,0"
+                       Style="{ThemeResource ListViewItemTextBlockStyle}" />
+        </Grid>
+    </DataTemplate>
+
     <DataTemplate x:Key="ZoomedOutItemTemplate">
         <Border Padding="5">
             <Border Background="{Binding Converter={StaticResource BackgroundConverter}}"
                     HorizontalAlignment="Left">
                 <interactivity:Interaction.Behaviors>
-                    <behaviors:WindowDimensionBehavior WidthPercentage="{StaticResource mediumCellWidthPercent}"
-                                                       HeightPercentage="{StaticResource mediumCellHeightPercent}"/>
+                    <behaviors:WindowDimensionBehavior WidthPercentage="{StaticResource MediumCellWidthPercent}"
+                                                       HeightPercentage="{StaticResource MediumCellHeightPercent}"/>
                 </interactivity:Interaction.Behaviors>
                 <TextBlock Text="{Binding Group.Key}"
                            Foreground="{Binding Converter={StaticResource ForegroundConverter}}"
@@ -188,8 +197,8 @@
               VerticalAlignment="Top"  
               CommonNavigationTransitionInfo.IsStaggerElement="True">
             <interactivity:Interaction.Behaviors>
-                <behaviors:WindowDimensionBehavior HeightPercentage="{StaticResource smallCellHeightPercent}"
-                                                     WidthPercentage="0.9"/>
+                <behaviors:WindowDimensionBehavior HeightPercentage="{StaticResource SmallCellHeightPercent}"
+                                                   WidthPercentage="0.9"/>
             </interactivity:Interaction.Behaviors>
             <!--setting width here is important-->
             <Grid.ColumnDefinitions>
@@ -201,11 +210,11 @@
                    Stretch="Fill" 
                    VerticalAlignment="Top">
                 <interactivity:Interaction.Behaviors>
-                    <behaviors:WindowDimensionBehavior WidthPercentage="{StaticResource smallCellWidthPercent}"
-                                                         HeightPercentage="{StaticResource smallCellHeightPercent}"/>
+                    <behaviors:WindowDimensionBehavior WidthPercentage="{StaticResource SmallCellWidthPercent}"
+                                                       HeightPercentage="{StaticResource SmallCellHeightPercent}"/>
                 </interactivity:Interaction.Behaviors>
             </Image>
-            <StackPanel Grid.Row="0" Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Top">
+            <StackPanel Grid.Row="0" Grid.Column="1" Margin="12,12,0,0" VerticalAlignment="Top">
                 <TextBlock Text="{Binding Title}" 
                            TextLineBounds="Tight"
                            Style="{StaticResource ListViewItemTextBlockStyle}" 
