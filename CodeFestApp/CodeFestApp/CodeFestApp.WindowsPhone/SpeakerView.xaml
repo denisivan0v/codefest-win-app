@@ -21,22 +21,20 @@
         </Grid.RowDefinitions>
 
         <!-- Title Panel -->
-        <StackPanel Grid.Row="0" Margin="19,0,0,0">
+        <StackPanel Grid.Row="0" Margin="19,12,0,0">
             <TextBlock Text="{Binding ConferenceTitle}" 
-                       Style="{ThemeResource TitleTextBlockStyle}" 
-                       Margin="0,12,0,0" />
+                       Style="{ThemeResource TitleTextBlockStyle}" />
             <TextBlock Text="{Binding Title}" 
                        Style="{ThemeResource HeaderTextBlockStyle}" 
-                       Margin="0,-6.5,0,26.5" 
+                       Margin="0,-6.5,0,6.5" 
                        CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
         </StackPanel>
         <ScrollViewer Grid.Row="1" Margin="9.5,0">
             <StackPanel Margin="5,0">
-                <userControls:ProfileControl />
-                <ListView ItemsSource="{Binding Source={StaticResource LecturesSource}}"
-                          Margin="0,10">
+                <userControls:ProfileControl Margin="0,10"/>
+                <ListView ItemsSource="{Binding Source={StaticResource LecturesSource}}">
                     <ListView.GroupStyle>
-                        <GroupStyle HidesIfEmpty="True" HeaderTemplate="{StaticResource SmallTextGroupHeaderTemplate}"/>
+                        <GroupStyle HidesIfEmpty="True" HeaderTemplate="{StaticResource SmallTextUnborderedGroupHeaderTemplate}"/>
                     </ListView.GroupStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate>
@@ -45,14 +43,17 @@
                                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <Rectangle Grid.Column="0" Width="10" Margin="0,0,10,0">
+                                <Rectangle Grid.Column="0" Width="10" Height="72">
                                     <Rectangle.Fill>
                                         <SolidColorBrush Color="{Binding Track.Color}" />
                                     </Rectangle.Fill>
                                 </Rectangle>
                                 <TextBlock Grid.Column="1"
-                                           Text="{Binding Title}" 
-                                           Style="{ThemeResource ListViewItemTextBlockStyle}" />
+                                           Text="{Binding Title}"
+                                           Margin="9.5,0"
+                                           VerticalAlignment="Center"
+                                           TextWrapping="Wrap"
+                                           Style="{ThemeResource TitleTextBlockStyle}" />
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
