@@ -56,7 +56,7 @@ namespace CodeFestApp.ViewModels
 
         public string UrlPathSegment
         {
-            get { return "usertweets"; }
+            get { return "tweets"; }
         }
 
         public IScreen HostScreen { get; private set; }
@@ -65,7 +65,7 @@ namespace CodeFestApp.ViewModels
         {
             var auth = new SingleUserAuthorizer
                 {
-                    
+ 
                 };
 
             await auth.AuthorizeAsync();
