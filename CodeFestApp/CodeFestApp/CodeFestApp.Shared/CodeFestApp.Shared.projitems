@@ -18,6 +18,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)AppBootstrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behaviors\ProgressBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataModel\AlphaKeyGroup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\Company.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\Day.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\IScheduleReader.cs" />

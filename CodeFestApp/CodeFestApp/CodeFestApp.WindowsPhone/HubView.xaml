@@ -1,6 +1,14 @@
 ﻿<Page x:Class="CodeFestApp.HubView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+      xmlns:behaviors="using:CodeFestApp.Behaviors">
+    <Page.Resources>
+        <CollectionViewSource x:Name="CharacterGroupedSpeakers" 
+                              IsSourceGrouped="True" 
+                              Source="{Binding Speakers}" 
+                              ItemsPath="Items"/>
+    </Page.Resources>
     <Grid>
         <Grid.ChildrenTransitions>
             <TransitionCollection>
@@ -23,20 +31,18 @@
                 </DataTemplate>
             </Hub.HeaderTemplate>
 
-            <HubSection Width="Auto"
-                        Header="{Binding DaysSectionTitle}"
+            <HubSection Header="{Binding DaysSectionTitle}"
                         HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
                 <DataTemplate>
                     <ListView Margin="0,9.5,0,0"
                               ItemsSource="{Binding Days}"
                               ItemTemplate="{StaticResource ManyImagesTileWithTitleItemTemplate}"
                               IsItemClickEnabled="True"
-                              ItemClick="DaysGrid_OnItemClick"/>
+                              ItemClick="DaysGridView_OnItemClick"/>
                 </DataTemplate>
             </HubSection>
 
-            <HubSection Width="Auto"
-                        Header="{Binding TracksSectionTitle}"
+            <HubSection Header="{Binding TracksSectionTitle}"
                         HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
                 <DataTemplate>
                     <ListView Margin="0,9.5,0,0"
@@ -47,21 +53,46 @@
                 </DataTemplate>
             </HubSection>
 
+            <HubSection Header="{Binding SpeakersSectionTitle}"
+                        HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
+                <DataTemplate>
+                    <SemanticZoom>
+                        <SemanticZoom.ZoomedInView>
+                            <ListView ItemsSource="{Binding Source={StaticResource CharacterGroupedSpeakers}}"
+                                      ItemTemplate="{StaticResource ListViewItemTemplate}" 
+                                      ShowsScrollingPlaceholders="True"
+                                      ScrollViewer.HorizontalScrollMode="Disabled" 
+                                      ScrollViewer.IsHorizontalScrollChainingEnabled="False"
+                                      IsItemClickEnabled="True"
+                                      ItemClick="SpeakersGridView_OnItemClick">
+                                <interactivity:Interaction.Behaviors>
+                                    <behaviors:WindowDimensionBehavior WidthPercentage="1" />
+                                </interactivity:Interaction.Behaviors>
+                                <ListView.GroupStyle>
+                                    <GroupStyle HidesIfEmpty="True" 
+                                                HeaderTemplate="{StaticResource GroupHeaderTemplate}"/>
+                                </ListView.GroupStyle>
+                            </ListView>
+                        </SemanticZoom.ZoomedInView>
+                        <SemanticZoom.ZoomedOutView>
+                            <GridView ItemsSource="{Binding Source={StaticResource CharacterGroupedSpeakers}, Path=CollectionGroups}"
+                                      Background="{StaticResource ContentDialogDimmingThemeBrush}"
+                                      HorizontalContentAlignment="Center" 
+                                      VerticalContentAlignment="Center"
+                                      HorizontalAlignment="Stretch" 
+                                      VerticalAlignment="Stretch"
+                                      ItemTemplate="{StaticResource ZoomedOutItemTemplate}">
+                                <interactivity:Interaction.Behaviors>
+                                    <behaviors:WindowDimensionBehavior WidthPercentage="1" />
+                                </interactivity:Interaction.Behaviors>
+                            </GridView>
+                        </SemanticZoom.ZoomedOutView>
+                    </SemanticZoom>
+                </DataTemplate>
+            </HubSection>
+
             <HubSection Header="{Binding CurrentLecturesSectionTitle}" 
                         HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}"> 
-                <DataTemplate>
-                    <ListView x:Name="Sections"
-                                IsItemClickEnabled="True">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Margin="0,0,0,27.5">
-                                    <TextBlock Text="{Binding Title}" 
-                                               Style="{ThemeResource ListViewItemTextBlockStyle}" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </DataTemplate>
             </HubSection>
         </Hub>
     </Grid>

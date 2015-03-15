@@ -12,7 +12,10 @@
             <ImageBrush x:Key="HubBackgroundImageBrush" ImageSource="{x:Null}"/>
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
-    
+
+    <JumpListItemBackgroundConverter x:Key="BackgroundConverter"/>
+    <JumpListItemForegroundConverter x:Key="ForegroundConverter"/>
+
     <DataTemplate x:Key="HubSectionHeaderTemplate">
         <TextBlock Margin="0,0,0,-9.5" Text="{Binding}"/>
     </DataTemplate>
@@ -87,12 +90,12 @@
                     HorizontalAlignment="Stretch">
                 <interactivity:Interaction.Behaviors>
                     <behaviors:WindowDimensionBehavior WidthPercentage="{StaticResource smallCellWidthPercent}"
-                                                     HeightPercentage="{StaticResource smallCellHeightPercent}"/>
+                                                       HeightPercentage="{StaticResource smallCellHeightPercent}"/>
                 </interactivity:Interaction.Behaviors>
                 <TextBlock Text="{Binding Key}" 
                            Foreground="{StaticResource PhoneAccentBrush}" 
-                           FontSize="30"
-                           Padding="6,0"
+                           FontSize="40"
+                           Padding="6,0,0,0"
                            FontFamily="{StaticResource PhoneFontFamilySemiLight}"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Bottom"/>
@@ -160,6 +163,63 @@
                        VerticalAlignment="Center"
                        Margin="9.5,0"
                        Style="{ThemeResource TitleTextBlockStyle}" />
+        </Grid>
+    </DataTemplate>
+    <DataTemplate x:Key="ZoomedOutItemTemplate">
+        <Border Padding="5">
+            <Border Background="{Binding Converter={StaticResource BackgroundConverter}}"
+                    HorizontalAlignment="Left">
+                <interactivity:Interaction.Behaviors>
+                    <behaviors:WindowDimensionBehavior WidthPercentage="{StaticResource mediumCellWidthPercent}"
+                                                       HeightPercentage="{StaticResource mediumCellHeightPercent}"/>
+                </interactivity:Interaction.Behaviors>
+                <TextBlock Text="{Binding Group.Key}"
+                           Foreground="{Binding Converter={StaticResource ForegroundConverter}}"
+                           FontSize="40"
+                           Padding="6,0,0,0"
+                           FontWeight="SemiBold"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Bottom"/>
+            </Border>
+        </Border>
+    </DataTemplate>
+    <DataTemplate x:Key="ListViewItemTemplate">
+        <Grid Margin="4,4" 
+              VerticalAlignment="Top"  
+              CommonNavigationTransitionInfo.IsStaggerElement="True">
+            <interactivity:Interaction.Behaviors>
+                <behaviors:WindowDimensionBehavior HeightPercentage="{StaticResource smallCellHeightPercent}"
+                                                     WidthPercentage="0.9"/>
+            </interactivity:Interaction.Behaviors>
+            <!--setting width here is important-->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Image Source="{Binding Avatar}" 
+                   Grid.Row="0" Grid.Column="0" 
+                   Stretch="Fill" 
+                   VerticalAlignment="Top">
+                <interactivity:Interaction.Behaviors>
+                    <behaviors:WindowDimensionBehavior WidthPercentage="{StaticResource smallCellWidthPercent}"
+                                                         HeightPercentage="{StaticResource smallCellHeightPercent}"/>
+                </interactivity:Interaction.Behaviors>
+            </Image>
+            <StackPanel Grid.Row="0" Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Top">
+                <TextBlock Text="{Binding Title}" 
+                           TextLineBounds="Tight"
+                           Style="{StaticResource ListViewItemTextBlockStyle}" 
+                           VerticalAlignment="Top" 
+                           HorizontalAlignment="Left" />
+                <TextBlock Text="{Binding Company}" 
+                           Style="{StaticResource ListViewItemSubheaderTextBlockStyle}" 
+                           VerticalAlignment="Top" 
+                           HorizontalAlignment="Left" />
+                <TextBlock Text="{Binding JobTitle}" 
+                           Style="{StaticResource ListViewItemSubheaderTextBlockStyle}" 
+                           VerticalAlignment="Top" 
+                           HorizontalAlignment="Left" />
+            </StackPanel>
         </Grid>
     </DataTemplate>
 </ResourceDictionary>
