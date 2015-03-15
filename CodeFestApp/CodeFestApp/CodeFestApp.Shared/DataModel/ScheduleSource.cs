@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
 using System.Threading.Tasks;
 
 using Windows.Storage;
@@ -17,7 +19,10 @@ namespace CodeFestApp.DataModel
         public async Task<string> ReadScheduleAsync()
         {
             var file = await StorageFile.GetFileFromApplicationUriAsync(_dataUri);
-            return await FileIO.ReadTextAsync(file);
+            var buffer = await FileIO.ReadBufferAsync(file);
+            var fileContent = new byte[buffer.Length];
+            buffer.CopyTo(fileContent);
+            return Encoding.UTF8.GetString(fileContent, 0, fileContent.Length);
         }
     }
 }

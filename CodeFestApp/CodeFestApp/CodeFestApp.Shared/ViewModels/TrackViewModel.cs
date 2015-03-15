@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using CodeFestApp.DataModel;
@@ -20,6 +21,9 @@ namespace CodeFestApp.ViewModels
             HostScreen = hostScreen;
 
             NavigateToLectureCommand = ReactiveCommand.Create();
+
+            this.WhenAnyObservable(x => x.NavigateToLectureCommand)
+                .Subscribe(x => HostScreen.Router.Navigate.Execute(x));
         }
 
         public string Title

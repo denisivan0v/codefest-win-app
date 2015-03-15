@@ -9,7 +9,7 @@ namespace CodeFestApp.DataModel
 {
     public class ScheduleReader : IScheduleReader
     {
-        private static readonly string Today = DateTime.Today.ToString("d");
+        private static readonly string MinDate = DateTime.MinValue.ToString("d");
         private readonly IScheduleSource _scheduleSource;
         private readonly List<Lecture> _lectures = new List<Lecture>();
 
@@ -95,8 +95,8 @@ namespace CodeFestApp.DataModel
                                            Id = (int)x["id"],
                                            Title = (string)x["title"],
                                            Description = (string)x["description"],
-                                           Start = DateTime.Parse(Today + " " + x["time_start"]),
-                                           End = DateTime.Parse(Today + " " + x["time_end"])
+                                           Start = DateTime.Parse(MinDate + " " + x["time_start"]),
+                                           End = DateTime.Parse(MinDate + " " + x["time_end"])
                                        })
                                    .Select(x =>
                                        {

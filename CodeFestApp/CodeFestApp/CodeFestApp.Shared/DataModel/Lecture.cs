@@ -13,13 +13,17 @@ namespace CodeFestApp.DataModel
 
         private IEnumerable<Speaker> _speakers;
 
-        public Lecture(int dayId, int trackId, Func<IEnumerable<Speaker>> speakersProvider, int speakerId, params int[] otherSpeakerIds)
+        public Lecture(int dayId,
+                       int trackId,
+                       Func<IEnumerable<Speaker>> speakersProvider,
+                       int speakerId,
+                       params int[] otherSpeakerIds)
         {
             _dayId = dayId;
             _trackId = trackId;
             _speakersProvider = speakersProvider;
             _speakerIds = new[] { speakerId }.Union(otherSpeakerIds);
-        } 
+        }
 
         public int Id { get; set; }
         public string Title { get; set; }
@@ -39,6 +43,8 @@ namespace CodeFestApp.DataModel
             if (Day == null)
             {
                 Day = days.SingleOrDefault(x => x.Id == _dayId);
+                Start = Day.Date.AddHours(Start.Hour).AddMinutes(Start.Minute);
+                End = Day.Date.AddHours(End.Hour).AddMinutes(End.Minute);
             }
         }
 
