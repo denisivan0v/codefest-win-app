@@ -31,6 +31,7 @@ namespace CodeFestApp
         private void PerformRegister(IUnityContainer container)
         {
             container.RegisterInstance(typeof(IScreen), this, Lifetime.External)
+                     .RegisterInstance(new TwitterKeys())
 
                      .RegisterType<IScheduleSource, ScheduleSource>(Lifetime.Singleton)
                      .RegisterType<IScheduleReader, ScheduleReader>(Lifetime.Singleton)

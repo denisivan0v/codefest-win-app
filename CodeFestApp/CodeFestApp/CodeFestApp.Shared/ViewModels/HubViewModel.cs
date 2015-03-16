@@ -49,7 +49,7 @@ namespace CodeFestApp.ViewModels
 
             this.WhenAnyObservable(x => x.LoadTracksCommand)
                 .ToProperty(this, x => x.Tracks, out _tracks);
-            
+
             this.WhenAnyObservable(x => x.LoadSpeakersCommand)
                 .ToProperty(this, x => x.Speakers, out _speakers);
 
@@ -57,13 +57,13 @@ namespace CodeFestApp.ViewModels
                 .Subscribe(x => HostScreen.Router.Navigate.Execute(x));
 
             this.WhenAnyObservable(x => x.NavigateToTrackCommand)
-               .Subscribe(x => HostScreen.Router.Navigate.Execute(x));
+                .Subscribe(x => HostScreen.Router.Navigate.Execute(x));
 
             this.WhenAnyObservable(x => x.NavigateToSpeakerCommand)
-               .Subscribe(x => HostScreen.Router.Navigate.Execute(x));
+                .Subscribe(x => HostScreen.Router.Navigate.Execute(x));
 
             this.WhenAnyObservable(x => x.NavigateToTwitterFeedCommand)
-                .Subscribe(x => HostScreen.Router.Navigate.Execute(new TweetsViewModel(HostScreen)));
+                .Subscribe(x => HostScreen.Router.Navigate.Execute(viewModelFactory.Create<TweetsViewModel>()));
         }
 
         public ReactiveCommand<IEnumerable<DayViewModel>> LoadDaysCommand { get; private set; }

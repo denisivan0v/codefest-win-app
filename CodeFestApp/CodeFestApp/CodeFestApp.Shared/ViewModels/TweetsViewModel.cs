@@ -18,11 +18,11 @@ namespace CodeFestApp.ViewModels
         private readonly ObservableAsPropertyHelper<ReactiveList<Tweet>> _tweets;
         private readonly ObservableAsPropertyHelper<bool> _isBusy;
         
-        public TweetsViewModel(IScreen hostScreen)
+        public TweetsViewModel(IScreen hostScreen, TwitterKeys twitterKeys)
         {
             HostScreen = hostScreen;
 
-            SearchForTweetsCommand = ReactiveCommand.CreateAsyncTask(_ => SearchForTweets("codefestru", "#codefest"));
+            SearchForTweetsCommand = ReactiveCommand.CreateAsyncTask(_ => SearchForTweets(twitterKeys, "codefestru", "#codefest"));
             RefreshTweetsCommand = ReactiveCommand.Create();
 
             this.WhenAnyObservable(x => x.SearchForTweetsCommand)
@@ -61,11 +61,17 @@ namespace CodeFestApp.ViewModels
 
         public IScreen HostScreen { get; private set; }
 
-        private static async Task<ReactiveList<Tweet>> SearchForTweets(string term1, string term2)
+        private static async Task<ReactiveList<Tweet>> SearchForTweets(TwitterKeys twitterKeys, string term1, string term2)
         {
             var auth = new SingleUserAuthorizer
                 {
- 
+                    CredentialStore = new InMemoryCredentialStore
+                        {
+                            ConsumerKey = twitterKeys.ConsumerKey,
+                            ConsumerSecret = twitterKeys.ConsumerSecret,
+                            OAuthToken = twitterKeys.OAuthToken,
+                            OAuthTokenSecret = twitterKeys.OAuthTokenSecret
+                        }
                 };
 
             await auth.AuthorizeAsync();
