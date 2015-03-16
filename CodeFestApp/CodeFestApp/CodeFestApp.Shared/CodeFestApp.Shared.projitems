@@ -56,4 +56,7 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)ReferencedAssemblies\FlurryWP8SDK.dll" />
+  </ItemGroup>
 </Project>

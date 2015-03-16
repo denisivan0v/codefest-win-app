@@ -149,6 +149,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="FlurryWP8SDK, Version=3.1.1.0, Culture=neutral, PublicKeyToken=d822942b4ec01210, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CodeFestApp.Shared\ReferencedAssemblies\FlurryWP8SDK.dll</HintPath>
+    </Reference>
     <Reference Include="LinqToTwitterPcl">
       <HintPath>..\..\packages\LinqToTwitter.3.1.2\lib\wpa\LinqToTwitterPcl.dll</HintPath>
     </Reference>
