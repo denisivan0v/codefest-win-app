@@ -1,4 +1,8 @@
-﻿using CodeFestApp.ViewModels;
+﻿using CodeFestApp.DataModel;
+using CodeFestApp.DI;
+using CodeFestApp.ViewModels;
+
+using Microsoft.Practices.Unity;
 
 using ReactiveUI;
 
@@ -8,27 +12,49 @@ namespace CodeFestApp
 {
     public class AppBootstrapper : ReactiveObject, IScreen
     {
-        public AppBootstrapper(IMutableDependencyResolver dependencyResolver = null, RoutingState router = null)
-        {
-            Router = router ?? new RoutingState();
-            dependencyResolver = dependencyResolver ?? Locator.CurrentMutable;
+        private readonly IUnityContainer _container = new UnityContainer();
 
-            RegisterParts(dependencyResolver);
+        public AppBootstrapper()
+        {
+            PerformRegister(_container);
 
             LogHost.Default.Level = LogLevel.Debug;
+            Locator.Current = new UnityDependencyResolver(_container);
+            Router = new RoutingState();
 
-            Router.Navigate.Execute(new HubViewModel(this));
+            ReadSchedule();
+            NavigateToHub();
         }
 
         public RoutingState Router { get; private set; }
 
-        private void RegisterParts(IMutableDependencyResolver dependencyResolver)
+        private void PerformRegister(IUnityContainer container)
         {
-            dependencyResolver.RegisterConstant(this, typeof(IScreen));
+            container.RegisterInstance(typeof(IScreen), this, Lifetime.External)
 
-            dependencyResolver.Register(() => new HubPage(), typeof(IViewFor<HubViewModel>));
-            dependencyResolver.Register(() => new SectionPage(), typeof(IViewFor<SectionViewModel>));
-            dependencyResolver.Register(() => new ItemPage(), typeof(IViewFor<ItemViewModel>));
+                     .RegisterType<IScheduleSource, ScheduleSource>(Lifetime.Singleton)
+                     .RegisterType<IScheduleReader, ScheduleReader>(Lifetime.Singleton)
+
+                     .RegisterType<IViewModelFactory, UnityViewModelFactory>(Lifetime.Singleton)
+
+                     .RegisterType<IViewFor<HubViewModel>, HubView>()
+                     .RegisterType<IViewFor<DayViewModel>, DayView>()
+                     .RegisterType<IViewFor<TrackViewModel>, TrackView>()
+                     .RegisterType<IViewFor<LectureViewModel>, LectureView>()
+                     .RegisterType<IViewFor<SpeakerViewModel>, SpeakerView>()
+                     .RegisterType<IViewFor<TweetsViewModel>, TweetsView>();
+        }
+
+        private void ReadSchedule()
+        {
+            var scheduleReader = _container.Resolve<IScheduleReader>();
+            scheduleReader.ReadSchedule().Wait();
+        }
+
+        private void NavigateToHub()
+        {
+            var hubViewModel = _container.Resolve<HubViewModel>();
+            Router.Navigate.Execute(hubViewModel);
         }
     }
 }

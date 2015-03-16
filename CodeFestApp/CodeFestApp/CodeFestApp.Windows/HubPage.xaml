@@ -36,12 +36,6 @@
     This grid acts as a root panel for the page.
   -->
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Grid.ChildrenTransitions>
-            <TransitionCollection>
-                <EntranceThemeTransition/>
-            </TransitionCollection>
-        </Grid.ChildrenTransitions>
-        
         <Hub>
             <Hub.Header>
                 <!-- Back button and page title -->

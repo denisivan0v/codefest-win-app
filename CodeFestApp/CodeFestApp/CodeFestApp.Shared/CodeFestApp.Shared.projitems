@@ -16,23 +16,44 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)AppBootstrapper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DataModel\SampleDataSource.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)MainWIndow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <Compile Include="$(MSBuildThisFileDirectory)Behaviors\ProgressBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataModel\AlphaKeyGroup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataModel\Company.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataModel\Day.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataModel\IScheduleReader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataModel\IScheduleSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataModel\Lecture.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataModel\Room.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataModel\ScheduleReader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataModel\ScheduleSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataModel\Track.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataModel\Speaker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataModel\Tweet.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DI\IViewModelFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DI\Lifetime.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DI\UnityDependencyResolver.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DI\UnityViewModelFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Behaviors\WindowDimensionBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UserControls\ProfileControl.xaml.cs">
+      <DependentUpon>ProfileControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SpeakerViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\LectureViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\HubViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ItemViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SectionViewModel.cs" />
-    <Content Include="$(MSBuildThisFileDirectory)DataModel\SampleData.json" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\DayViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\TrackViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\TweetsViewModel.cs" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\TwitterIcon.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\LightGray.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\MediumGray.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\DarkGray.png" />
+    <Content Include="$(MSBuildThisFileDirectory)DataModel\schedule.json" />
     <PRIResource Include="$(MSBuildThisFileDirectory)Strings\ru\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="$(MSBuildThisFileDirectory)MainWindow.xaml">
+    <Page Include="$(MSBuildThisFileDirectory)UserControls\ProfileControl.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
 </Project>
