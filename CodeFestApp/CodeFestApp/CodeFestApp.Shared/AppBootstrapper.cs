@@ -1,4 +1,7 @@
-﻿using CodeFestApp.DataModel;
+﻿using System;
+
+using CodeFestApp.Analytics;
+using CodeFestApp.DataModel;
 using CodeFestApp.DI;
 using CodeFestApp.ViewModels;
 
@@ -10,7 +13,7 @@ using Splat;
 
 namespace CodeFestApp
 {
-    public class AppBootstrapper : ReactiveObject, IScreen
+    public class AppBootstrapper : ReactiveObject, IScreen, IDisposable
     {
         private readonly IUnityContainer _container = new UnityContainer();
 
@@ -22,16 +25,25 @@ namespace CodeFestApp
             Locator.Current = new UnityDependencyResolver(_container);
             Router = new RoutingState();
 
+            StartAnalyticsSession();
             ReadSchedule();
             NavigateToHub();
         }
 
         public RoutingState Router { get; private set; }
 
+        public void Dispose()
+        {
+            _container.Dispose();
+        }
+
         private void PerformRegister(IUnityContainer container)
         {
             container.RegisterInstance(typeof(IScreen), this, Lifetime.External)
-                     .RegisterInstance(new TwitterKeys())
+                     .RegisterInstance(new TwitterKeys(), Lifetime.Singleton)
+                     .RegisterInstance(new FlurryKey(), Lifetime.Singleton)
+
+                     .RegisterType<IAnalyticsLogger, FlurryAnalyticsWrapper>(Lifetime.Singleton)
 
                      .RegisterType<IScheduleSource, ScheduleSource>(Lifetime.Singleton)
                      .RegisterType<IScheduleReader, ScheduleReader>(Lifetime.Singleton)
@@ -44,6 +56,12 @@ namespace CodeFestApp
                      .RegisterType<IViewFor<LectureViewModel>, LectureView>()
                      .RegisterType<IViewFor<SpeakerViewModel>, SpeakerView>()
                      .RegisterType<IViewFor<TweetsViewModel>, TweetsView>();
+        }
+
+        private void StartAnalyticsSession()
+        {
+            var analytics = _container.Resolve<IAnalyticsLogger>();
+            analytics.StartSession();
         }
 
         private void ReadSchedule()

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using CodeFestApp.Analytics;
 using CodeFestApp.DataModel;
 using CodeFestApp.DI;
 
@@ -16,7 +17,8 @@ namespace CodeFestApp.ViewModels
 
         public LectureViewModel(IScreen hostScreen,
                                 Lecture lecture,
-                                IViewModelFactory viewModelFactory)
+                                IViewModelFactory viewModelFactory,
+                                IAnalyticsLogger logger)
         {
             HostScreen = hostScreen;
             _lecture = lecture;
@@ -26,6 +28,11 @@ namespace CodeFestApp.ViewModels
 
             this.WhenAnyObservable(x => x.NavigateToSpeaker)
                 .Subscribe(x => HostScreen.Router.Navigate.Execute(x));
+
+            this.WhenAnyObservable(x => x.NavigateToSpeaker.ThrownExceptions)
+                .Subscribe(logger.LogException);
+
+            this.WhenNavigatedTo(() => logger.LogViewModelRouted(this));
         }
 
         public TrackViewModel Track

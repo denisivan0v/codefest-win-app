@@ -1,6 +1,6 @@
 ﻿using System;
 
-using Windows.UI.Xaml.Media.Animation;
+using CodeFestApp.Analytics;
 
 using ReactiveUI;
 
@@ -16,25 +16,29 @@ namespace CodeFestApp
 {
     public sealed partial class App : Application
     {
+        private readonly AppBootstrapper _appBootstrapper = new AppBootstrapper();
+
         public App()
         {
             InitializeComponent();
 
-            RxApp.SuspensionHost.CreateNewAppState = () => new AppBootstrapper();
+            var logger = (IAnalyticsLogger)Locator.Current.GetService(typeof(IAnalyticsLogger));
+            RxApp.SuspensionHost.CreateNewAppState = () => _appBootstrapper;
+            RxApp.SuspensionHost.IsResuming.Subscribe(_ => logger.StartSession());
             RxApp.SuspensionHost.SetupDefaultSuspendResume();
 
 #if WINDOWS_PHONE_APP
             Observable.FromEventPattern<BackPressedEventArgs>(x => HardwareButtons.BackPressed += x,
                                                               x => HardwareButtons.BackPressed -= x)
                       .Subscribe(x =>
-                      {
-                          var hostScreen = (IScreen)Locator.Current.GetService(typeof(IScreen));
-                          if (hostScreen.Router.NavigationStack.Count > 1)
                           {
-                              hostScreen.Router.NavigateBack.Execute(null);
-                              x.EventArgs.Handled = true;
-                          }
-                      });
+                              var hostScreen = (IScreen)Locator.Current.GetService(typeof(IScreen));
+                              if (hostScreen.Router.NavigationStack.Count > 1)
+                              {
+                                  hostScreen.Router.NavigateBack.Execute(null);
+                                  x.EventArgs.Handled = true;
+                              }
+                          });
 #endif
         }
 

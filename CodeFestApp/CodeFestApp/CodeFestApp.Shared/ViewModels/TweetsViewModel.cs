@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 
+using CodeFestApp.Analytics;
 using CodeFestApp.DataModel;
 
 using LinqToTwitter;
@@ -18,7 +19,7 @@ namespace CodeFestApp.ViewModels
         private readonly ObservableAsPropertyHelper<ReactiveList<Tweet>> _tweets;
         private readonly ObservableAsPropertyHelper<bool> _isBusy;
         
-        public TweetsViewModel(IScreen hostScreen, TwitterKeys twitterKeys)
+        public TweetsViewModel(IScreen hostScreen, IAnalyticsLogger logger, TwitterKeys twitterKeys)
         {
             HostScreen = hostScreen;
 
@@ -34,6 +35,12 @@ namespace CodeFestApp.ViewModels
             this.WhenAnyObservable(x => x.RefreshTweetsCommand)
                 .ObserveOn(RxApp.TaskpoolScheduler)
                 .Subscribe(x => SearchForTweetsCommand.ExecuteAsyncTask());
+
+            this.WhenAnyObservable(x => x.SearchForTweetsCommand.ThrownExceptions,
+                                   x => x.RefreshTweetsCommand.ThrownExceptions)
+                .Subscribe(logger.LogException);
+
+            this.WhenNavigatedTo(() => logger.LogViewModelRouted(this));
         }
 
         public string Title

@@ -44,12 +44,19 @@
                                             <SolidColorBrush Color="{Binding Track.Color}" />
                                         </Rectangle.Fill>
                                     </Rectangle>
-                                    <TextBlock Grid.Column="1"
-                                               Text="{Binding Title}"
-                                               Margin="9.5,0"
-                                               VerticalAlignment="Center"
-                                               TextWrapping="Wrap"
-                                               Style="{ThemeResource TitleTextBlockStyle}" />
+                                    <StackPanel Grid.Column="1" Margin="9.5,12,0,0" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Title}"
+                                                   TextWrapping="Wrap"
+                                                   Style="{ThemeResource TitleTextBlockStyle}" />
+                                        <ListView ItemsSource="{Binding Speakers}">
+                                            <ListView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Title}"
+                                                               Style="{ThemeResource ListViewItemSubheaderTextBlockStyle}" />
+                                                </DataTemplate>
+                                            </ListView.ItemTemplate>
+                                        </ListView>
+                                    </StackPanel>
                                 </Grid>
                             </StackPanel>
                         </DataTemplate>
