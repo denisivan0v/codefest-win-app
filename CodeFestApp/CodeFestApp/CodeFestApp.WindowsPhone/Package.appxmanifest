@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
-  <Identity Name="62382denisivanov.CodeFestConference" Publisher="CN=F03F5D5F-E0F6-4907-A7C3-C71D8D18145E" Version="1.1.0.0" />
+  <Identity Name="62382denisivanov.CodeFestConference" Publisher="CN=F03F5D5F-E0F6-4907-A7C3-C71D8D18145E" Version="1.2.0.0" />
   <mp:PhoneIdentity PhoneProductId="63ebf9a7-bb42-42ae-8bca-087e75c1d210" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>CodeFest Conference</DisplayName>
@@ -16,7 +16,7 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="CodeFestApp.WindowsPhone.App">
-      <m3:VisualElements DisplayName="CodeFest" Square150x150Logo="Assets\Logo.png" Square44x44Logo="Assets\SmallLogo.png" Description="Приложение конференции CodeFest" ForegroundText="light" BackgroundColor="transparent" ToastCapable="true">
+      <m3:VisualElements DisplayName="CodeFest Conference" Square150x150Logo="Assets\Logo.png" Square44x44Logo="Assets\SmallLogo.png" Description="Приложение конференции CodeFest 2015" ForegroundText="light" BackgroundColor="transparent" ToastCapable="true">
         <m3:DefaultTile Wide310x150Logo="Assets\WideLogo.png" Square71x71Logo="Assets\Square71x71Logo.png">
         </m3:DefaultTile>
         <m3:InitialRotationPreference>

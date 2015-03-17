@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using CodeFestApp.Analytics;
 using CodeFestApp.DataModel;
 using CodeFestApp.DI;
 
@@ -16,7 +17,7 @@ namespace CodeFestApp.ViewModels
         private readonly IEnumerable<IGrouping<string, LectureViewModel>> _lectures;
         private readonly ReactiveList<Uri> _speakerAvatars;
 
-        public DayViewModel(IScreen hostScreen, Day day, IViewModelFactory lectureViewModelFactory)
+        public DayViewModel(IScreen hostScreen, Day day, IViewModelFactory lectureViewModelFactory, IAnalyticsLogger logger)
         {
             HostScreen = hostScreen;
             _day = day;
@@ -24,7 +25,8 @@ namespace CodeFestApp.ViewModels
             _lectures = _day.Lectures
                             .Select(lectureViewModelFactory.Create<LectureViewModel, Lecture>)
                             .OrderBy(x => x.Start)
-                            .GroupBy(x => x.Start.ToString("t"));
+                            .GroupBy(x => x.Start.ToString("t"))
+                            .ToArray();
 
             _speakerAvatars = new ReactiveList<Uri>(_day.Lectures.SelectMany(x => x.Speakers).Select(x => x.Avatar));
             
@@ -32,6 +34,11 @@ namespace CodeFestApp.ViewModels
 
             this.WhenAnyObservable(x => x.NavigateToLectureCommand)
                 .Subscribe(x => HostScreen.Router.Navigate.Execute(x));
+
+            this.WhenAnyObservable(x => x.NavigateToLectureCommand.ThrownExceptions)
+                .Subscribe(logger.LogException);
+
+            this.WhenNavigatedTo(() => logger.LogViewModelRouted(this));
         }
 
         public string ConferenceTitle

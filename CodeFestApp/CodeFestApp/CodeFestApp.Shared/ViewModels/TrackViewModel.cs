@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 
+using CodeFestApp.Analytics;
 using CodeFestApp.DataModel;
 using CodeFestApp.DI;
 
@@ -15,7 +15,7 @@ namespace CodeFestApp.ViewModels
         private readonly Track _track;
         private readonly IViewModelFactory _viewModelFactory;
 
-        public TrackViewModel(IScreen hostScreen, Track track, IViewModelFactory viewModelFactory)
+        public TrackViewModel(IScreen hostScreen, Track track, IViewModelFactory viewModelFactory, IAnalyticsLogger logger)
         {
             _track = track;
             _viewModelFactory = viewModelFactory;
@@ -25,6 +25,11 @@ namespace CodeFestApp.ViewModels
 
             this.WhenAnyObservable(x => x.NavigateToLectureCommand)
                 .Subscribe(x => HostScreen.Router.Navigate.Execute(x));
+
+            this.WhenAnyObservable(x => x.NavigateToLectureCommand.ThrownExceptions)
+                .Subscribe(logger.LogException);
+
+            this.WhenNavigatedTo(() => logger.LogViewModelRouted(this));
         }
 
         public string ConferenceTitle 

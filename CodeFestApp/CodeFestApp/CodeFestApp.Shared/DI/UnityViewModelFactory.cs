@@ -13,6 +13,11 @@ namespace CodeFestApp.DI
             _container = container;
         }
 
+        public TViewModel Create<TViewModel>() where TViewModel : IRoutableViewModel
+        {
+            return _container.Resolve<TViewModel>();
+        }
+
         public TViewModel Create<TViewModel, TModel>(TModel param) where TViewModel : IRoutableViewModel
         {
             return _container.Resolve<TViewModel>(new DependencyOverride(typeof(TModel), param));
