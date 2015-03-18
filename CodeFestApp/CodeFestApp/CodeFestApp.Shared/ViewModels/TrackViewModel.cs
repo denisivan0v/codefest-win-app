@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
 
 using CodeFestApp.Analytics;
 using CodeFestApp.DataModel;
@@ -27,6 +28,7 @@ namespace CodeFestApp.ViewModels
                 .Subscribe(x => HostScreen.Router.Navigate.Execute(x));
 
             this.WhenAnyObservable(x => x.NavigateToLectureCommand.ThrownExceptions)
+                .ObserveOn(RxApp.TaskpoolScheduler)
                 .Subscribe(logger.LogException);
 
             this.WhenNavigatedTo(() => logger.LogViewModelRouted(this));

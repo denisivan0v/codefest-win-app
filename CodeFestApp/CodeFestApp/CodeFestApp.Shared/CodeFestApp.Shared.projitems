@@ -13,6 +13,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="$(MSBuildThisFileDirectory)Analytics\FlurryAnalyticsWrapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Analytics\FlurryLogger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Analytics\IAnalyticsLogger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>

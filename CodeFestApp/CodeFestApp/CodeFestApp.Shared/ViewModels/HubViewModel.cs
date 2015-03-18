@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 
 using CodeFestApp.Analytics;
@@ -73,6 +74,7 @@ namespace CodeFestApp.ViewModels
                                    x => x.NavigateToTrackCommand.ThrownExceptions,
                                    x => x.NavigateToSpeakerCommand.ThrownExceptions,
                                    x => x.NavigateToTwitterFeedCommand.ThrownExceptions)
+                .ObserveOn(RxApp.TaskpoolScheduler)
                 .Subscribe(logger.LogException);
             
             this.WhenNavigatedTo(() => logger.LogViewModelRouted(this));

@@ -38,6 +38,7 @@ namespace CodeFestApp.ViewModels
 
             this.WhenAnyObservable(x => x.SearchForTweetsCommand.ThrownExceptions,
                                    x => x.RefreshTweetsCommand.ThrownExceptions)
+                .ObserveOn(RxApp.TaskpoolScheduler)
                 .Subscribe(logger.LogException);
 
             this.WhenNavigatedTo(() => logger.LogViewModelRouted(this));
