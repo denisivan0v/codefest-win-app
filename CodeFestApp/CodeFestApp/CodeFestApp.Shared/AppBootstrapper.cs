@@ -23,6 +23,7 @@ namespace CodeFestApp
 
             Locator.Current = new UnityDependencyResolver(_container);
             LogHost.Default.Level = LogLevel.Debug;
+            
             Router = new RoutingState();
 
             StartAnalyticsSession();

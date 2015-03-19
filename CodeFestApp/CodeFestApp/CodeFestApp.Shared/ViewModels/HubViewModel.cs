@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+
+using Windows.Media.Capture;
 
 using CodeFestApp.Analytics;
 using CodeFestApp.DataModel;
 using CodeFestApp.DI;
 
 using ReactiveUI;
+
+using Splat;
 
 namespace CodeFestApp.ViewModels
 {
@@ -67,7 +72,8 @@ namespace CodeFestApp.ViewModels
             this.WhenAnyObservable(x => x.NavigateToTwitterFeedCommand)
                 .Subscribe(x => HostScreen.Router.Navigate.Execute(viewModelFactory.Create<TweetsViewModel>()));
 
-            this.WhenAnyObservable(x => x.LoadDaysCommand.ThrownExceptions,
+            this.WhenAnyObservable(x => x.ThrownExceptions,
+                                   x => x.LoadDaysCommand.ThrownExceptions,
                                    x => x.LoadTracksCommand.ThrownExceptions,
                                    x => x.LoadSpeakersCommand.ThrownExceptions,
                                    x => x.NavigateToDayCommand.ThrownExceptions,
@@ -77,7 +83,11 @@ namespace CodeFestApp.ViewModels
                 .ObserveOn(RxApp.TaskpoolScheduler)
                 .Subscribe(logger.LogException);
             
-            this.WhenNavigatedTo(() => logger.LogViewModelRouted(this));
+            this.WhenNavigatedTo(() =>
+                {
+                    Task.Run(() => logger.LogViewModelRouted(this));
+                    return Disposable.Empty;
+                });
         }
 
         public ReactiveCommand<IEnumerable<DayViewModel>> LoadDaysCommand { get; private set; }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 
@@ -12,6 +13,8 @@ using LinqToTwitter;
 
 using ReactiveUI;
 
+using Splat;
+
 namespace CodeFestApp.ViewModels
 {
     public class TweetsViewModel : ReactiveObject, IRoutableViewModel
@@ -19,7 +22,7 @@ namespace CodeFestApp.ViewModels
         private readonly ObservableAsPropertyHelper<ReactiveList<Tweet>> _tweets;
         private readonly ObservableAsPropertyHelper<bool> _isBusy;
         
-        public TweetsViewModel(IScreen hostScreen, IAnalyticsLogger logger, TwitterKeys twitterKeys)
+        public TweetsViewModel(IScreen hostScreen, TwitterKeys twitterKeys, IAnalyticsLogger logger)
         {
             HostScreen = hostScreen;
 
@@ -36,12 +39,17 @@ namespace CodeFestApp.ViewModels
                 .ObserveOn(RxApp.TaskpoolScheduler)
                 .Subscribe(x => SearchForTweetsCommand.ExecuteAsyncTask());
 
-            this.WhenAnyObservable(x => x.SearchForTweetsCommand.ThrownExceptions,
+            this.WhenAnyObservable(x => x.ThrownExceptions,
+                                   x => x.SearchForTweetsCommand.ThrownExceptions,
                                    x => x.RefreshTweetsCommand.ThrownExceptions)
                 .ObserveOn(RxApp.TaskpoolScheduler)
                 .Subscribe(logger.LogException);
 
-            this.WhenNavigatedTo(() => logger.LogViewModelRouted(this));
+            this.WhenNavigatedTo(() =>
+            {
+                Task.Run(() => logger.LogViewModelRouted(this));
+                return Disposable.Empty;
+            });
         }
 
         public string Title
