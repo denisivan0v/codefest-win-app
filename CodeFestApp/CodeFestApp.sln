@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeFestApp", "CodeFestApp", "{5D975583-7831-4AAF-BB1C-D087CB831ECA}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeFestApp.Windows", "CodeFestApp\CodeFestApp.Windows\CodeFestApp.Windows.csproj", "{861207C1-E4EE-41D1-BAE8-E1D178217005}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeFestApp.WindowsPhone", "CodeFestApp\CodeFestApp.WindowsPhone\CodeFestApp.WindowsPhone.csproj", "{A24254B8-57C0-42CE-9874-A7257306FB25}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeFestApp.MobileService", "MobileService\CodeFestApp.MobileService.csproj", "{5352C501-4065-45F3-86BB-D46A51FC8CB0}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -72,6 +74,16 @@ Global
 		{A24254B8-57C0-42CE-9874-A7257306FB25}.Release|x86.ActiveCfg = Release|x86
 		{A24254B8-57C0-42CE-9874-A7257306FB25}.Release|x86.Build.0 = Release|x86
 		{A24254B8-57C0-42CE-9874-A7257306FB25}.Release|x86.Deploy.0 = Release|x86
+		{5352C501-4065-45F3-86BB-D46A51FC8CB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5352C501-4065-45F3-86BB-D46A51FC8CB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5352C501-4065-45F3-86BB-D46A51FC8CB0}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{5352C501-4065-45F3-86BB-D46A51FC8CB0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5352C501-4065-45F3-86BB-D46A51FC8CB0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5352C501-4065-45F3-86BB-D46A51FC8CB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5352C501-4065-45F3-86BB-D46A51FC8CB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5352C501-4065-45F3-86BB-D46A51FC8CB0}.Release|ARM.ActiveCfg = Release|Any CPU
+		{5352C501-4065-45F3-86BB-D46A51FC8CB0}.Release|x64.ActiveCfg = Release|Any CPU
+		{5352C501-4065-45F3-86BB-D46A51FC8CB0}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

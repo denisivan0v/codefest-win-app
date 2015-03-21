@@ -38,6 +38,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DI\UnityViewModelFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behaviors\WindowDimensionBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FlurryKey.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MobileServicesSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TwitterKeys.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UserControls\ProfileControl.xaml.cs">
       <DependentUpon>ProfileControl.xaml</DependentUpon>
