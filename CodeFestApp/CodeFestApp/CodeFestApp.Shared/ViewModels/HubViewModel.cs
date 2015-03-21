@@ -71,7 +71,7 @@ namespace CodeFestApp.ViewModels
 
             this.WhenAnyObservable(x => x.NavigateToTwitterFeedCommand)
                 .Subscribe(x => HostScreen.Router.Navigate.Execute(viewModelFactory.Create<TweetsViewModel>()));
-
+            
             this.WhenAnyObservable(x => x.ThrownExceptions,
                                    x => x.LoadDaysCommand.ThrownExceptions,
                                    x => x.LoadTracksCommand.ThrownExceptions,

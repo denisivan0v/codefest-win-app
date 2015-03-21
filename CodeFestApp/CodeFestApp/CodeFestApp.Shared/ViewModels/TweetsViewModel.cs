@@ -13,8 +13,6 @@ using LinqToTwitter;
 
 using ReactiveUI;
 
-using Splat;
-
 namespace CodeFestApp.ViewModels
 {
     public class TweetsViewModel : ReactiveObject, IRoutableViewModel
@@ -46,10 +44,10 @@ namespace CodeFestApp.ViewModels
                 .Subscribe(logger.LogException);
 
             this.WhenNavigatedTo(() =>
-            {
-                Task.Run(() => logger.LogViewModelRouted(this));
-                return Disposable.Empty;
-            });
+                {
+                    Task.Run(() => logger.LogViewModelRouted(this));
+                    return Disposable.Empty;
+                });
         }
 
         public string Title

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 
 using CodeFestApp.Analytics;
 using CodeFestApp.DataModel;
@@ -27,11 +29,16 @@ namespace CodeFestApp.ViewModels
             this.WhenAnyObservable(x => x.NavigateToLectureCommand)
                 .Subscribe(x => HostScreen.Router.Navigate.Execute(x));
 
-            this.WhenAnyObservable(x => x.NavigateToLectureCommand.ThrownExceptions)
+            this.WhenAnyObservable(x => x.ThrownExceptions,
+                                   x => x.NavigateToLectureCommand.ThrownExceptions)
                 .ObserveOn(RxApp.TaskpoolScheduler)
                 .Subscribe(logger.LogException);
 
-            this.WhenNavigatedTo(() => logger.LogViewModelRouted(this));
+            this.WhenNavigatedTo(() =>
+                {
+                    Task.Run(() => logger.LogViewModelRouted(this));
+                    return Disposable.Empty;
+                });
         }
 
         public string ConferenceTitle 
