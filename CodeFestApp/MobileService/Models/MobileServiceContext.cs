@@ -30,7 +30,7 @@ namespace CodeFestApp.MobileService.Models
         {
         }
 
-        public DbSet<TodoItem> TodoItems { get; set; }
+        public DbSet<LectureAttitude> LectureAttitudes { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

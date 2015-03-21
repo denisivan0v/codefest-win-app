@@ -185,8 +185,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\TodoItemController.cs" />
-    <Compile Include="DataObjects\TodoItem.cs" />
+    <Compile Include="Controllers\LectureAttitudeController.cs" />
+    <Compile Include="DataObjects\Attitude.cs" />
+    <Compile Include="DataObjects\LectureAttitude.cs" />
     <Compile Include="Models\MobileServiceContext.cs" />
     <Compile Include="ScheduledJobs\SampleJob.cs" />
     <Compile Include="Global.asax.cs">
