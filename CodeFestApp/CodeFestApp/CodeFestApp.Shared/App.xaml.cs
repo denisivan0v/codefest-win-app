@@ -2,8 +2,6 @@
 
 using CodeFestApp.Analytics;
 
-using Microsoft.WindowsAzure.MobileServices;
-
 using ReactiveUI;
 
 using Windows.ApplicationModel.Activation;
@@ -18,12 +16,6 @@ namespace CodeFestApp
 {
     public sealed partial class App : Application
     {
-#if WINDOWS_PHONE_APP
-        // http://go.microsoft.com/fwlink/?LinkId=290986&clcid=0x409
-        public static MobileServiceClient CodefestappClient =
-            new MobileServiceClient(MobileServicesSettings.Url, MobileServicesSettings.Key);
-#endif
-
         private readonly AppBootstrapper _appBootstrapper = new AppBootstrapper();
 
         public App()

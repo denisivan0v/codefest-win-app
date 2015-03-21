@@ -6,6 +6,7 @@ using CodeFestApp.DI;
 using CodeFestApp.ViewModels;
 
 using Microsoft.Practices.Unity;
+using Microsoft.WindowsAzure.MobileServices;
 
 using ReactiveUI;
 
@@ -43,6 +44,7 @@ namespace CodeFestApp
             container.RegisterInstance(typeof(IScreen), this, Lifetime.External)
                      .RegisterInstance(new TwitterKeys(), Lifetime.Singleton)
                      .RegisterInstance(new FlurryKey(), Lifetime.Singleton)
+                     .RegisterInstance(new MobileServicesClientFactory(), Lifetime.Singleton)
 
                      .RegisterType<IAnalyticsLogger, FlurryAnalyticsWrapper>(Lifetime.Singleton)
 
