@@ -97,11 +97,12 @@
     <Page.BottomAppBar>
         <CommandBar>
             <CommandBar.PrimaryCommands>
-                <AppBarButton Label="лента"  Command="{Binding NavigateToTwitterFeedCommand}">
+                <AppBarButton Label="лента" Command="{Binding NavigateToTwitterFeedCommand}">
                     <AppBarButton.Icon>
                         <BitmapIcon UriSource="{Binding TwitterIcon}"/>
                     </AppBarButton.Icon>
                 </AppBarButton>
+                <AppBarButton Icon="Help" Label="о приложении" Command="{Binding NavigateToAboutCommand}"/>
             </CommandBar.PrimaryCommands>
         </CommandBar>
     </Page.BottomAppBar>

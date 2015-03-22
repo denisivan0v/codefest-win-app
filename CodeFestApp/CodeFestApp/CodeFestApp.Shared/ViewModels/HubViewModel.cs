@@ -46,6 +46,7 @@ namespace CodeFestApp.ViewModels
             NavigateToTrackCommand = ReactiveCommand.Create();
             NavigateToSpeakerCommand = ReactiveCommand.Create();
             NavigateToTwitterFeedCommand = ReactiveCommand.Create();
+            NavigateToAboutCommand = ReactiveCommand.Create();
 
             this.WhenAnyObservable(x => x.LoadDaysCommand)
                 .ToProperty(this, x => x.Days, out _days);
@@ -67,7 +68,10 @@ namespace CodeFestApp.ViewModels
 
             this.WhenAnyObservable(x => x.NavigateToTwitterFeedCommand)
                 .Subscribe(x => HostScreen.Router.Navigate.Execute(viewModelFactory.Create<TweetsViewModel>()));
-            
+
+            this.WhenAnyObservable(x => x.NavigateToAboutCommand)
+                .Subscribe(x => HostScreen.Router.Navigate.Execute(viewModelFactory.Create<AboutViewModel>()));
+
             this.WhenAnyObservable(x => x.ThrownExceptions,
                                    x => x.LoadDaysCommand.ThrownExceptions,
                                    x => x.LoadTracksCommand.ThrownExceptions,
@@ -93,6 +97,7 @@ namespace CodeFestApp.ViewModels
         public ReactiveCommand<object> NavigateToTrackCommand { get; private set; }
         public ReactiveCommand<object> NavigateToSpeakerCommand { get; private set; }
         public ReactiveCommand<object> NavigateToTwitterFeedCommand { get; private set; }
+        public ReactiveCommand<object> NavigateToAboutCommand { get; private set; }
 
         public int ActiveSection { get; set; }
 

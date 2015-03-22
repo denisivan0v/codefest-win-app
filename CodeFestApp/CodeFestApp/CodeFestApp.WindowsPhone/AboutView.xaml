@@ -1,0 +1,56 @@
+﻿<Page x:Class="CodeFestApp.AboutView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid>
+        <Pivot Background="{ThemeResource HubBackgroundImageBrush}">
+            <PivotItem>
+                <PivotItem.Header>
+                    <StackPanel Grid.Row="0" Margin="19,12,0,0">
+                        <TextBlock Text="{Binding ConferenceTitle}" 
+                                   Style="{ThemeResource TitleTextBlockStyle}" />
+                        <TextBlock Text="{Binding Title}"
+                                   Style="{ThemeResource HeaderTextBlockStyle}" 
+                                   Margin="0,-6.5,0,0" 
+                                   CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
+                    </StackPanel>
+                </PivotItem.Header>
+                <StackPanel Margin="9.5,0">
+                    <Grid HorizontalAlignment="Left">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+                        <RichTextBlock FontSize="18" TextWrapping="Wrap" Grid.Column="0">
+                            <Paragraph>
+                                <Run Text="CodeFest developer conference app" />
+                                <LineBreak />
+                                <LineBreak />
+                                <Run Text="CodeFest - conference about software development and testing as well as project management" />
+                            </Paragraph>
+                        </RichTextBlock>
+                        <Image Grid.Column="1" Source="Assets/StoreLogo.png" VerticalAlignment="Top" />
+                    </Grid>
+                    <RichTextBlock FontSize="18" TextWrapping="Wrap" Margin="0,19" HorizontalAlignment="Left">
+                        <Paragraph>
+                            <Run Text="This is Open Source Software. Please make your contributions:" />
+                            <LineBreak />
+                            <InlineUIContainer>
+                                <HyperlinkButton NavigateUri="{Binding GitHubLink}" 
+                                                 Content="{Binding GitHubLinkContent}"/>
+                            </InlineUIContainer>
+                            <LineBreak />
+                            <LineBreak />
+                            <Run Text="Please provide any feedback at:" />
+                            <LineBreak />
+                            <InlineUIContainer>
+                                <HyperlinkButton NavigateUri="{Binding FeedbackEmail}" 
+                                                 Content="{Binding FeedbackEmailContent}"/>
+                            </InlineUIContainer>
+                        </Paragraph>
+                    </RichTextBlock>
+                </StackPanel>
+            </PivotItem>
+        </Pivot>
+    </Grid>
+</Page>

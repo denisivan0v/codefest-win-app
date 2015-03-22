@@ -58,7 +58,8 @@ namespace CodeFestApp
                      .RegisterType<IViewFor<TrackViewModel>, TrackView>()
                      .RegisterType<IViewFor<LectureViewModel>, LectureView>()
                      .RegisterType<IViewFor<SpeakerViewModel>, SpeakerView>()
-                     .RegisterType<IViewFor<TweetsViewModel>, TweetsView>();
+                     .RegisterType<IViewFor<TweetsViewModel>, TweetsView>()
+                     .RegisterType<IViewFor<AboutViewModel>, AboutView>();
         }
 
         private void StartAnalyticsSession()
