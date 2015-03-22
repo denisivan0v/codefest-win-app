@@ -49,17 +49,25 @@ namespace CodeFestApp.ViewModels
 
             Like = ReactiveCommand.CreateAsyncTask(
                 this.WhenAny(x => x.Start, x => x.IsLiked, (s, l) => s.Value <= DateTime.Now && !l.Value),
-                _ => httpClient.PostAsync(string.Format("like/{0}/{1}",
-                                                        deviceIdentity,
-                                                        _lecture.Id),
-                                          null));
+                _ =>
+                    {
+                        logger.LogLectureLikeEvent(_lecture);
+                        return httpClient.PostAsync(string.Format("like/{0}/{1}",
+                                                                  deviceIdentity,
+                                                                  _lecture.Id),
+                                                    null);
+                    });
 
             Dislike = ReactiveCommand.CreateAsyncTask(
                 this.WhenAny(x => x.Start, x => x.IsDisliked, (s, l) => s.Value <= DateTime.Now && !l.Value),
-                _ => httpClient.PostAsync(string.Format("dislike/{0}/{1}",
-                                                        deviceIdentity,
-                                                        _lecture.Id),
-                                          null));
+                _ =>
+                    {
+                        logger.LogLectureDislikeEvent(_lecture);
+                        return httpClient.PostAsync(string.Format("dislike/{0}/{1}",
+                                                                  deviceIdentity,
+                                                                  _lecture.Id),
+                                                    null);
+                    });
 
             this.WhenAnyObservable(x => x.NavigateToSpeaker)
                 .Subscribe(x => HostScreen.Router.Navigate.Execute(x));
