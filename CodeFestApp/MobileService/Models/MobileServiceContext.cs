@@ -31,6 +31,7 @@ namespace CodeFestApp.MobileService.Models
         }
 
         public DbSet<LectureAttitude> LectureAttitudes { get; set; }
+        public DbSet<FavoriteLecture> FavoriteLectures { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

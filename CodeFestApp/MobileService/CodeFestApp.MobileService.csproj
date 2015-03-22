@@ -185,8 +185,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\FavoriteLectureController.cs" />
     <Compile Include="Controllers\LectureAttitudeController.cs" />
     <Compile Include="DataObjects\Attitude.cs" />
+    <Compile Include="DataObjects\FavoriteLecture.cs" />
     <Compile Include="DataObjects\LectureAttitude.cs" />
     <Compile Include="Models\MobileServiceContext.cs" />
     <Compile Include="ScheduledJobs\SampleJob.cs" />
@@ -198,12 +200,6 @@
   <ItemGroup>
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
-    <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
