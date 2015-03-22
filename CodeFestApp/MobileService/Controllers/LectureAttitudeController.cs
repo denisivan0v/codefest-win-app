@@ -13,7 +13,7 @@ namespace CodeFestApp.MobileService.Controllers
     public class LectureAttitudeController : TableController<LectureAttitude>
     {
         [Route("attitude/{deviceIdentity}/{lectureId}")]
-        public IQueryable<LectureAttitude> GetAttitudesForDevice(string deviceIdentity, int lectureId)
+        public IQueryable<LectureAttitude> GetAttitude(string deviceIdentity, int lectureId)
         {
             return Query().Where(x => x.DeviceIdentity == deviceIdentity &&
                                       x.LectureId == lectureId);
@@ -22,24 +22,52 @@ namespace CodeFestApp.MobileService.Controllers
         [Route("like/{deviceIdentity}/{lectureId}", Name = "Like")]
         public async Task<IHttpActionResult> PostLike(string deviceIdentity, int lectureId)
         {
+            var attutide = GetAttitude(deviceIdentity, lectureId).SingleOrDefault();
+            if (attutide != null)
+            {
+                if (attutide.Attitude == Attitude.Dislike)
+                {
+                    await DeleteAsync(attutide.Id);
+                }
+                else
+                {
+                    return Ok();
+                }
+            }
+
             var current = await InsertAsync(new LectureAttitude
                 {
                     DeviceIdentity = deviceIdentity,
                     LectureId = lectureId,
                     Attitude = Attitude.Like,
                 });
+
             return CreatedAtRoute("Like", new { id = current.Id }, current);
         }
 
         [Route("dislike/{deviceIdentity}/{lectureId}", Name = "Dislike")]
         public async Task<IHttpActionResult> PostDislike(string deviceIdentity, int lectureId)
         {
+            var attutide = GetAttitude(deviceIdentity, lectureId).SingleOrDefault();
+            if (attutide != null)
+            {
+                if (attutide.Attitude == Attitude.Like)
+                {
+                    await DeleteAsync(attutide.Id);
+                }
+                else
+                {
+                    return Ok();
+                }
+            }
+
             var current = await InsertAsync(new LectureAttitude
                 {
                     DeviceIdentity = deviceIdentity,
                     LectureId = lectureId,
                     Attitude = Attitude.Dislike,
                 });
+
             return CreatedAtRoute("Dislike", new { id = current.Id }, current);
         }
 

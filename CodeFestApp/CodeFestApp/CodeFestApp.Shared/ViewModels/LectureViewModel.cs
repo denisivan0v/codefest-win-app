@@ -48,14 +48,14 @@ namespace CodeFestApp.ViewModels
                     });
 
             Like = ReactiveCommand.CreateAsyncTask(
-                this.WhenAny(x => x.IsLiked, x => !x.Value),
+                this.WhenAny(x => x.Start, x => x.IsLiked, (s, l) => s.Value <= DateTime.Now && !l.Value),
                 _ => httpClient.PostAsync(string.Format("like/{0}/{1}",
                                                         deviceIdentity,
                                                         _lecture.Id),
                                           null));
 
             Dislike = ReactiveCommand.CreateAsyncTask(
-                this.WhenAny(x => x.IsDisiked, x => !x.Value),
+                this.WhenAny(x => x.Start, x => x.IsDisliked, (s, l) => s.Value <= DateTime.Now && !l.Value),
                 _ => httpClient.PostAsync(string.Format("dislike/{0}/{1}",
                                                         deviceIdentity,
                                                         _lecture.Id),
@@ -65,6 +65,7 @@ namespace CodeFestApp.ViewModels
                 .Subscribe(x => HostScreen.Router.Navigate.Execute(x));
 
             this.WhenAnyObservable(x => x.LoadLectureAttitude)
+                .SubscribeOn(RxApp.TaskpoolScheduler)
                 .Subscribe(x =>
                     {
                         if (!x.Contains(deviceIdentity))
@@ -74,7 +75,7 @@ namespace CodeFestApp.ViewModels
                         
                         if (x.Contains("dislike"))
                         {
-                            IsDisiked = true;
+                            IsDisliked = true;
                         }
                         else
                         {
@@ -83,22 +84,32 @@ namespace CodeFestApp.ViewModels
                     });
 
             this.WhenAnyObservable(x => x.Like)
-                .Subscribe(x =>
+                .SubscribeOn(RxApp.TaskpoolScheduler)
+                .Subscribe(async x =>
                     {
                         if (x.IsSuccessStatusCode)
                         {
-                            IsLiked = true;
-                            IsDisiked = false;
+                            var content = await x.Content.ReadAsStringAsync();
+                            if (content.Contains("like"))
+                            {
+                                IsLiked = true;
+                                IsDisliked = false;
+                            }
                         }
                     });
 
             this.WhenAnyObservable(x => x.Dislike)
-                .Subscribe(x =>
+                .SubscribeOn(RxApp.TaskpoolScheduler)
+                .Subscribe(async x =>
                     {
                         if (x.IsSuccessStatusCode)
                         {
-                            IsDisiked = true;
-                            IsLiked = false;
+                            var content = await x.Content.ReadAsStringAsync();
+                            if (content.Contains("dislike"))
+                            {
+                                IsDisliked = true;
+                                IsLiked = false;
+                            }
                         }
                     });
             
@@ -162,7 +173,7 @@ namespace CodeFestApp.ViewModels
             set { this.RaiseAndSetIfChanged(ref _isLiked, value); }
         }
 
-        public bool IsDisiked
+        public bool IsDisliked
         {
             get { return _isDisliked; }
             set { this.RaiseAndSetIfChanged(ref _isDisliked, value); }

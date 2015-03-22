@@ -67,7 +67,7 @@
                                     Command="{Binding Like}" 
                                     IsChecked="{Binding IsLiked}"/>
                 <AppBarToggleButton Icon="Dislike" Label="не нравится"
-                                    Command="{Binding Dilsike}" 
+                                    Command="{Binding Dislike}" 
                                     IsChecked="{Binding IsDisliked}"/>
             </CommandBar.PrimaryCommands>
         </CommandBar>
