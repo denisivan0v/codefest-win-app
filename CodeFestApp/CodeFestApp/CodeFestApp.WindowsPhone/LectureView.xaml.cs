@@ -16,6 +16,9 @@ namespace CodeFestApp
 
             this.WhenAnyValue(x => x.ViewModel)
                 .Subscribe(x => DataContext = x);
+
+            this.WhenAnyValue(x => x.ViewModel.LoadLectureAttitude)
+                .Subscribe(x => x.ExecuteAsyncTask());
         } 
 
         object IViewFor.ViewModel

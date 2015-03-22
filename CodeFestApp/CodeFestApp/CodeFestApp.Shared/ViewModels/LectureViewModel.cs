@@ -19,6 +19,9 @@ namespace CodeFestApp.ViewModels
     {
         private readonly IViewModelFactory _viewModelFactory;
         private readonly Lecture _lecture;
+        
+        private bool _isLiked; 
+        private bool _isDisliked; 
 
         public LectureViewModel(IScreen hostScreen,
                                 Lecture lecture,
@@ -31,23 +34,74 @@ namespace CodeFestApp.ViewModels
             _viewModelFactory = viewModelFactory;
 
             NavigateToSpeaker = ReactiveCommand.Create();
-            Like = ReactiveCommand.CreateAsyncTask(
-                _ =>
+
+            var deviceIdentity = DeviceInfo.GetDeviceIdentity();
+            var httpClient = mobileServiceClientFactory.Create();
+
+            LoadLectureAttitude = ReactiveCommand.CreateAsyncTask(
+                async _ =>
                     {
-                        var httpClient = mobileServiceClientFactory.Create();
-                        return httpClient.PostAsync(string.Format("/like/{0}/{1}",
-                                                                  DeviceInfo.GetDeviceIdentity(),
-                                                                  _lecture.Id),
-                                                    null);
+                        var response = await httpClient.GetAsync(string.Format("attitude/{0}/{1}",
+                                                                               deviceIdentity,
+                                                                               _lecture.Id));
+                        return await response.Content.ReadAsStringAsync();
                     });
+
+            Like = ReactiveCommand.CreateAsyncTask(
+                this.WhenAny(x => x.IsLiked, x => !x.Value),
+                _ => httpClient.PostAsync(string.Format("like/{0}/{1}",
+                                                        deviceIdentity,
+                                                        _lecture.Id),
+                                          null));
+
+            Dislike = ReactiveCommand.CreateAsyncTask(
+                this.WhenAny(x => x.IsDisiked, x => !x.Value),
+                _ => httpClient.PostAsync(string.Format("dislike/{0}/{1}",
+                                                        deviceIdentity,
+                                                        _lecture.Id),
+                                          null));
 
             this.WhenAnyObservable(x => x.NavigateToSpeaker)
                 .Subscribe(x => HostScreen.Router.Navigate.Execute(x));
 
-            this.WhenAnyObservable(x => x.Like)
-                .Select(x => x)
-                .Subscribe();
+            this.WhenAnyObservable(x => x.LoadLectureAttitude)
+                .Subscribe(x =>
+                    {
+                        if (!x.Contains(deviceIdentity))
+                        {
+                            return;
+                        }
+                        
+                        if (x.Contains("dislike"))
+                        {
+                            IsDisiked = true;
+                        }
+                        else
+                        {
+                            IsLiked = true;
+                        }
+                    });
 
+            this.WhenAnyObservable(x => x.Like)
+                .Subscribe(x =>
+                    {
+                        if (x.IsSuccessStatusCode)
+                        {
+                            IsLiked = true;
+                            IsDisiked = false;
+                        }
+                    });
+
+            this.WhenAnyObservable(x => x.Dislike)
+                .Subscribe(x =>
+                    {
+                        if (x.IsSuccessStatusCode)
+                        {
+                            IsDisiked = true;
+                            IsLiked = false;
+                        }
+                    });
+            
             this.WhenAnyObservable(x => x.ThrownExceptions,
                                    x => x.NavigateToSpeaker.ThrownExceptions,
                                    x => x.Like.ThrownExceptions,
@@ -102,9 +156,22 @@ namespace CodeFestApp.ViewModels
             get { return _lecture.End; }
         }
 
+        public bool IsLiked
+        {
+            get { return _isLiked; }
+            set { this.RaiseAndSetIfChanged(ref _isLiked, value); }
+        }
+
+        public bool IsDisiked
+        {
+            get { return _isDisliked; }
+            set { this.RaiseAndSetIfChanged(ref _isDisliked, value); }
+        }
+
         public ReactiveCommand<object> NavigateToSpeaker { get; private set; } 
-        public ReactiveCommand<HttpResponseMessage> Like { get; private set; } 
-        public ReactiveCommand<object> Dislike { get; private set; } 
+        public ReactiveCommand<string> LoadLectureAttitude { get; private set; } 
+        public ReactiveCommand<HttpResponseMessage> Like { get; private set; }
+        public ReactiveCommand<HttpResponseMessage> Dislike { get; private set; } 
 
         public string UrlPathSegment
         {

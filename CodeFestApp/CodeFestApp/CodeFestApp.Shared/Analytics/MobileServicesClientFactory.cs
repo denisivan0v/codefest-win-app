@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Net.Http;
 
 namespace CodeFestApp.Analytics
@@ -8,11 +7,12 @@ namespace CodeFestApp.Analytics
     {
         public HttpClient Create()
         {
-            var handler = new HttpClientHandler { Credentials = new NetworkCredential(string.Empty, MobileServicesSettings.Key) };
-            return new HttpClient(handler)
-                {
-                    BaseAddress = new Uri(MobileServicesSettings.Url)
-                };
+            var httpClient = new HttpClient { BaseAddress = new Uri(MobileServicesSettings.Url) };
+
+            // https://msdn.microsoft.com/en-us/library/azure/jj677199.aspx
+            httpClient.DefaultRequestHeaders.Add("X-ZUMO-APPLICATION", MobileServicesSettings.Key);
+
+            return httpClient;
         }
     }
 }

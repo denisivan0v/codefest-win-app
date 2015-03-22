@@ -63,7 +63,12 @@
     <Page.BottomAppBar>
         <CommandBar>
             <CommandBar.PrimaryCommands>
-                <AppBarButton Icon="Like"  Label="нравится" Command="{Binding Like}"/>
+                <AppBarToggleButton Icon="Like" Label="нравится" 
+                                    Command="{Binding Like}" 
+                                    IsChecked="{Binding IsLiked}"/>
+                <AppBarToggleButton Icon="Dislike" Label="не нравится"
+                                    Command="{Binding Dilsike}" 
+                                    IsChecked="{Binding IsDisliked}"/>
             </CommandBar.PrimaryCommands>
         </CommandBar>
     </Page.BottomAppBar>

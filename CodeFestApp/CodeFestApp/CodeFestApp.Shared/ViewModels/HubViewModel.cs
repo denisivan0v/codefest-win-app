@@ -5,15 +5,11 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 
-using Windows.Media.Capture;
-
 using CodeFestApp.Analytics;
 using CodeFestApp.DataModel;
 using CodeFestApp.DI;
 
 using ReactiveUI;
-
-using Splat;
 
 namespace CodeFestApp.ViewModels
 {

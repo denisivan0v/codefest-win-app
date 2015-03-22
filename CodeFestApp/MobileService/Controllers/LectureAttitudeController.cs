@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Controllers;
@@ -13,10 +12,11 @@ namespace CodeFestApp.MobileService.Controllers
 {
     public class LectureAttitudeController : TableController<LectureAttitude>
     {
-        [Route("attitude/{deviceIdentity}")]
-        public IQueryable<LectureAttitude> GetAttitudesForDevice(string deviceIdentity)
+        [Route("attitude/{deviceIdentity}/{lectureId}")]
+        public IQueryable<LectureAttitude> GetAttitudesForDevice(string deviceIdentity, int lectureId)
         {
-            return Query().Where(x => x.DeviceIdentity == deviceIdentity);
+            return Query().Where(x => x.DeviceIdentity == deviceIdentity &&
+                                      x.LectureId == lectureId);
         }
 
         [Route("like/{deviceIdentity}/{lectureId}", Name = "Like")]
@@ -38,7 +38,7 @@ namespace CodeFestApp.MobileService.Controllers
                 {
                     DeviceIdentity = deviceIdentity,
                     LectureId = lectureId,
-                    Attitude = Attitude.Like,
+                    Attitude = Attitude.Dislike,
                 });
             return CreatedAtRoute("Dislike", new { id = current.Id }, current);
         }
