@@ -12,6 +12,13 @@ namespace CodeFestApp.MobileService.Controllers
 {
     public class FavoriteLectureController : TableController<FavoriteLecture>
     {
+        [Route("favorite/lectures/check/{deviceIdentity}/{lectureId}")]
+        public bool GetIsLectureInFavorites(string deviceIdentity, int lectureId)
+        {
+            return Query().Any(x => x.DeviceIdentity == deviceIdentity &&
+                                    x.LectureId == lectureId);
+        }
+
         [Route("favorite/lectures/{deviceIdentity}")]
         public IQueryable<FavoriteLecture> GetFavoriteLectures(string deviceIdentity)
         {
@@ -21,7 +28,7 @@ namespace CodeFestApp.MobileService.Controllers
         [Route("favorite/lectures/add", Name = "AddLectureToFavotites")]
         public async Task<IHttpActionResult> PostLectureToFavorites(FavoriteLecture favorite)
         {
-            var exists = GetFavoriteLectures(favorite.DeviceIdentity).Any(x => x.LectureId == favorite.LectureId);
+            var exists = GetIsLectureInFavorites(favorite.DeviceIdentity, favorite.LectureId);
             if (exists)
             {
                 return Ok();
