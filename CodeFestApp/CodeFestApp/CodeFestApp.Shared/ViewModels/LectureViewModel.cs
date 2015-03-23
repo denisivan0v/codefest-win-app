@@ -11,6 +11,8 @@ using CodeFestApp.DataModel;
 using CodeFestApp.DI;
 using CodeFestApp.Utils;
 
+using Microsoft.WindowsAzure.MobileServices;
+
 using ReactiveUI;
 
 namespace CodeFestApp.ViewModels
@@ -19,15 +21,17 @@ namespace CodeFestApp.ViewModels
     {
         private readonly IViewModelFactory _viewModelFactory;
         private readonly Lecture _lecture;
+        private readonly ObservableAsPropertyHelper<bool> _isInFavorites;
         
         private bool _isLiked; 
-        private bool _isDisliked; 
+        private bool _isDisliked;
 
         public LectureViewModel(IScreen hostScreen,
                                 Lecture lecture,
                                 IViewModelFactory viewModelFactory,
                                 IAnalyticsLogger logger,
-                                MobileServicesClientFactory mobileServiceClientFactory)
+                                MobileServicesClientFactory mobileServiceClientFactory,
+                                IMobileServiceClient mobileServiceClient)
         {
             HostScreen = hostScreen;
             _lecture = lecture;
@@ -45,6 +49,16 @@ namespace CodeFestApp.ViewModels
                                                                                deviceIdentity,
                                                                                _lecture.Id));
                         return await response.Content.ReadAsStringAsync();
+                    });
+
+            CheckIsInFavorites = ReactiveCommand.CreateAsyncTask(
+                async _ =>
+                    {
+                        var response = await httpClient.GetAsync(string.Format("favorite/lectures/check/{0}/{1}",
+                                                                               deviceIdentity,
+                                                                               _lecture.Id));
+                        var responseContent = await response.Content.ReadAsStringAsync();
+                        return bool.Parse(responseContent);
                     });
 
             Like = ReactiveCommand.CreateAsyncTask(
@@ -69,6 +83,15 @@ namespace CodeFestApp.ViewModels
                                                     null);
                     });
 
+            AddToFavorites = ReactiveCommand.CreateAsyncTask(
+                _ =>
+                    {
+                        if (IsInFavorites)
+                        {
+
+                        }
+                    });
+
             this.WhenAnyObservable(x => x.NavigateToSpeaker)
                 .Subscribe(x => HostScreen.Router.Navigate.Execute(x));
 
@@ -80,7 +103,7 @@ namespace CodeFestApp.ViewModels
                         {
                             return;
                         }
-                        
+
                         if (x.Contains("dislike"))
                         {
                             IsDisliked = true;
@@ -90,6 +113,9 @@ namespace CodeFestApp.ViewModels
                             IsLiked = true;
                         }
                     });
+
+            this.WhenAnyObservable(x => x.CheckIsInFavorites)
+                .ToProperty(this, x => x.IsInFavorites, out _isInFavorites);
 
             this.WhenAnyObservable(x => x.Like)
                 .SubscribeOn(RxApp.TaskpoolScheduler)
@@ -120,7 +146,7 @@ namespace CodeFestApp.ViewModels
                             }
                         }
                     });
-            
+
             this.WhenAnyObservable(x => x.ThrownExceptions,
                                    x => x.NavigateToSpeaker.ThrownExceptions,
                                    x => x.Like.ThrownExceptions,
@@ -187,10 +213,17 @@ namespace CodeFestApp.ViewModels
             set { this.RaiseAndSetIfChanged(ref _isDisliked, value); }
         }
 
+        public bool IsInFavorites
+        {
+            get { return _isInFavorites.Value; }
+        }
+
         public ReactiveCommand<object> NavigateToSpeaker { get; private set; } 
         public ReactiveCommand<string> LoadLectureAttitude { get; private set; } 
+        public ReactiveCommand<bool> CheckIsInFavorites { get; private set; } 
         public ReactiveCommand<HttpResponseMessage> Like { get; private set; }
         public ReactiveCommand<HttpResponseMessage> Dislike { get; private set; } 
+        public ReactiveCommand<HttpResponseMessage> AddToFavorites { get; private set; } 
 
         public string UrlPathSegment
         {

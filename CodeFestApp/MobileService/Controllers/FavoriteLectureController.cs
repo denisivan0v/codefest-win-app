@@ -25,29 +25,35 @@ namespace CodeFestApp.MobileService.Controllers
             return Query().Where(x => x.DeviceIdentity == deviceIdentity);
         }
 
-        [Route("favorite/lectures/add", Name = "AddLectureToFavotites")]
-        public async Task<IHttpActionResult> PostLectureToFavorites(FavoriteLecture favorite)
+        [Route("favorite/lectures/add/{deviceIdentity}/{lectureId}", Name = "AddToFavotites")]
+        public async Task<IHttpActionResult> PostToFavorites(string deviceIdentity, int lectureId)
         {
-            var exists = GetIsLectureInFavorites(favorite.DeviceIdentity, favorite.LectureId);
+            var exists = GetIsLectureInFavorites(deviceIdentity, lectureId);
             if (exists)
             {
                 return Ok();
             }
 
-            var current = await InsertAsync(favorite);
-            return CreatedAtRoute("AddFavotiteLecture", new { id = current.Id }, current);
+            var current = await InsertAsync(new FavoriteLecture
+                {
+                    LectureId = lectureId,
+                    DeviceIdentity = deviceIdentity
+                });
+
+            return CreatedAtRoute("AddToFavotites", new { id = current.Id }, current);
         }
 
-        [Route("favorite/lectures/remove/{id}", Name = "RemoveLectureFromFavorites")]
-        public Task DeleteLectureFromFavorites(string id)
+        [Route("favorite/lectures/remove/{deviceIdentity}/{lectureId}")]
+        public Task DeleteromFavorites(string deviceIdentity, int lectureId)
         {
-            var exists = Query().Any(x => x.Id == id);
-            if (!exists)
+            var existing = Query().SingleOrDefault(x => x.DeviceIdentity == deviceIdentity &&
+                                                      x.LectureId == lectureId);
+            if (existing == null)
             {
                 return Task.FromResult(true);
             }
 
-            return DeleteAsync(id);
+            return DeleteAsync(existing.Id);
         }
 
         protected override void Initialize(HttpControllerContext controllerContext)
