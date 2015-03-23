@@ -80,7 +80,7 @@ namespace CodeFestApp.ViewModels
                                    x => x.NavigateToTrackCommand.ThrownExceptions,
                                    x => x.NavigateToSpeakerCommand.ThrownExceptions,
                                    x => x.NavigateToTwitterFeedCommand.ThrownExceptions)
-                .ObserveOn(RxApp.TaskpoolScheduler)
+                .SubscribeOn(RxApp.TaskpoolScheduler)
                 .Subscribe(logger.LogException);
             
             this.WhenNavigatedTo(() =>

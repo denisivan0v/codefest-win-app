@@ -83,13 +83,20 @@ namespace CodeFestApp.ViewModels
                                                     null);
                     });
 
-            AddToFavorites = ReactiveCommand.CreateAsyncTask(
+            ManageFavorites = ReactiveCommand.CreateAsyncTask(
                 _ =>
                     {
                         if (IsInFavorites)
                         {
-
+                            return httpClient.DeleteAsync(string.Format("favorite/lectures/remove/{0}/{1}",
+                                                                        deviceIdentity,
+                                                                        _lecture.Id));
                         }
+
+                        return httpClient.PostAsync(string.Format("favorite/lectures/add/{0}/{1}",
+                                                                  deviceIdentity,
+                                                                  _lecture.Id),
+                                                    null);
                     });
 
             this.WhenAnyObservable(x => x.NavigateToSpeaker)
@@ -146,6 +153,10 @@ namespace CodeFestApp.ViewModels
                             }
                         }
                     });
+
+            this.WhenAnyObservable(x => x.ManageFavorites)
+                .SubscribeOn(RxApp.TaskpoolScheduler)
+                .Subscribe(x => CheckIsInFavorites.ExecuteAsyncTask());
 
             this.WhenAnyObservable(x => x.ThrownExceptions,
                                    x => x.NavigateToSpeaker.ThrownExceptions,
@@ -223,7 +234,7 @@ namespace CodeFestApp.ViewModels
         public ReactiveCommand<bool> CheckIsInFavorites { get; private set; } 
         public ReactiveCommand<HttpResponseMessage> Like { get; private set; }
         public ReactiveCommand<HttpResponseMessage> Dislike { get; private set; } 
-        public ReactiveCommand<HttpResponseMessage> AddToFavorites { get; private set; } 
+        public ReactiveCommand<HttpResponseMessage> ManageFavorites { get; private set; } 
 
         public string UrlPathSegment
         {
