@@ -11,8 +11,6 @@ using CodeFestApp.DataModel;
 using CodeFestApp.DI;
 using CodeFestApp.Utils;
 
-using Microsoft.WindowsAzure.MobileServices;
-
 using ReactiveUI;
 
 namespace CodeFestApp.ViewModels
