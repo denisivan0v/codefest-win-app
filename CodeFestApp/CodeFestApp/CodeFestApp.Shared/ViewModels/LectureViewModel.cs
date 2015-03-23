@@ -30,8 +30,7 @@ namespace CodeFestApp.ViewModels
                                 Lecture lecture,
                                 IViewModelFactory viewModelFactory,
                                 IAnalyticsLogger logger,
-                                MobileServicesClientFactory mobileServiceClientFactory,
-                                IMobileServiceClient mobileServiceClient)
+                                MobileServicesClientFactory mobileServiceClientFactory)
         {
             HostScreen = hostScreen;
             _lecture = lecture;
