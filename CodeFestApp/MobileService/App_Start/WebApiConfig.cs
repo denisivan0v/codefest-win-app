@@ -1,5 +1,7 @@
 ﻿using System.Data.Entity;
+using System.Data.Entity.Migrations;
 
+using CodeFestApp.MobileService.Migrations;
 using CodeFestApp.MobileService.Models;
 using Microsoft.WindowsAzure.Mobile.Service;
 
@@ -20,6 +22,9 @@ namespace CodeFestApp.MobileService
             //// config.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
 
             Database.SetInitializer(new CreateDatabaseIfNotExists<MobileServiceContext>());
+
+            var migrator = new DbMigrator(new Configuration());
+            migrator.Update();
         }
     }
 }
