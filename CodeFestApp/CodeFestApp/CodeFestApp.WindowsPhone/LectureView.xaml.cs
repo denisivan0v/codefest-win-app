@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive.Linq;
 
 using CodeFestApp.ViewModels;
 
@@ -18,6 +19,11 @@ namespace CodeFestApp
                 .Subscribe(x => DataContext = x);
 
             this.WhenAnyValue(x => x.ViewModel.LoadLectureAttitude)
+                .ObserveOn(RxApp.TaskpoolScheduler)
+                .Subscribe(x => x.ExecuteAsyncTask());
+
+            this.WhenAnyValue(x => x.ViewModel.CheckIsInFavorites)
+                .ObserveOn(RxApp.TaskpoolScheduler)
                 .Subscribe(x => x.ExecuteAsyncTask());
         } 
 

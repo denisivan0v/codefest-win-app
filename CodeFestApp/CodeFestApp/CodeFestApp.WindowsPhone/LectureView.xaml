@@ -63,6 +63,9 @@
     <Page.BottomAppBar>
         <CommandBar>
             <CommandBar.PrimaryCommands>
+                <AppBarToggleButton Icon="Favorite" Label="в избранное" 
+                                    Command="{Binding ManageFavorites}" 
+                                    IsChecked="{Binding IsInFavorites}"/>
                 <AppBarToggleButton Icon="Like" Label="нравится" 
                                     Command="{Binding Like}" 
                                     IsChecked="{Binding IsLiked}"/>

@@ -185,9 +185,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\FavoriteLectureController.cs" />
     <Compile Include="Controllers\LectureAttitudeController.cs" />
     <Compile Include="DataObjects\Attitude.cs" />
+    <Compile Include="DataObjects\FavoriteLecture.cs" />
     <Compile Include="DataObjects\LectureAttitude.cs" />
+    <Compile Include="Migrations\201503211712518_InitialCreate.cs" />
+    <Compile Include="Migrations\201503211712518_InitialCreate.Designer.cs">
+      <DependentUpon>201503211712518_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503231701178_FavoriteLectures.cs" />
+    <Compile Include="Migrations\201503231701178_FavoriteLectures.Designer.cs">
+      <DependentUpon>201503231701178_FavoriteLectures.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\MobileServiceContext.cs" />
     <Compile Include="ScheduledJobs\SampleJob.cs" />
     <Compile Include="Global.asax.cs">
@@ -198,12 +209,6 @@
   <ItemGroup>
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
-    <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -216,6 +221,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\PublishProfiles\mobile-codefestapp.pubxml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201503211712518_InitialCreate.resx">
+      <DependentUpon>201503211712518_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503231701178_FavoriteLectures.resx">
+      <DependentUpon>201503231701178_FavoriteLectures.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
