@@ -159,9 +159,9 @@ namespace CodeFestApp.ViewModels
                                    x => x.NavigateToSpeaker.ThrownExceptions,
                                    x => x.Like.ThrownExceptions,
                                    x => x.Dislike.ThrownExceptions)
-                .ObserveOn(RxApp.TaskpoolScheduler)
+                .SubscribeOn(RxApp.TaskpoolScheduler)
                 .Subscribe(logger.LogException);
-
+         
             this.WhenNavigatedTo(() =>
                 {
                     Task.Run(() => logger.LogViewModelRouted(this));
