@@ -113,14 +113,14 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <GridView ItemsSource="{Binding SpeakerAvatars}"
+            <GridView ItemsSource="{Binding SpeakerAvatars, Mode=OneTime}"
                       Grid.Column="0" 
                       Margin="0,14.5"
                       HorizontalAlignment="Left"
                       Height="120" Width="120">
                 <GridView.ItemTemplate>
                     <DataTemplate>
-                        <Image Source="{Binding}" Stretch="Uniform"/>
+                        <Image Source="{Binding Mode=OneTime}" Stretch="Uniform"/>
                     </DataTemplate>
                 </GridView.ItemTemplate>
                 <GridView.ItemContainerStyle>
@@ -130,7 +130,7 @@
                     </Style>
                 </GridView.ItemContainerStyle>
             </GridView>
-            <TextBlock Text="{Binding Title}" 
+            <TextBlock Text="{Binding Title, Mode=OneTime}" 
                        Grid.Column="1" Margin="14.5,0,0,0"
                        Style="{ThemeResource ListViewItemTextBlockStyle}"/>
         </Grid>

@@ -1,4 +1,7 @@
-﻿using CodeFestApp.ViewModels;
+﻿using System;
+using System.Reactive.Linq;
+
+using CodeFestApp.ViewModels;
 
 using ReactiveUI;
 
@@ -14,6 +17,10 @@ namespace CodeFestApp
 
             this.WhenAnyValue(x => x.ViewModel)
                 .BindTo(this, x => x.DataContext);
+
+            this.WhenAnyValue(x => x.ViewModel.LoadLectures)
+                .ObserveOn(RxApp.TaskpoolScheduler)
+                .Subscribe(x => x.ExecuteAsyncTask());
         }
         
         object IViewFor.ViewModel

@@ -100,7 +100,6 @@ namespace CodeFestApp.ViewModels
                 .Subscribe(x => HostScreen.Router.Navigate.Execute(x));
 
             this.WhenAnyObservable(x => x.LoadLectureAttitude)
-                .SubscribeOn(RxApp.TaskpoolScheduler)
                 .Subscribe(x =>
                     {
                         if (!x.Contains(deviceIdentity))
@@ -122,7 +121,6 @@ namespace CodeFestApp.ViewModels
                 .ToProperty(this, x => x.IsInFavorites, out _isInFavorites);
 
             this.WhenAnyObservable(x => x.Like)
-                .SubscribeOn(RxApp.TaskpoolScheduler)
                 .Subscribe(async x =>
                     {
                         if (x.IsSuccessStatusCode)
@@ -137,7 +135,6 @@ namespace CodeFestApp.ViewModels
                     });
 
             this.WhenAnyObservable(x => x.Dislike)
-                .SubscribeOn(RxApp.TaskpoolScheduler)
                 .Subscribe(async x =>
                     {
                         if (x.IsSuccessStatusCode)
@@ -152,16 +149,15 @@ namespace CodeFestApp.ViewModels
                     });
 
             this.WhenAnyObservable(x => x.ManageFavorites)
-                .SubscribeOn(RxApp.TaskpoolScheduler)
                 .Subscribe(x => CheckIsInFavorites.ExecuteAsyncTask());
 
             this.WhenAnyObservable(x => x.ThrownExceptions,
                                    x => x.NavigateToSpeaker.ThrownExceptions,
                                    x => x.Like.ThrownExceptions,
                                    x => x.Dislike.ThrownExceptions)
-                .ObserveOn(RxApp.TaskpoolScheduler)
+                .SubscribeOn(RxApp.TaskpoolScheduler)
                 .Subscribe(logger.LogException);
-
+         
             this.WhenNavigatedTo(() =>
                 {
                     Task.Run(() => logger.LogViewModelRouted(this));

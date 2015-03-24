@@ -17,28 +17,33 @@ namespace CodeFestApp.ViewModels
     {
         private readonly Day _day;
 
-        private readonly IEnumerable<IGrouping<string, LectureViewModel>> _lectures;
-        private readonly ReactiveList<Uri> _speakerAvatars;
+        private readonly ObservableAsPropertyHelper<IEnumerable<IGrouping<string, LectureViewModel>>> _lectures;
 
-        public DayViewModel(IScreen hostScreen, Day day, IViewModelFactory lectureViewModelFactory, IAnalyticsLogger logger)
+        public DayViewModel(IScreen hostScreen,
+                            Day day,
+                            IViewModelFactory lectureViewModelFactory,
+                            IAnalyticsLogger logger)
         {
             HostScreen = hostScreen;
             _day = day;
 
-            _lectures = _day.Lectures
-                            .Select(lectureViewModelFactory.Create<LectureViewModel, Lecture>)
-                            .OrderBy(x => x.Start)
-                            .GroupBy(x => x.Start.ToString("t"))
-                            .ToArray();
-
-            _speakerAvatars = new ReactiveList<Uri>(_day.Lectures.SelectMany(x => x.Speakers).Select(x => x.Avatar));
-            
             NavigateToLectureCommand = ReactiveCommand.Create();
+            
+            LoadLectures = ReactiveCommand.CreateAsyncTask(_ => Task.Run(
+                () => _day.Lectures
+                          .Select(lectureViewModelFactory.Create<LectureViewModel, Lecture>)
+                          .OrderBy(x => x.Start)
+                          .GroupBy(x => x.Start.ToString("t"))
+                          .AsEnumerable()));
 
             this.WhenAnyObservable(x => x.NavigateToLectureCommand)
                 .Subscribe(x => HostScreen.Router.Navigate.Execute(x));
 
+            this.WhenAnyObservable(x => x.LoadLectures)
+                .ToProperty(this, x => x.Lectures, out _lectures);
+
             this.WhenAnyObservable(x => x.ThrownExceptions,
+                                   x => x.LoadLectures.ThrownExceptions,
                                    x => x.NavigateToLectureCommand.ThrownExceptions)
                 .ObserveOn(RxApp.TaskpoolScheduler)
                 .Subscribe(logger.LogException);
@@ -65,21 +70,18 @@ namespace CodeFestApp.ViewModels
             get { return _day.Date; }
         }
 
-        public ReactiveList<Uri> SpeakerAvatars
+        public IEnumerable<Uri> SpeakerAvatars
         {
-            get
-            {
-                _speakerAvatars.Sort((x, y) => (new Random()).Next(0, 10));
-                return _speakerAvatars;
-            }
+            get { return _day.Lectures.SelectMany(x => x.Speakers).Select(x => x.Avatar); }
         }
 
         public IEnumerable<IGrouping<string, LectureViewModel>> Lectures
         {
-            get { return _lectures; }
+            get { return _lectures.Value; }
         }
 
-        public ReactiveCommand<object> NavigateToLectureCommand { get; private set; }  
+        public ReactiveCommand<object> NavigateToLectureCommand { get; private set; }
+        public ReactiveCommand<IEnumerable<IGrouping<string, LectureViewModel>>> LoadLectures { get; private set; }
 
         public string UrlPathSegment
         {

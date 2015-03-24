@@ -6,7 +6,7 @@
     <Page.Resources>
         <CollectionViewSource x:Name="CharacterGroupedSpeakers" 
                               IsSourceGrouped="True" 
-                              Source="{Binding Speakers}" 
+                              Source="{Binding Speakers, Mode=OneWay}" 
                               ItemsPath="Items"/>
     </Page.Resources>
     <Grid>
@@ -16,7 +16,7 @@
             </TransitionCollection>
         </Grid.ChildrenTransitions>
         <Hub Background="{ThemeResource HubBackgroundImageBrush}"
-             DefaultSectionIndex="{Binding ActiveSection}"
+             DefaultSectionIndex="{Binding ActiveSection, Mode=OneTime}"
              SectionsInViewChanged="Hub_OnSectionsInViewChanged">
             <Hub.HeaderTemplate>
                 <DataTemplate>
@@ -31,20 +31,20 @@
                 </DataTemplate>
             </Hub.HeaderTemplate>
 
-            <HubSection Header="{Binding DaysSectionTitle}"
+            <HubSection Header="{Binding DaysSectionTitle, Mode=OneTime}"
                         HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
                 <DataTemplate>
-                    <ListView ItemsSource="{Binding Days}"
+                    <ListView ItemsSource="{Binding Days, Mode=OneWay}"
                               ItemTemplate="{StaticResource ManyImagesTileWithTitleItemTemplate}"
                               IsItemClickEnabled="True"
                               ItemClick="DaysGridView_OnItemClick"/>
                 </DataTemplate>
             </HubSection>
 
-            <HubSection Header="{Binding TracksSectionTitle}"
+            <HubSection Header="{Binding TracksSectionTitle, Mode=OneTime}"
                         HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
                 <DataTemplate>
-                    <ListView ItemsSource="{Binding Tracks}"
+                    <ListView ItemsSource="{Binding Tracks, Mode=OneWay}"
                               ItemTemplate="{StaticResource LargeTextTrackItemTemplate}"
                               IsItemClickEnabled="True"
                               ItemClick="TracksListView_OnItemClick"/>
@@ -56,7 +56,7 @@
                 <DataTemplate>
                     <SemanticZoom>
                         <SemanticZoom.ZoomedInView>
-                            <ListView ItemsSource="{Binding Source={StaticResource CharacterGroupedSpeakers}}"
+                            <ListView ItemsSource="{Binding Source={StaticResource CharacterGroupedSpeakers}, Mode=OneTime}"
                                       ItemTemplate="{StaticResource ListViewItemTemplate}" 
                                       ShowsScrollingPlaceholders="True"
                                       ScrollViewer.HorizontalScrollMode="Disabled" 
@@ -73,7 +73,7 @@
                             </ListView>
                         </SemanticZoom.ZoomedInView>
                         <SemanticZoom.ZoomedOutView>
-                            <GridView ItemsSource="{Binding Source={StaticResource CharacterGroupedSpeakers}, Path=CollectionGroups}"
+                            <GridView ItemsSource="{Binding Source={StaticResource CharacterGroupedSpeakers}, Path=CollectionGroups, Mode=OneTime}"
                                       Background="{StaticResource ContentDialogDimmingThemeBrush}"
                                       HorizontalContentAlignment="Center" 
                                       VerticalContentAlignment="Center"
@@ -89,7 +89,7 @@
                 </DataTemplate>
             </HubSection>
 
-            <HubSection Header="{Binding CurrentLecturesSectionTitle}" 
+            <HubSection Header="{Binding CurrentLecturesSectionTitle, Mode=OneTime}" 
                         HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}"> 
             </HubSection>
         </Hub>
@@ -97,12 +97,12 @@
     <Page.BottomAppBar>
         <CommandBar>
             <CommandBar.PrimaryCommands>
-                <AppBarButton Label="лента" Command="{Binding NavigateToTwitterFeedCommand}">
+                <AppBarButton Label="лента" Command="{Binding NavigateToTwitterFeedCommand, Mode=OneTime}">
                     <AppBarButton.Icon>
-                        <BitmapIcon UriSource="{Binding TwitterIcon}"/>
+                        <BitmapIcon UriSource="{Binding TwitterIcon, Mode=OneTime}"/>
                     </AppBarButton.Icon>
                 </AppBarButton>
-                <AppBarButton Icon="Help" Label="о приложении" Command="{Binding NavigateToAboutCommand}"/>
+                <AppBarButton Icon="Help" Label="о приложении" Command="{Binding NavigateToAboutCommand, Mode=OneTime}"/>
             </CommandBar.PrimaryCommands>
         </CommandBar>
     </Page.BottomAppBar>
