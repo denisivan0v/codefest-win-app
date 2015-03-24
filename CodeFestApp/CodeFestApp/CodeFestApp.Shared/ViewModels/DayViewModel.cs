@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Disposables;
@@ -19,7 +18,6 @@ namespace CodeFestApp.ViewModels
         private readonly Day _day;
 
         private readonly ObservableAsPropertyHelper<IEnumerable<IGrouping<string, LectureViewModel>>> _lectures;
-        private readonly ObservableAsPropertyHelper<IEnumerable<Uri>> _speakerAvatars;
 
         public DayViewModel(IScreen hostScreen,
                             Day day,
@@ -38,20 +36,14 @@ namespace CodeFestApp.ViewModels
                           .GroupBy(x => x.Start.ToString("t"))
                           .AsEnumerable()));
 
-            LoadSpeakerAvatars = ReactiveCommand.CreateAsyncTask(_ => Task.Run(
-                () => _day.Lectures.SelectMany(x => x.Speakers).Select(x => x.Avatar)));
-
             this.WhenAnyObservable(x => x.NavigateToLectureCommand)
                 .Subscribe(x => HostScreen.Router.Navigate.Execute(x));
 
             this.WhenAnyObservable(x => x.LoadLectures)
                 .ToProperty(this, x => x.Lectures, out _lectures);
 
-            this.WhenAnyObservable(x => x.LoadSpeakerAvatars)
-                .Select(x => x)
-                .ToProperty(this, x => x.SpeakerAvatars, out _speakerAvatars);
-
             this.WhenAnyObservable(x => x.ThrownExceptions,
+                                   x => x.LoadLectures.ThrownExceptions,
                                    x => x.NavigateToLectureCommand.ThrownExceptions)
                 .ObserveOn(RxApp.TaskpoolScheduler)
                 .Subscribe(logger.LogException);
@@ -80,7 +72,7 @@ namespace CodeFestApp.ViewModels
 
         public IEnumerable<Uri> SpeakerAvatars
         {
-            get { return _speakerAvatars.Value; }
+            get { return _day.Lectures.SelectMany(x => x.Speakers).Select(x => x.Avatar); }
         }
 
         public IEnumerable<IGrouping<string, LectureViewModel>> Lectures
@@ -90,7 +82,6 @@ namespace CodeFestApp.ViewModels
 
         public ReactiveCommand<object> NavigateToLectureCommand { get; private set; }
         public ReactiveCommand<IEnumerable<IGrouping<string, LectureViewModel>>> LoadLectures { get; private set; }
-        public ReactiveCommand<IEnumerable<Uri>> LoadSpeakerAvatars { get; private set; }
 
         public string UrlPathSegment
         {

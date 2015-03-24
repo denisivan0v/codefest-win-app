@@ -6,7 +6,6 @@ using CodeFestApp.DI;
 using CodeFestApp.ViewModels;
 
 using Microsoft.Practices.Unity;
-using Microsoft.WindowsAzure.MobileServices;
 
 using ReactiveUI;
 
@@ -53,13 +52,13 @@ namespace CodeFestApp
 
                      .RegisterType<IViewModelFactory, UnityViewModelFactory>(Lifetime.Singleton)
 
-                     .RegisterType<IViewFor<HubViewModel>, HubView>()
-                     .RegisterType<IViewFor<DayViewModel>, DayView>()
-                     .RegisterType<IViewFor<TrackViewModel>, TrackView>()
-                     .RegisterType<IViewFor<LectureViewModel>, LectureView>()
-                     .RegisterType<IViewFor<SpeakerViewModel>, SpeakerView>()
-                     .RegisterType<IViewFor<TweetsViewModel>, TweetsView>()
-                     .RegisterType<IViewFor<AboutViewModel>, AboutView>();
+                     .RegisterType<IViewFor<HubViewModel>, HubView>(Lifetime.PerResolve)
+                     .RegisterType<IViewFor<DayViewModel>, DayView>(Lifetime.PerResolve)
+                     .RegisterType<IViewFor<TrackViewModel>, TrackView>(Lifetime.PerResolve)
+                     .RegisterType<IViewFor<LectureViewModel>, LectureView>(Lifetime.PerResolve)
+                     .RegisterType<IViewFor<SpeakerViewModel>, SpeakerView>(Lifetime.PerResolve)
+                     .RegisterType<IViewFor<TweetsViewModel>, TweetsView>(Lifetime.PerResolve)
+                     .RegisterType<IViewFor<AboutViewModel>, AboutView>(Lifetime.PerResolve);
         }
 
         private void StartAnalyticsSession()
