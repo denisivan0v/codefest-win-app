@@ -10,13 +10,8 @@ using Windows.UI.Xaml.Controls;
 
 namespace CodeFestApp
 {
-    public sealed partial class HubView : IViewFor<HubViewModel>, IDisposable
+    public sealed partial class HubView : IViewFor<HubViewModel>
     {
-        private readonly IDisposable _dataContextSub;
-        private readonly IDisposable _loadDaysSub;
-        private readonly IDisposable _loadTracksSub;
-        private readonly IDisposable _loadSpeakersSub;
-
         public HubView()
         {
             InitializeComponent();
@@ -24,20 +19,20 @@ namespace CodeFestApp
             // Hub is only supported in Portrait orientation
             DisplayInformation.AutoRotationPreferences = DisplayOrientations.Portrait;
 
-            _dataContextSub = this.WhenAnyValue(x => x.ViewModel)
-                                  .BindTo(this, x => x.DataContext);
+            this.WhenAnyValue(x => x.ViewModel)
+                .BindTo(this, x => x.DataContext);
 
-            _loadDaysSub = this.WhenAnyValue(x => x.ViewModel.LoadDaysCommand)
+            this.WhenAnyValue(x => x.ViewModel.LoadDaysCommand)
                                .ObserveOn(RxApp.TaskpoolScheduler)
                                .Subscribe(x => x.ExecuteAsyncTask());
 
-            _loadTracksSub = this.WhenAnyValue(x => x.ViewModel.LoadTracksCommand)
-                                 .ObserveOn(RxApp.TaskpoolScheduler)
-                                 .Subscribe(x => x.ExecuteAsyncTask());
+            this.WhenAnyValue(x => x.ViewModel.LoadTracksCommand)
+                .ObserveOn(RxApp.TaskpoolScheduler)
+                .Subscribe(x => x.ExecuteAsyncTask());
 
-            _loadSpeakersSub = this.WhenAnyValue(x => x.ViewModel.LoadSpeakersCommand)
-                                   .ObserveOn(RxApp.TaskpoolScheduler)
-                                   .Subscribe(x => x.ExecuteAsyncTask());
+            this.WhenAnyValue(x => x.ViewModel.LoadSpeakersCommand)
+                .ObserveOn(RxApp.TaskpoolScheduler)
+                .Subscribe(x => x.ExecuteAsyncTask());
         }
 
         object IViewFor.ViewModel
@@ -47,14 +42,6 @@ namespace CodeFestApp
         }
 
         public HubViewModel ViewModel { get; set; }
-
-        public void Dispose()
-        {
-            _dataContextSub.Dispose();
-            _loadDaysSub.Dispose();
-            _loadTracksSub.Dispose();
-            _loadSpeakersSub.Dispose();
-        }
 
         private void DaysGridView_OnItemClick(object sender, ItemClickEventArgs e)
         {
