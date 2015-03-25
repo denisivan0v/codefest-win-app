@@ -52,13 +52,13 @@ namespace CodeFestApp
 
                      .RegisterType<IViewModelFactory, UnityViewModelFactory>(Lifetime.Singleton)
 
-                     .RegisterType<IViewFor<HubViewModel>, HubView>(Lifetime.PerResolve)
-                     .RegisterType<IViewFor<DayViewModel>, DayView>(Lifetime.PerResolve)
-                     .RegisterType<IViewFor<TrackViewModel>, TrackView>(Lifetime.PerResolve)
-                     .RegisterType<IViewFor<LectureViewModel>, LectureView>(Lifetime.PerResolve)
-                     .RegisterType<IViewFor<SpeakerViewModel>, SpeakerView>(Lifetime.PerResolve)
-                     .RegisterType<IViewFor<TweetsViewModel>, TweetsView>(Lifetime.PerResolve)
-                     .RegisterType<IViewFor<AboutViewModel>, AboutView>(Lifetime.PerResolve);
+                     .RegisterType<IViewFor<HubViewModel>, HubView>(Lifetime.Singleton)
+                     .RegisterType<IViewFor<DayViewModel>, DayView>(Lifetime.Transient)
+                     .RegisterType<IViewFor<TrackViewModel>, TrackView>(Lifetime.Transient)
+                     .RegisterType<IViewFor<LectureViewModel>, LectureView>(Lifetime.Transient)
+                     .RegisterType<IViewFor<SpeakerViewModel>, SpeakerView>(Lifetime.Transient)
+                     .RegisterType<IViewFor<TweetsViewModel>, TweetsView>(Lifetime.Transient)
+                     .RegisterType<IViewFor<AboutViewModel>, AboutView>(Lifetime.Transient);
         }
 
         private void StartAnalyticsSession()

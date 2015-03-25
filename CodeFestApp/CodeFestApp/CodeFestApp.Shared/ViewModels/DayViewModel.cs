@@ -16,9 +16,8 @@ namespace CodeFestApp.ViewModels
     public class DayViewModel : ReactiveObject, IRoutableViewModel
     {
         private readonly Day _day;
-
         private readonly ObservableAsPropertyHelper<IEnumerable<IGrouping<string, LectureViewModel>>> _lectures;
-
+        
         public DayViewModel(IScreen hostScreen,
                             Day day,
                             IViewModelFactory lectureViewModelFactory,

@@ -14,9 +14,9 @@ namespace CodeFestApp.DI
             get { return new ExternallyControlledLifetimeManager(); }
         }
 
-        public static LifetimeManager PerResolve
+        public static LifetimeManager Transient
         {
-            get { return new PerResolveLifetimeManager(); }
+            get { return new TransientLifetimeManager(); }
         }
     }
 }

@@ -55,7 +55,7 @@ namespace CodeFestApp.ViewModels
                                                                                deviceIdentity,
                                                                                _lecture.Id));
                         var responseContent = await response.Content.ReadAsStringAsync();
-                        return bool.Parse(responseContent);
+                        return responseContent == "true";
                     });
 
             Like = ReactiveCommand.CreateAsyncTask(
