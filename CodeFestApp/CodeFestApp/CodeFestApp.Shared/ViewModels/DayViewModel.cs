@@ -44,9 +44,8 @@ namespace CodeFestApp.ViewModels
             this.WhenAnyObservable(x => x.ThrownExceptions,
                                    x => x.LoadLectures.ThrownExceptions,
                                    x => x.NavigateToLectureCommand.ThrownExceptions)
-                .ObserveOn(RxApp.TaskpoolScheduler)
                 .Subscribe(logger.LogException);
-
+            
             this.WhenNavigatedTo(() =>
                 {
                     Task.Run(() => logger.LogViewModelRouted(this));
