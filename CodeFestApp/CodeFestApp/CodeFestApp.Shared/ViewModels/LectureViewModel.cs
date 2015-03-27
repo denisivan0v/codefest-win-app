@@ -77,35 +77,26 @@ namespace CodeFestApp.ViewModels
                     });
 
             ManageFavorites = ReactiveCommand.CreateAsyncTask(
-                async _ =>
+                _ =>
                     {
                         if (IsInFavorites)
                         {
-                            var respose = await httpClient.DeleteAsync(string.Format("favorite/lectures/remove/{0}/{1}",
+                            return httpClient.DeleteAsync(string.Format("favorite/lectures/remove/{0}/{1}",
                                                                                      deviceIdentity,
                                                                                      _lecture.Id));
-                            if (respose.IsSuccessStatusCode)
-                            {
-                                IsInFavorites = !IsInFavorites;
-                            }
                         }
-                        else
-                        {
-                            var respose = await httpClient.PostAsync(string.Format("favorite/lectures/add/{0}/{1}",
-                                                                                   deviceIdentity,
-                                                                                   _lecture.Id),
-                                                                     null);
-                            if (respose.IsSuccessStatusCode)
-                            {
-                                IsInFavorites = !IsInFavorites;
-                            }
-                        }
+
+                        return httpClient.PostAsync(string.Format("favorite/lectures/add/{0}/{1}",
+                                                                  deviceIdentity,
+                                                                  _lecture.Id),
+                                                    null);
                     });
 
             this.WhenAnyObservable(x => x.NavigateToSpeaker)
                 .Subscribe(x => HostScreen.Router.Navigate.Execute(x));
 
             this.WhenAnyObservable(x => x.LoadLectureAttitude)
+                .SubscribeOn(RxApp.TaskpoolScheduler)
                 .Subscribe(x =>
                     {
                         if (!x.Contains(deviceIdentity))
@@ -124,6 +115,7 @@ namespace CodeFestApp.ViewModels
                     });
 
             this.WhenAnyObservable(x => x.CheckIsInFavorites)
+                .SubscribeOn(RxApp.TaskpoolScheduler)
                 .Subscribe(async x =>
                     {
                         if (x.IsSuccessStatusCode)
@@ -134,6 +126,7 @@ namespace CodeFestApp.ViewModels
                     });
 
             this.WhenAnyObservable(x => x.Like)
+                .SubscribeOn(RxApp.TaskpoolScheduler)
                 .Subscribe(async x =>
                     {
                         if (x.IsSuccessStatusCode)
@@ -148,6 +141,7 @@ namespace CodeFestApp.ViewModels
                     });
 
             this.WhenAnyObservable(x => x.Dislike)
+                .SubscribeOn(RxApp.TaskpoolScheduler)
                 .Subscribe(async x =>
                     {
                         if (x.IsSuccessStatusCode)
@@ -161,6 +155,16 @@ namespace CodeFestApp.ViewModels
                         }
                     });
 
+            this.WhenAnyObservable(x => x.ManageFavorites)
+                .SubscribeOn(RxApp.TaskpoolScheduler)
+                .Subscribe(x =>
+                    {
+                        if (x.IsSuccessStatusCode)
+                        {
+                            IsInFavorites = !IsInFavorites;
+                        }
+                    });
+
             this.WhenAnyObservable(x => x.ThrownExceptions,
                                    x => x.NavigateToSpeaker.ThrownExceptions,
                                    x => x.CheckIsInFavorites.ThrownExceptions,
@@ -170,7 +174,7 @@ namespace CodeFestApp.ViewModels
                 .Subscribe(logger.LogException);
 
             this.WhenAnyValue(x => x.CheckIsInFavorites)
-                .ObserveOn(RxApp.TaskpoolScheduler)
+                .SubscribeOn(RxApp.TaskpoolScheduler)
                 .Subscribe(x => x.ExecuteAsyncTask());
 
             this.WhenNavigatedTo(() =>
@@ -242,8 +246,8 @@ namespace CodeFestApp.ViewModels
         public ReactiveCommand<string> LoadLectureAttitude { get; private set; }
         public ReactiveCommand<HttpResponseMessage> CheckIsInFavorites { get; private set; } 
         public ReactiveCommand<HttpResponseMessage> Like { get; private set; }
-        public ReactiveCommand<HttpResponseMessage> Dislike { get; private set; } 
-        public ReactiveCommand<Unit> ManageFavorites { get; private set; } 
+        public ReactiveCommand<HttpResponseMessage> Dislike { get; private set; }
+        public ReactiveCommand<HttpResponseMessage> ManageFavorites { get; private set; } 
 
         public string UrlPathSegment
         {
