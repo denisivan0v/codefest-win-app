@@ -12,6 +12,7 @@
     <ApplicationDefinition Include="$(MSBuildThisFileDirectory)App.xaml">
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="$(MSBuildThisFileDirectory)Analytics\FavoriteLecture.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Analytics\FlurryAnalyticsWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Analytics\MobileServicesClientFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Analytics\IAnalyticsLogger.cs" />

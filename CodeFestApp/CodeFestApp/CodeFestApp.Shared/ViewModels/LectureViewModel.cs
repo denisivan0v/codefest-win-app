@@ -39,7 +39,7 @@ namespace CodeFestApp.ViewModels
             NavigateToSpeaker = ReactiveCommand.Create();
 
             var deviceIdentity = DeviceInfo.GetDeviceIdentity();
-            var httpClient = mobileServiceClientFactory.Create();
+            var httpClient = mobileServiceClientFactory.CreateHttpClient();
 
             LoadLectureAttitude = ReactiveCommand.CreateAsyncTask(
                 async _ =>

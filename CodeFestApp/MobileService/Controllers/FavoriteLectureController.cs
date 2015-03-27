@@ -12,17 +12,16 @@ namespace CodeFestApp.MobileService.Controllers
 {
     public class FavoriteLectureController : TableController<FavoriteLecture>
     {
+        public IQueryable<FavoriteLecture> GetFavoriteLectures()
+        {
+            return Query();
+        }
+
         [Route("favorite/lectures/check/{deviceIdentity}/{lectureId}")]
         public bool GetIsLectureInFavorites(string deviceIdentity, int lectureId)
         {
             return Query().Any(x => x.DeviceIdentity == deviceIdentity &&
                                     x.LectureId == lectureId);
-        }
-
-        [Route("favorite/lectures/{deviceIdentity}")]
-        public IQueryable<FavoriteLecture> GetFavoriteLectures(string deviceIdentity)
-        {
-            return Query().Where(x => x.DeviceIdentity == deviceIdentity);
         }
 
         [Route("favorite/lectures/add/{deviceIdentity}/{lectureId}", Name = "AddToFavotites")]

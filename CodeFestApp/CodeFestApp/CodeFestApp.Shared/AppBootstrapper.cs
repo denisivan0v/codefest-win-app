@@ -6,6 +6,7 @@ using CodeFestApp.DI;
 using CodeFestApp.ViewModels;
 
 using Microsoft.Practices.Unity;
+using Microsoft.WindowsAzure.MobileServices;
 
 using ReactiveUI;
 
@@ -51,7 +52,7 @@ namespace CodeFestApp
                      .RegisterType<IScheduleReader, ScheduleReader>(Lifetime.Singleton)
 
                      .RegisterType<IViewModelFactory, UnityViewModelFactory>(Lifetime.Singleton)
-
+                     
                      .RegisterType<IViewFor<HubViewModel>, HubView>(Lifetime.Transient)
                      .RegisterType<IViewFor<DayViewModel>, DayView>(Lifetime.Transient)
                      .RegisterType<IViewFor<TrackViewModel>, TrackView>(Lifetime.Transient)

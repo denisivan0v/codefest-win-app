@@ -33,6 +33,10 @@ namespace CodeFestApp
             this.WhenAnyValue(x => x.ViewModel.LoadSpeakersCommand)
                 .ObserveOn(RxApp.TaskpoolScheduler)
                 .Subscribe(x => x.ExecuteAsyncTask());
+
+            this.WhenAnyValue(x => x.ViewModel.LoadFavorites)
+                .SubscribeOn(RxApp.TaskpoolScheduler)
+                .Subscribe(x => x.ExecuteAsyncTask());
         }
 
         object IViewFor.ViewModel
