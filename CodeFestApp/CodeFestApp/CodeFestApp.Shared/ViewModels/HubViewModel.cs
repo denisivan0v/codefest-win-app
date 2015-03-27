@@ -19,6 +19,7 @@ namespace CodeFestApp.ViewModels
         private readonly ObservableAsPropertyHelper<IEnumerable<DayViewModel>> _days;
         private readonly ObservableAsPropertyHelper<IEnumerable<TrackViewModel>> _tracks;
         private readonly ObservableAsPropertyHelper<IEnumerable<AlphaKeyGroup<SpeakerViewModel>>> _speakers;
+        private IEnumerable<IGrouping<string, LectureViewModel>> _favoriteLectures;
 
         public HubViewModel(IScreen screen,
                             IScheduleReader scheduleReader,
@@ -95,7 +96,8 @@ namespace CodeFestApp.ViewModels
                         FavoriteLectures = scheduleReader.GetLectures()
                                                          .Where(x => lectureIds.Contains(x.Id))
                                                          .Select(viewModelFactory.Create<LectureViewModel, Lecture>)
-                                                         .ToArray();
+                                                         .OrderBy(x => x.Start)
+                                                         .GroupBy(x => x.Start.ToString("f"));
                     });
 
             this.WhenAnyObservable(x => x.ThrownExceptions,
@@ -148,6 +150,11 @@ namespace CodeFestApp.ViewModels
             get { return "СПИКЕРЫ"; }
         }
 
+        public string FavoriteLecturesSectionTitle
+        {
+            get { return "ИЗБРАННОЕ"; }
+        }
+
         public Uri TwitterIcon
         {
             get { return new Uri("ms-appx:///Assets/TwitterIcon.png"); }
@@ -168,7 +175,11 @@ namespace CodeFestApp.ViewModels
             get { return _speakers.Value; }
         }
 
-        public IEnumerable<LectureViewModel> FavoriteLectures { get; set; }
+        public IEnumerable<IGrouping<string, LectureViewModel>> FavoriteLectures
+        {
+            get { return _favoriteLectures; }
+            set { this.RaiseAndSetIfChanged(ref _favoriteLectures, value); }
+        }
 
         public IScreen HostScreen { get; private set; }
 

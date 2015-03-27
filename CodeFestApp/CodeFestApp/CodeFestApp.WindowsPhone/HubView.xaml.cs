@@ -68,5 +68,10 @@ namespace CodeFestApp
             var activeSection = hub.SectionsInView[0];
             ViewModel.ActiveSection = hub.Sections.IndexOf(activeSection);
         }
+
+        private void FavoriteLecturesListView_OnItemClick(object sender, ItemClickEventArgs e)
+        {
+            ViewModel.HostScreen.Router.Navigate.ExecuteAsyncTask(e.ClickedItem);
+        }
     }
 }
