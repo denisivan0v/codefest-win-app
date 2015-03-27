@@ -82,6 +82,7 @@ namespace CodeFestApp.DataModel
                         TwitterProfile = CreateUri((string)x["link_twitter"]),
                         VkontakteProfile = CreateUri((string)x["link_vkontakte"])
                     })
+                .Distinct()
                 .Select(x =>
                     {
                         x.SetCompany(_companies);
