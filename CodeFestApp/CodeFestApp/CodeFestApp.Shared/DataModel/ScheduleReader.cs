@@ -111,6 +111,11 @@ namespace CodeFestApp.DataModel
             return _days;
         }
 
+        public IEnumerable<Lecture> GetLectures()
+        {
+            return _lectures;
+        }
+
         public IEnumerable<Lecture> GetCurrentLectures()
         {
             var now = DateTime.Now;

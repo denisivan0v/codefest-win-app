@@ -8,8 +8,9 @@ namespace CodeFestApp.DataModel
         Task ReadSchedule();
 
         IEnumerable<Day> GetDays();
-        IEnumerable<Lecture> GetCurrentLectures();
         IEnumerable<Speaker> GetSpeakers();
         IEnumerable<Track> GetTracks();
+        IEnumerable<Lecture> GetLectures();
+        IEnumerable<Lecture> GetCurrentLectures();
     }
 }

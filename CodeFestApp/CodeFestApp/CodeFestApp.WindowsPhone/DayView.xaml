@@ -1,9 +1,12 @@
 ﻿<Page x:Class="CodeFestApp.DayView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"> 
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+      xmlns:behaviors="using:CodeFestApp.Behaviors"
+      xmlns:controls="using:WinRTXamlToolkit.Controls"> 
     <Page.Resources>
         <CollectionViewSource x:Key="LecturesSource"
-                              Source="{Binding Lectures}"
+                              Source="{Binding Lectures, Mode=OneWay}"
                               IsSourceGrouped="True" />
     </Page.Resources>
     <Page.Transitions>
@@ -16,15 +19,15 @@
             <PivotItem>
                 <PivotItem.Header>
                     <StackPanel Grid.Row="0" Margin="19,12,0,0">
-                        <TextBlock Text="{Binding ConferenceTitle}" 
+                        <TextBlock Text="{Binding ConferenceTitle, Mode=OneTime}" 
                                    Style="{ThemeResource TitleTextBlockStyle}" />
-                        <TextBlock Text="{Binding Title}"
+                        <TextBlock Text="{Binding Title, Mode=OneTime}"
                                    Style="{ThemeResource HeaderTextBlockStyle}" 
                                    Margin="0,-6.5,0,0" 
                                    CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
                     </StackPanel>
                 </PivotItem.Header>
-                <ListView ItemsSource="{Binding Source={StaticResource LecturesSource}}"
+                <ListView ItemsSource="{Binding Source={StaticResource LecturesSource}, Mode=OneTime}"
                           Margin="0,-19,0,19"
                           IsItemClickEnabled="True"
                           ItemClick="LecturesListView_OnItemClick">
@@ -33,32 +36,47 @@
                     </ListView.GroupStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Margin="0,0,0,5">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Rectangle Grid.Column="0" Width="10" Height="72">
-                                        <Rectangle.Fill>
-                                            <SolidColorBrush Color="{Binding Track.Color}" />
-                                        </Rectangle.Fill>
-                                    </Rectangle>
-                                    <StackPanel Grid.Column="1" Margin="9.5,12,0,0" VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding Title}"
-                                                   TextWrapping="Wrap"
-                                                   Style="{ThemeResource TitleTextBlockStyle}" />
-                                        <ListView ItemsSource="{Binding Speakers}">
-                                            <ListView.ItemTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock Text="{Binding Title}"
-                                                               Style="{ThemeResource ListViewItemSubheaderTextBlockStyle}" />
-                                                </DataTemplate>
-                                            </ListView.ItemTemplate>
-                                        </ListView>
-                                    </StackPanel>
-                                </Grid>
-                            </StackPanel>
+                            <Grid Margin="0,0,0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Rectangle Grid.Column="0" Width="10" Height="72">
+                                    <Rectangle.Fill>
+                                        <SolidColorBrush Color="{Binding Track.Color, Mode=OneTime}" />
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                                <StackPanel Grid.Column="1" Margin="9.5,12,0,0" 
+                                            VerticalAlignment="Center">
+                                    <interactivity:Interaction.Behaviors>
+                                        <behaviors:WindowDimensionBehavior WidthPercentage="0.75" />
+                                    </interactivity:Interaction.Behaviors>
+                                    <TextBlock Text="{Binding Title, Mode=OneTime}"
+                                               TextWrapping="Wrap"
+                                               Style="{ThemeResource TitleTextBlockStyle}" />
+                                    <ListView ItemsSource="{Binding Speakers, Mode=OneTime}">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Title, Mode=OneTime}"
+                                                           Style="{ThemeResource ListViewItemSubheaderTextBlockStyle}" />
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                </StackPanel>
+                                <controls:ImageToggleButton Grid.Column="2"
+                                                            Command="{Binding ManageFavorites}" 
+                                                            IsChecked="{Binding IsInFavorites}"
+                                                            IsEnabled="{Binding IsReady}"
+                                                            Stretch="Fill"
+                                                            Width="42"
+                                                            Height="42"
+                                                            VerticalAlignment="Center"
+                                                            NormalStateImageSource="Assets/appbar.star.png"
+                                                            DisabledStateImageSource="Assets/appbar.star.disabled.png"
+                                                            CheckedStateImageSource="Assets/appbar.star.checked.png">
+                                </controls:ImageToggleButton>
+                            </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>

@@ -23,8 +23,8 @@ namespace CodeFestApp
                 .BindTo(this, x => x.DataContext);
 
             this.WhenAnyValue(x => x.ViewModel.LoadDaysCommand)
-                .ObserveOn(RxApp.TaskpoolScheduler)
-                .Subscribe(x => x.ExecuteAsyncTask());
+                               .ObserveOn(RxApp.TaskpoolScheduler)
+                               .Subscribe(x => x.ExecuteAsyncTask());
 
             this.WhenAnyValue(x => x.ViewModel.LoadTracksCommand)
                 .ObserveOn(RxApp.TaskpoolScheduler)
@@ -32,6 +32,10 @@ namespace CodeFestApp
 
             this.WhenAnyValue(x => x.ViewModel.LoadSpeakersCommand)
                 .ObserveOn(RxApp.TaskpoolScheduler)
+                .Subscribe(x => x.ExecuteAsyncTask());
+
+            this.WhenAnyValue(x => x.ViewModel.LoadFavorites)
+                .SubscribeOn(RxApp.TaskpoolScheduler)
                 .Subscribe(x => x.ExecuteAsyncTask());
         }
 
@@ -63,6 +67,11 @@ namespace CodeFestApp
             var hub = (Hub)sender;
             var activeSection = hub.SectionsInView[0];
             ViewModel.ActiveSection = hub.Sections.IndexOf(activeSection);
+        }
+
+        private void FavoriteLecturesListView_OnItemClick(object sender, ItemClickEventArgs e)
+        {
+            ViewModel.HostScreen.Router.Navigate.ExecuteAsyncTask(e.ClickedItem);
         }
     }
 }

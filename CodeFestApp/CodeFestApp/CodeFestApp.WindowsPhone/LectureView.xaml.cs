@@ -21,10 +21,6 @@ namespace CodeFestApp
             this.WhenAnyValue(x => x.ViewModel.LoadLectureAttitude)
                 .ObserveOn(RxApp.TaskpoolScheduler)
                 .Subscribe(x => x.ExecuteAsyncTask());
-
-            this.WhenAnyValue(x => x.ViewModel.CheckIsInFavorites)
-                .ObserveOn(RxApp.TaskpoolScheduler)
-                .Subscribe(x => x.ExecuteAsyncTask());
         } 
 
         object IViewFor.ViewModel

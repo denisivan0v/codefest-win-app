@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using CodeFestApp.Analytics;
 using CodeFestApp.DataModel;
 using CodeFestApp.DI;
+using CodeFestApp.Utils;
 
 using ReactiveUI;
 
@@ -18,10 +19,18 @@ namespace CodeFestApp.ViewModels
         private readonly ObservableAsPropertyHelper<IEnumerable<DayViewModel>> _days;
         private readonly ObservableAsPropertyHelper<IEnumerable<TrackViewModel>> _tracks;
         private readonly ObservableAsPropertyHelper<IEnumerable<AlphaKeyGroup<SpeakerViewModel>>> _speakers;
+        private IEnumerable<IGrouping<string, LectureViewModel>> _favoriteLectures;
 
-        public HubViewModel(IScreen screen, IScheduleReader scheduleReader, IViewModelFactory viewModelFactory, IAnalyticsLogger logger)
+        public HubViewModel(IScreen screen,
+                            IScheduleReader scheduleReader,
+                            IViewModelFactory viewModelFactory,
+                            MobileServicesClientFactory mobileServiceClientFactory,
+                            IAnalyticsLogger logger)
         {
             HostScreen = screen;
+
+            var deviceIdentity = DeviceInfo.GetDeviceIdentity();
+            var mobileServiceClient = mobileServiceClientFactory.Create();
 
             LoadDaysCommand = ReactiveCommand.CreateAsyncTask(_ => Task.Run(
                 () =>
@@ -42,6 +51,13 @@ namespace CodeFestApp.ViewModels
                         var viewModels = speakers.Select(viewModelFactory.Create<SpeakerViewModel, Speaker>);
                         return AlphaKeyGroup<SpeakerViewModel>.CreateGroups(viewModels, x => x.Title, true);
                     }));
+            LoadFavorites = ReactiveCommand.CreateAsyncTask(
+                _ =>
+                    {
+                        var favs = mobileServiceClient.GetTable<FavoriteLecture>();
+                        return favs.Where(x => x.DeviceIdentity == deviceIdentity).ToEnumerableAsync();
+                    });
+
             NavigateToDayCommand = ReactiveCommand.Create();
             NavigateToTrackCommand = ReactiveCommand.Create();
             NavigateToSpeakerCommand = ReactiveCommand.Create();
@@ -72,6 +88,18 @@ namespace CodeFestApp.ViewModels
             this.WhenAnyObservable(x => x.NavigateToAboutCommand)
                 .Subscribe(x => HostScreen.Router.Navigate.Execute(viewModelFactory.Create<AboutViewModel>()));
 
+            this.WhenAnyObservable(x => x.LoadFavorites)
+                .SubscribeOn(RxApp.TaskpoolScheduler)
+                .Subscribe(fav =>
+                    {
+                        var lectureIds = fav.Select(x => x.LectureId).ToArray();
+                        FavoriteLectures = scheduleReader.GetLectures()
+                                                         .Where(x => lectureIds.Contains(x.Id))
+                                                         .Select(viewModelFactory.Create<LectureViewModel, Lecture>)
+                                                         .OrderBy(x => x.Start)
+                                                         .GroupBy(x => x.Start.ToString("f"));
+                    });
+
             this.WhenAnyObservable(x => x.ThrownExceptions,
                                    x => x.LoadDaysCommand.ThrownExceptions,
                                    x => x.LoadTracksCommand.ThrownExceptions,
@@ -82,7 +110,7 @@ namespace CodeFestApp.ViewModels
                                    x => x.NavigateToTwitterFeedCommand.ThrownExceptions)
                 .SubscribeOn(RxApp.TaskpoolScheduler)
                 .Subscribe(logger.LogException);
-            
+
             this.WhenNavigatedTo(() =>
                 {
                     Task.Run(() => logger.LogViewModelRouted(this));
@@ -93,6 +121,7 @@ namespace CodeFestApp.ViewModels
         public ReactiveCommand<IEnumerable<DayViewModel>> LoadDaysCommand { get; private set; }
         public ReactiveCommand<IEnumerable<TrackViewModel>> LoadTracksCommand { get; private set; }
         public ReactiveCommand<IEnumerable<AlphaKeyGroup<SpeakerViewModel>>> LoadSpeakersCommand { get; private set; }
+        public ReactiveCommand<IEnumerable<FavoriteLecture>> LoadFavorites { get; private set; }
         public ReactiveCommand<object> NavigateToDayCommand { get; private set; }
         public ReactiveCommand<object> NavigateToTrackCommand { get; private set; }
         public ReactiveCommand<object> NavigateToSpeakerCommand { get; private set; }
@@ -121,6 +150,11 @@ namespace CodeFestApp.ViewModels
             get { return "СПИКЕРЫ"; }
         }
 
+        public string FavoriteLecturesSectionTitle
+        {
+            get { return "ИЗБРАННОЕ"; }
+        }
+
         public Uri TwitterIcon
         {
             get { return new Uri("ms-appx:///Assets/TwitterIcon.png"); }
@@ -139,6 +173,12 @@ namespace CodeFestApp.ViewModels
         public IEnumerable<AlphaKeyGroup<SpeakerViewModel>> Speakers
         {
             get { return _speakers.Value; }
+        }
+
+        public IEnumerable<IGrouping<string, LectureViewModel>> FavoriteLectures
+        {
+            get { return _favoriteLectures; }
+            set { this.RaiseAndSetIfChanged(ref _favoriteLectures, value); }
         }
 
         public IScreen HostScreen { get; private set; }

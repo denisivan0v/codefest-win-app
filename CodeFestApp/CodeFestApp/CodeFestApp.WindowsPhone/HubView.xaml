@@ -8,6 +8,9 @@
                               IsSourceGrouped="True" 
                               Source="{Binding Speakers, Mode=OneWay}" 
                               ItemsPath="Items"/>
+        <CollectionViewSource x:Key="FavoriteLecturesSource"
+                              Source="{Binding FavoriteLectures}"
+                              IsSourceGrouped="True" />
     </Page.Resources>
     <Grid>
         <Grid.ChildrenTransitions>
@@ -86,6 +89,48 @@
                             </GridView>
                         </SemanticZoom.ZoomedOutView>
                     </SemanticZoom>
+                </DataTemplate>
+            </HubSection>
+            <HubSection Header="{Binding FavoriteLecturesSectionTitle, Mode=OneTime}" 
+                        HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
+                <DataTemplate>
+                    <ListView ItemsSource="{Binding Source={StaticResource FavoriteLecturesSource}}"
+                          IsItemClickEnabled="True"
+                          ItemClick="FavoriteLecturesListView_OnItemClick"
+                          Margin="0,-19,0,19">
+                        <ListView.GroupStyle>
+                            <GroupStyle HidesIfEmpty="True" 
+                                    HeaderTemplate="{StaticResource SmallTextUnborderedGroupHeaderTemplate}"/>
+                        </ListView.GroupStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,0,0,9.5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <GridView Grid.Column="0"
+                                            ItemsSource="{Binding Speakers}"
+                                            VerticalAlignment="Center">
+                                        <GridView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Image Source="{Binding Avatar}"
+                                                    Height="52" 
+                                                    Margin="5,0"
+                                                    Stretch="Uniform"/>
+                                            </DataTemplate>
+                                        </GridView.ItemTemplate>
+                                    </GridView>
+                                    <TextBlock Grid.Column="1"
+                                            Text="{Binding Title}"
+                                            Margin="9.5,0"
+                                            VerticalAlignment="Center"
+                                            TextWrapping="Wrap"
+                                            Style="{ThemeResource TitleTextBlockStyle}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
                 </DataTemplate>
             </HubSection>
 

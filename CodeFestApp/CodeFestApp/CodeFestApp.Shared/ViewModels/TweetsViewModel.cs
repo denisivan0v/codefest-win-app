@@ -40,7 +40,7 @@ namespace CodeFestApp.ViewModels
             this.WhenAnyObservable(x => x.ThrownExceptions,
                                    x => x.SearchForTweetsCommand.ThrownExceptions,
                                    x => x.RefreshTweetsCommand.ThrownExceptions)
-                .ObserveOn(RxApp.TaskpoolScheduler)
+                .SubscribeOn(RxApp.TaskpoolScheduler)
                 .Subscribe(logger.LogException);
 
             this.WhenNavigatedTo(() =>

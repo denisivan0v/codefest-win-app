@@ -16,9 +16,8 @@ namespace CodeFestApp.ViewModels
     public class DayViewModel : ReactiveObject, IRoutableViewModel
     {
         private readonly Day _day;
-
         private readonly ObservableAsPropertyHelper<IEnumerable<IGrouping<string, LectureViewModel>>> _lectures;
-
+        
         public DayViewModel(IScreen hostScreen,
                             Day day,
                             IViewModelFactory lectureViewModelFactory,
@@ -45,9 +44,9 @@ namespace CodeFestApp.ViewModels
             this.WhenAnyObservable(x => x.ThrownExceptions,
                                    x => x.LoadLectures.ThrownExceptions,
                                    x => x.NavigateToLectureCommand.ThrownExceptions)
-                .ObserveOn(RxApp.TaskpoolScheduler)
+                .SubscribeOn(RxApp.TaskpoolScheduler)
                 .Subscribe(logger.LogException);
-
+            
             this.WhenNavigatedTo(() =>
                 {
                     Task.Run(() => logger.LogViewModelRouted(this));

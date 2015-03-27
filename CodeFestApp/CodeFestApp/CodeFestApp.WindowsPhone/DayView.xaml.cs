@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Reactive.Linq;
+
+using Windows.UI.Xaml;
 
 using CodeFestApp.ViewModels;
 
@@ -19,7 +20,6 @@ namespace CodeFestApp
                 .BindTo(this, x => x.DataContext);
 
             this.WhenAnyValue(x => x.ViewModel.LoadLectures)
-                .ObserveOn(RxApp.TaskpoolScheduler)
                 .Subscribe(x => x.ExecuteAsyncTask());
         }
         
