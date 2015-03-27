@@ -82,6 +82,7 @@ namespace CodeFestApp.DataModel
                         TwitterProfile = CreateUri((string)x["link_twitter"]),
                         VkontakteProfile = CreateUri((string)x["link_vkontakte"])
                     })
+                .Distinct()
                 .Select(x =>
                     {
                         x.SetCompany(_companies);
@@ -119,7 +120,7 @@ namespace CodeFestApp.DataModel
         public IEnumerable<Lecture> GetCurrentLectures()
         {
             var now = DateTime.Now;
-            return _lectures.Where(x => x.Start >= now && x.End <= now);
+            return _lectures.Where(x => x.Start <= now && now <= x.End);
         }
 
         public IEnumerable<Speaker> GetSpeakers()

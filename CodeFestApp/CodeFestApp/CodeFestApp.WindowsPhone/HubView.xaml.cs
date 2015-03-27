@@ -37,6 +37,10 @@ namespace CodeFestApp
             this.WhenAnyValue(x => x.ViewModel.LoadFavorites)
                 .SubscribeOn(RxApp.TaskpoolScheduler)
                 .Subscribe(x => x.ExecuteAsyncTask());
+
+            this.WhenAnyValue(x => x.ViewModel.LoadCurrentLectures)
+                .SubscribeOn(RxApp.TaskpoolScheduler)
+                .Subscribe(x => x.ExecuteAsyncTask());
         }
 
         object IViewFor.ViewModel
@@ -71,7 +75,12 @@ namespace CodeFestApp
 
         private void FavoriteLecturesListView_OnItemClick(object sender, ItemClickEventArgs e)
         {
-            ViewModel.HostScreen.Router.Navigate.ExecuteAsyncTask(e.ClickedItem);
+            ViewModel.HostScreen.Router.Navigate.Execute(e.ClickedItem);
+        }
+
+        private void CurrentLecturesListView_OnItemClick(object sender, ItemClickEventArgs e)
+        {
+            ViewModel.HostScreen.Router.Navigate.Execute(e.ClickedItem);
         }
     }
 }
