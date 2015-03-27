@@ -71,6 +71,7 @@
                                                             Stretch="Fill"
                                                             Width="42"
                                                             Height="42"
+                                                            VerticalAlignment="Center"
                                                             NormalStateImageSource="Assets/appbar.star.png"
                                                             DisabledStateImageSource="Assets/appbar.star.disabled.png"
                                                             CheckedStateImageSource="Assets/appbar.star.checked.png">
