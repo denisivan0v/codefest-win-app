@@ -178,6 +178,7 @@ namespace CodeFestApp.ViewModels
                                    x => x.ManageFavorites.ThrownExceptions,
                                    x => x.Like.ThrownExceptions,
                                    x => x.Dislike.ThrownExceptions)
+                .SubscribeOn(RxApp.TaskpoolScheduler)
                 .Subscribe(logger.LogException);
             
             this.WhenAnyValue(x => x.CheckIsInFavorites)

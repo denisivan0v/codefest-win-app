@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 
 using CodeFestApp.Analytics;
@@ -43,6 +44,7 @@ namespace CodeFestApp.ViewModels
             this.WhenAnyObservable(x => x.ThrownExceptions,
                                    x => x.LoadLectures.ThrownExceptions,
                                    x => x.NavigateToLectureCommand.ThrownExceptions)
+                .SubscribeOn(RxApp.TaskpoolScheduler)
                 .Subscribe(logger.LogException);
             
             this.WhenNavigatedTo(() =>

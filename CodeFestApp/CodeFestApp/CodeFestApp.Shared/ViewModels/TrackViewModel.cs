@@ -31,7 +31,7 @@ namespace CodeFestApp.ViewModels
 
             this.WhenAnyObservable(x => x.ThrownExceptions,
                                    x => x.NavigateToLectureCommand.ThrownExceptions)
-                .ObserveOn(RxApp.TaskpoolScheduler)
+                .SubscribeOn(RxApp.TaskpoolScheduler)
                 .Subscribe(logger.LogException);
 
             this.WhenNavigatedTo(() =>
