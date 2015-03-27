@@ -67,10 +67,10 @@
                                 <controls:ImageToggleButton Grid.Column="2"
                                                             Command="{Binding ManageFavorites}" 
                                                             IsChecked="{Binding IsInFavorites}"
+                                                            IsEnabled="{Binding IsReady}"
                                                             Stretch="Fill"
                                                             Width="42"
                                                             Height="42"
-                                                            GenerateMissingImages="True"
                                                             NormalStateImageSource="Assets/appbar.star.png"
                                                             DisabledStateImageSource="Assets/appbar.star.disabled.png"
                                                             CheckedStateImageSource="Assets/appbar.star.checked.png">

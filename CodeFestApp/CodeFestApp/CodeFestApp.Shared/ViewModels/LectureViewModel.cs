@@ -24,6 +24,7 @@ namespace CodeFestApp.ViewModels
         private bool _isInFavorites;
         private bool _isLiked; 
         private bool _isDisliked;
+        private bool _isReady;
 
         public LectureViewModel(IScreen hostScreen,
                                 Lecture lecture,
@@ -50,9 +51,13 @@ namespace CodeFestApp.ViewModels
                     });
 
             CheckIsInFavorites = ReactiveCommand.CreateAsyncTask(
-                _ => httpClient.GetAsync(string.Format("favorite/lectures/check/{0}/{1}",
-                                                       deviceIdentity,
-                                                       _lecture.Id)));
+                _ =>
+                    {
+                        IsReady = false;
+                        return httpClient.GetAsync(string.Format("favorite/lectures/check/{0}/{1}",
+                                                                 deviceIdentity,
+                                                                 _lecture.Id));
+                    });
 
             Like = ReactiveCommand.CreateAsyncTask(
                 this.WhenAny(x => x.Start, x => x.IsLiked, (s, l) => s.Value <= DateTime.Now && !l.Value),
@@ -123,6 +128,8 @@ namespace CodeFestApp.ViewModels
                             var content = await x.Content.ReadAsStringAsync();
                             IsInFavorites = content == "true";
                         }
+
+                        IsReady = true;
                     });
 
             this.WhenAnyObservable(x => x.Like)
@@ -172,7 +179,7 @@ namespace CodeFestApp.ViewModels
                                    x => x.Like.ThrownExceptions,
                                    x => x.Dislike.ThrownExceptions)
                 .Subscribe(logger.LogException);
-
+            
             this.WhenAnyValue(x => x.CheckIsInFavorites)
                 .SubscribeOn(RxApp.TaskpoolScheduler)
                 .Subscribe(x => x.ExecuteAsyncTask());
@@ -240,6 +247,12 @@ namespace CodeFestApp.ViewModels
         {
             get { return _isInFavorites; }
             set { this.RaiseAndSetIfChanged(ref _isInFavorites, value); }
+        }
+
+        public bool IsReady
+        {
+            get { return _isReady; }
+            set { this.RaiseAndSetIfChanged(ref _isReady, value); }
         }
 
         public ReactiveCommand<object> NavigateToSpeaker { get; private set; } 
