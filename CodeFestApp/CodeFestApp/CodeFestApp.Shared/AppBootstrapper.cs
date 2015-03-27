@@ -52,7 +52,7 @@ namespace CodeFestApp
 
                      .RegisterType<IViewModelFactory, UnityViewModelFactory>(Lifetime.Singleton)
 
-                     .RegisterType<IViewFor<HubViewModel>, HubView>(Lifetime.Singleton)
+                     .RegisterType<IViewFor<HubViewModel>, HubView>(Lifetime.Transient)
                      .RegisterType<IViewFor<DayViewModel>, DayView>(Lifetime.Transient)
                      .RegisterType<IViewFor<TrackViewModel>, TrackView>(Lifetime.Transient)
                      .RegisterType<IViewFor<LectureViewModel>, LectureView>(Lifetime.Transient)

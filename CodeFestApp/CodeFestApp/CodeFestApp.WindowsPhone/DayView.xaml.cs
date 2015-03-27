@@ -1,5 +1,7 @@
 ﻿using System;
 
+using Windows.UI.Xaml;
+
 using CodeFestApp.ViewModels;
 
 using ReactiveUI;
