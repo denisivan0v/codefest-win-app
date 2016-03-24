@@ -35,7 +35,7 @@ namespace CodeFestApp
                               var hostScreen = (IScreen)Locator.Current.GetService(typeof(IScreen));
                               if (hostScreen.Router.NavigationStack.Count > 1)
                               {
-                                  hostScreen.Router.NavigateBack.Execute(null);
+                                  hostScreen.Router.NavigateBack.ExecuteAsyncTask();
                                   x.EventArgs.Handled = true;
                               }
                           });

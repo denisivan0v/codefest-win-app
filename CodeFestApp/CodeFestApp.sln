@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeFestApp", "CodeFestApp", "{5D975583-7831-4AAF-BB1C-D087CB831ECA}"
 EndProject
@@ -13,7 +13,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeFestApp.WindowsPhone", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeFestApp.MobileService", "MobileService\CodeFestApp.MobileService.csproj", "{5352C501-4065-45F3-86BB-D46A51FC8CB0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{370B3127-0306-441F-B733-391F608FD8AF}"
+	ProjectSection(SolutionItems) = preProject
+		Performance1.psess = Performance1.psess
+	EndProjectSection
+EndProject
 Global
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		CodeFestApp\CodeFestApp.Shared\CodeFestApp.Shared.projitems*{861207c1-e4ee-41d1-bae8-e1d178217005}*SharedItemsImports = 4
 		CodeFestApp\CodeFestApp.Shared\CodeFestApp.Shared.projitems*{a24254b8-57c0-42ce-9874-a7257306fb25}*SharedItemsImports = 4

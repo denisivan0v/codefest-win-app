@@ -6,7 +6,6 @@ using CodeFestApp.DI;
 using CodeFestApp.ViewModels;
 
 using Microsoft.Practices.Unity;
-using Microsoft.WindowsAzure.MobileServices;
 
 using ReactiveUI;
 
@@ -26,6 +25,9 @@ namespace CodeFestApp
             LogHost.Default.Level = LogLevel.Debug;
             
             Router = new RoutingState();
+
+            var logger = _container.Resolve<IAnalyticsLogger>();
+            Router.Navigate.ThrownExceptions.Subscribe(logger.LogException);
 
             StartAnalyticsSession();
             ReadSchedule();
@@ -77,7 +79,7 @@ namespace CodeFestApp
         private void NavigateToHub()
         {
             var hubViewModel = _container.Resolve<HubViewModel>();
-            Router.Navigate.Execute(hubViewModel);
+            Router.Navigate.ExecuteAsyncTask(hubViewModel);
         }
     }
 }

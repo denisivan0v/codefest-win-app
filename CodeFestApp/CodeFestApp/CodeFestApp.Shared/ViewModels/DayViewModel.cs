@@ -36,7 +36,7 @@ namespace CodeFestApp.ViewModels
                           .AsEnumerable()));
 
             this.WhenAnyObservable(x => x.NavigateToLectureCommand)
-                .Subscribe(x => HostScreen.Router.Navigate.Execute(x));
+                .Subscribe(x => HostScreen.Router.Navigate.ExecuteAsyncTask(x));
 
             this.WhenAnyObservable(x => x.LoadLectures)
                 .ToProperty(this, x => x.Lectures, out _lectures);

@@ -82,19 +82,19 @@ namespace CodeFestApp.ViewModels
                 .ToProperty(this, x => x.Speakers, out _speakers);
 
             this.WhenAnyObservable(x => x.NavigateToDayCommand)
-                .Subscribe(x => HostScreen.Router.Navigate.Execute(x));
+                .Subscribe(x => HostScreen.Router.Navigate.ExecuteAsyncTask(x));
 
             this.WhenAnyObservable(x => x.NavigateToTrackCommand)
-                .Subscribe(x => HostScreen.Router.Navigate.Execute(x));
+                .Subscribe(x => HostScreen.Router.Navigate.ExecuteAsyncTask(x));
 
             this.WhenAnyObservable(x => x.NavigateToSpeakerCommand)
-                .Subscribe(x => HostScreen.Router.Navigate.Execute(x));
+                .Subscribe(x => HostScreen.Router.Navigate.ExecuteAsyncTask(x));
 
             this.WhenAnyObservable(x => x.NavigateToTwitterFeedCommand)
-                .Subscribe(x => HostScreen.Router.Navigate.Execute(viewModelFactory.Create<TweetsViewModel>()));
+                .Subscribe(x => HostScreen.Router.Navigate.ExecuteAsyncTask(viewModelFactory.Create<TweetsViewModel>()));
 
             this.WhenAnyObservable(x => x.NavigateToAboutCommand)
-                .Subscribe(x => HostScreen.Router.Navigate.Execute(viewModelFactory.Create<AboutViewModel>()));
+                .Subscribe(x => HostScreen.Router.Navigate.ExecuteAsyncTask(viewModelFactory.Create<AboutViewModel>()));
 
             this.WhenAnyObservable(x => x.LoadFavorites)
                 .SubscribeOn(RxApp.TaskpoolScheduler)

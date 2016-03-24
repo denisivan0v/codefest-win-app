@@ -53,17 +53,17 @@ namespace CodeFestApp
 
         private void DaysGridView_OnItemClick(object sender, ItemClickEventArgs e)
         {
-            ViewModel.NavigateToDayCommand.Execute(e.ClickedItem);
+            ViewModel.NavigateToDayCommand.ExecuteAsyncTask(e.ClickedItem);
         }
 
         private void TracksListView_OnItemClick(object sender, ItemClickEventArgs e)
         {
-            ViewModel.NavigateToTrackCommand.Execute(e.ClickedItem);
+            ViewModel.NavigateToTrackCommand.ExecuteAsyncTask(e.ClickedItem);
         }
         
         private void SpeakersGridView_OnItemClick(object sender, ItemClickEventArgs e)
         {
-            ViewModel.NavigateToSpeakerCommand.Execute(e.ClickedItem);
+            ViewModel.NavigateToSpeakerCommand.ExecuteAsyncTask(e.ClickedItem);
         }
 
         private void Hub_OnSectionsInViewChanged(object sender, SectionsInViewChangedEventArgs e)
@@ -75,12 +75,12 @@ namespace CodeFestApp
 
         private void FavoriteLecturesListView_OnItemClick(object sender, ItemClickEventArgs e)
         {
-            ViewModel.HostScreen.Router.Navigate.Execute(e.ClickedItem);
+            ViewModel.HostScreen.Router.Navigate.ExecuteAsyncTask(e.ClickedItem);
         }
 
         private void CurrentLecturesListView_OnItemClick(object sender, ItemClickEventArgs e)
         {
-            ViewModel.HostScreen.Router.Navigate.Execute(e.ClickedItem);
+            ViewModel.HostScreen.Router.Navigate.ExecuteAsyncTask(e.ClickedItem);
         }
     }
 }
